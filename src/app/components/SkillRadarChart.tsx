@@ -95,9 +95,9 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
 
   // Simplified skill names
   const skillLabels = [
-    'Requirement Analysis',
+    'Requirements',
     'Design', 
-    'Construction',
+    'Development',
     'Testing',
     'Maintenance'
   ];
@@ -114,10 +114,10 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
     <div className="w-full">
       {/* Title */}
       <div className="text-center mb-8">
-        <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+        <h3 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
           Engineering Skills
         </h3>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-slate-600 dark:text-slate-400">
           My capabilities across the software development lifecycle
         </p>
       </div>
@@ -132,9 +132,9 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
                 key={`grid-${index}`}
                 points={grid.points}
                 fill="none"
-                stroke="#e5e7eb"
+                stroke="#cbd5e1"
                 strokeWidth="1"
-                className="dark:stroke-gray-600"
+                className="dark:stroke-slate-600"
               />
             ))}
 
@@ -146,9 +146,9 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
                 y1={axis.y1}
                 x2={axis.x2}
                 y2={axis.y2}
-                stroke="#e5e7eb"
+                stroke="#cbd5e1"
                 strokeWidth="1"
-                className="dark:stroke-gray-600"
+                className="dark:stroke-slate-600"
               />
             ))}
 
@@ -156,8 +156,8 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
             {skillAreaPath && (
               <path
                 d={skillAreaPath}
-                fill="rgba(59, 130, 246, 0.3)"
-                stroke="#3b82f6"
+                fill="rgba(30, 64, 175, 0.15)"
+                stroke="#1e40af"
                 strokeWidth="2"
                 className={`transition-all duration-1000 ease-out ${
                   hoveredSkill !== null ? 'opacity-70' : ''
@@ -172,7 +172,7 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
                 cx={point.x}
                 cy={point.y}
                 r={hoveredSkill === index ? "8" : "6"}
-                fill="#3b82f6"
+                fill="#1e40af"
                 stroke="white"
                 strokeWidth="3"
                 className="transition-all duration-300 cursor-pointer drop-shadow-lg hover:drop-shadow-xl"
@@ -218,8 +218,8 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
                   fill="currentColor"
                   className={`transition-all duration-300 cursor-pointer select-none ${
                     hoveredSkill === index 
-                      ? 'text-blue-600 dark:text-blue-400 font-bold' 
-                      : 'text-gray-700 dark:text-gray-300'
+                      ? 'text-blue-700 dark:text-blue-400 font-bold' 
+                      : 'text-slate-700 dark:text-slate-300'
                   }`}
                   style={{
                     transitionDelay: `${index * 150}ms`
@@ -241,7 +241,7 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
                 fontSize="12"
                 fill="currentColor"
                 opacity={0.6}
-                className="text-gray-500 dark:text-gray-400 select-none"
+                className="text-slate-500 dark:text-slate-400 select-none"
               >
                 {grid.level}
               </text>
@@ -250,11 +250,11 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
 
           {/* Hover tooltip */}
           {hoveredSkill !== null && (
-            <div className="absolute top-4 left-4 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-10">
-              <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+            <div className="absolute top-4 left-4 bg-white dark:bg-slate-800 p-3 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 z-10">
+              <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                 {skillLabels[hoveredSkill]}
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+              <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                 Level {chartSkills[hoveredSkill]?.level || 0}/5
               </div>
               <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
@@ -265,8 +265,8 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
         </div>
 
         {/* Skill Levels Legend */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 max-w-sm">
-          <h4 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 max-w-sm">
+          <h4 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">
             Skill Levels
           </h4>
           <div className="space-y-3">
@@ -281,12 +281,12 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
               >
                 <div className={`
                   flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold
-                  ${index + 1 <= 2 ? 'bg-blue-500' : 
-                    index + 1 <= 4 ? 'bg-green-500' : 'bg-purple-500'}
+                  ${index + 1 <= 2 ? 'bg-slate-500' : 
+                    index + 1 <= 4 ? 'bg-blue-600' : 'bg-blue-700'}
                 `}>
                   {index + 1}
                 </div>
-                <div className="text-sm text-gray-700 dark:text-gray-300">
+                <div className="text-sm text-slate-700 dark:text-slate-300">
                   {description}
                 </div>
               </div>

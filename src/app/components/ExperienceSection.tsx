@@ -13,13 +13,13 @@ export default function ExperienceSection() {
   const getTypeColor = (type: Experience['type']) => {
     switch (type) {
       case 'fulltime':
-        return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300';
-      case 'parttime':
         return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300';
+      case 'parttime':
+        return 'bg-slate-100 text-slate-700 dark:bg-slate-800/50 dark:text-slate-300';
       case 'internship':
-        return 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300';
+        return 'bg-slate-100 text-slate-600 dark:bg-slate-800/50 dark:text-slate-400';
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-300';
+        return 'bg-slate-100 text-slate-700 dark:bg-slate-800/50 dark:text-slate-300';
     }
   };
 
@@ -47,14 +47,14 @@ export default function ExperienceSection() {
   };
 
   return (
-    <section id="experience" className="py-20 bg-gray-50 dark:bg-gray-900/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="experience" className="section-padding bg-slate-50 dark:bg-slate-900/50">
+      <div className="max-w-7xl mx-auto container-padding">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
             Professional Experience
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
             My journey through various roles in software engineering, from internships to full-time positions, 
             building scalable systems and leading innovative projects.
           </p>
@@ -62,7 +62,7 @@ export default function ExperienceSection() {
 
         {/* Filter Tabs */}
         <div className="flex justify-center mb-12">
-          <div className="inline-flex bg-white dark:bg-gray-800 rounded-lg p-1 shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="inline-flex bg-white dark:bg-slate-800 rounded-lg p-1 shadow-sm border border-slate-200 dark:border-slate-700">
             {(['all', 'fulltime', 'parttime', 'internship'] as const).map((type) => (
               <button
                 key={type}
@@ -70,12 +70,12 @@ export default function ExperienceSection() {
                 className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${
                   selectedType === type
                     ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
                 }`}
               >
                 {type === 'all' ? 'All' : getTypeLabel(type)}
                 {type !== 'all' && (
-                  <span className="ml-2 text-xs bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded-full">
+                  <span className="ml-2 text-xs bg-slate-200 dark:bg-slate-600 px-2 py-1 rounded-full">
                     {groupedExperiences[type].length}
                   </span>
                 )}
@@ -93,7 +93,7 @@ export default function ExperienceSection() {
             >
               {/* Timeline line */}
               {index !== filteredExperiences.length - 1 && (
-                <div className="absolute left-8 top-20 w-0.5 h-full bg-gray-200 dark:bg-gray-700 z-0" />
+                <div className="absolute left-8 top-20 w-0.5 h-full bg-slate-200 dark:bg-slate-700 z-0" />
               )}
 
               <div className="relative z-10 card p-6 md:p-8 card-hover">
@@ -107,10 +107,10 @@ export default function ExperienceSection() {
                   <div className="flex-grow">
                     <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
                       <div className="space-y-2">
-                        <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100">
+                        <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100">
                           {experience.title}
                         </h3>
-                        <div className="flex flex-wrap items-center gap-4 text-gray-600 dark:text-gray-400">
+                        <div className="flex flex-wrap items-center gap-4 text-slate-600 dark:text-slate-400">
                           <div className="flex items-center space-x-2">
                             <Building size={16} />
                             <span className="font-medium">{experience.company}</span>
@@ -134,7 +134,7 @@ export default function ExperienceSection() {
                     {/* Description */}
                     <div className="space-y-4 mb-6">
                       {experience.description.slice(0, expandedExperience === experience.id ? undefined : 2).map((desc, descIndex) => (
-                        <p key={descIndex} className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                        <p key={descIndex} className="text-slate-700 dark:text-slate-300 leading-relaxed">
                           {desc}
                         </p>
                       ))}
@@ -162,14 +162,14 @@ export default function ExperienceSection() {
                     {/* Achievements */}
                     {experience.achievements && experience.achievements.length > 0 && (
                       <div className="mb-6">
-                        <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center">
-                          <Trophy size={20} className="mr-2 text-yellow-500" />
+                        <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3 flex items-center">
+                          <Trophy size={20} className="mr-2 text-blue-600" />
                           Key Achievements
                         </h4>
                         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
                           {experience.achievements.map((achievement, achIndex) => (
-                            <div key={achIndex} className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
-                              <p className="text-sm text-green-800 dark:text-green-300 font-medium">
+                            <div key={achIndex} className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
+                              <p className="text-sm text-blue-800 dark:text-blue-300 font-medium">
                                 {achievement}
                               </p>
                             </div>
@@ -180,14 +180,14 @@ export default function ExperienceSection() {
 
                     {/* Technologies */}
                     <div className="mb-6">
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                      <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
                         Technologies Used:
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {experience.technologies.map((tech, techIndex) => (
                           <span
                             key={techIndex}
-                            className="px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-sm rounded-full border border-blue-200 dark:border-blue-800"
+                            className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm rounded-full border border-slate-200 dark:border-slate-700"
                           >
                             {tech}
                           </span>
@@ -198,7 +198,7 @@ export default function ExperienceSection() {
                     {/* Image Slider */}
                     {experience.images && experience.images.length > 0 && (
                       <div className="mb-6">
-                        <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                        <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">
                           Project Gallery
                         </h4>
                         <ImageSlider images={experience.images} />
@@ -208,7 +208,7 @@ export default function ExperienceSection() {
                     {/* Certificates */}
                     {experience.certificates && experience.certificates.length > 0 && (
                       <div>
-                        <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                        <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">
                           Certificates & Recognition
                         </h4>
                         <div className="grid sm:grid-cols-2 gap-4">
@@ -218,10 +218,10 @@ export default function ExperienceSection() {
                               href={cert}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center space-x-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                              className="flex items-center space-x-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors group"
                             >
-                              <ExternalLink size={16} className="text-gray-500 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
-                              <span className="text-sm text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                              <ExternalLink size={16} className="text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+                              <span className="text-sm text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                                 View Certificate
                               </span>
                             </a>
