@@ -119,11 +119,11 @@ export default function HeroSection() {
             {/* Action buttons */}
             <div className={`flex flex-col sm:flex-row justify-center gap-6 mb-12 ${isVisible ? 'animate-fade-in delay-800' : 'opacity-0'}`}>
               <Link
-                href="/journey"
+                href="/experience"
                 className="btn-primary group"
               >
                 <span className="flex items-center space-x-2">
-                  <span>Discover My Journey</span>
+                  <span>Overview of my Experience</span>
                   <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                 </span>
               </Link>
