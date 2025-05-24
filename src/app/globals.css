@@ -100,6 +100,10 @@ code {
     animation: slideInfinite 30s linear infinite;
   }
 
+  .pause-animation {
+    animation-play-state: paused;
+  }
+
   .duration-slower {
     animation-duration: 20s;
   }
@@ -232,4 +236,19 @@ code {
 
 .gradient-text {
   @apply bg-gradient-to-r from-blue-700 to-blue-500 bg-clip-text text-transparent;
+}
+
+/* Line clamp utilities */
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
