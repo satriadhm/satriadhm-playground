@@ -237,11 +237,3 @@ export const certifications: Certification[] = [
     credentialId: 'SEDP-2023'
   }
 ];
-
-export const navigationItems = [
-  { name: 'Home', href: '#home' },
-  { name: 'Experience', href: '#experience' },
-  { name: 'Blog & Certifications', href: '#blog-certifications' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Life Journey', href: '#life-journey' }
-];
