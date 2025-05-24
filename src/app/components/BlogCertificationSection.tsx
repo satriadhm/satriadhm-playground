@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Calendar, Clock, ExternalLink, Award, User, LinkIcon } from 'lucide-react';
+import { ExternalLink, Award, ChevronRight } from 'lucide-react';
 import { certifications } from '@/constants/data';
 
 // Mock blog data - you can replace this with actual blog data or API
@@ -59,196 +59,178 @@ export default function BlogCertificationSection() {
     });
   };
 
-  const getCategoryColor = (category: string) => {
-    const colors: { [key: string]: string } = {
-      'Backend Development': 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300',
-      'Frontend Development': 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300',
-      'Career': 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300',
-      'Database': 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-300',
-    };
-    return colors[category] || 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-300';
+  const formatDateShort = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
+    });
   };
 
   return (
-    <section id="blog-certifications" className="py-20 bg-white dark:bg-gray-950">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="blog-certifications" className="py-24 bg-white dark:bg-slate-950">
+      <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            Blog & Certifications
+        <div className="text-center mb-20">
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-8">
+            Writing & Achievements
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            Sharing knowledge through technical writing and showcasing professional achievements 
-            and certifications earned throughout my career.
+          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            Thoughts on technology, career insights, and professional milestones along my journey as a software engineer.
           </p>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex justify-center mb-12">
-          <div className="inline-flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+        <div className="flex justify-center mb-20">
+          <div className="flex border-b border-slate-200 dark:border-slate-800">
             <button
               onClick={() => setActiveTab('blog')}
-              className={`px-6 py-3 rounded-md text-sm font-medium transition-all ${
+              className={`px-10 py-4 text-lg font-medium transition-all relative ${
                 activeTab === 'blog'
-                  ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                  ? 'text-blue-600 dark:text-blue-400'
+                  : 'text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
               }`}
             >
-              Blog Posts
-              <span className="ml-2 text-xs bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 px-2 py-1 rounded-full">
-                {blogPosts.length}
-              </span>
+              Writing
+              {activeTab === 'blog' && (
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400"></div>
+              )}
             </button>
             <button
               onClick={() => setActiveTab('certifications')}
-              className={`px-6 py-3 rounded-md text-sm font-medium transition-all ${
+              className={`px-10 py-4 text-lg font-medium transition-all relative ${
                 activeTab === 'certifications'
-                  ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'
+                  ? 'text-blue-600 dark:text-blue-400'
+                  : 'text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
               }`}
             >
-              Certifications
-              <span className="ml-2 text-xs bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 px-2 py-1 rounded-full">
-                {certifications.length}
-              </span>
+              Achievements
+              {activeTab === 'certifications' && (
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400"></div>
+              )}
             </button>
           </div>
         </div>
 
         {/* Blog Posts Tab */}
         {activeTab === 'blog' && (
-          <div className="space-y-8">
-            {/* Featured Posts */}
-            <div className="grid md:grid-cols-2 gap-8 mb-12">
-              {blogPosts.filter(post => post.featured).map((post) => (
-                <article key={post.id} className="card p-6 card-hover group">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(post.category)}`}>
-                        {post.category}
-                      </span>
-                      <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-                        <Clock size={16} />
-                        <span>{post.readTime} min read</span>
-                      </div>
+          <div className="space-y-20">
+            {/* Featured Article */}
+            {blogPosts.filter(post => post.featured).length > 0 && (
+              <article className="border-b border-slate-100 dark:border-slate-800 pb-20">
+                <div className="space-y-8">
+                  <div className="space-y-6">
+                    <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 leading-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+                      {blogPosts.filter(post => post.featured)[0].title}
+                    </h1>
+                    <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
+                      {blogPosts.filter(post => post.featured)[0].excerpt}
+                    </p>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4 text-sm text-slate-500 dark:text-slate-400">
+                      <span className="font-medium">{blogPosts.filter(post => post.featured)[0].title}</span>
+                      <span>·</span>
+                      <span>{formatDate(blogPosts.filter(post => post.featured)[0].date)}</span>
+                      <span>·</span>
+                      <span>{blogPosts.filter(post => post.featured)[0].readTime} min read</span>
                     </div>
                     
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                      {post.title}
-                    </h3>
-                    
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                      {post.excerpt}
-                    </p>
-                    
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-                      <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-                        <Calendar size={16} />
-                        <span>{formatDate(post.date)}</span>
+                    <a
+                      href={`/blog/${blogPosts.filter(post => post.featured)[0].slug}`}
+                      className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group"
+                    >
+                      <span>Read article</span>
+                      <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              </article>
+            )}
+
+            {/* All Articles */}
+            <div className="space-y-16">
+              {blogPosts.map((post) => (
+                <article key={post.id} className="group cursor-pointer">
+                  <a href={`/blog/${post.slug}`} className="block">
+                    <div className="flex items-start space-x-8">
+                      <div className="flex-shrink-0 text-sm text-slate-400 dark:text-slate-600 pt-1 w-16">
+                        {formatDateShort(post.date)}
                       </div>
                       
-                      <a
-                        href={`/blog/${post.slug}`}
-                        className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group"
-                      >
-                        <span>Read more</span>
-                        <ExternalLink size={16} className="group-hover:translate-x-1 transition-transform" />
-                      </a>
+                      <div className="flex-grow space-y-3">
+                        <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
+                          {post.title}
+                        </h2>
+                        <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                          {post.excerpt}
+                        </p>
+                        <div className="flex items-center space-x-3 text-sm text-slate-500 dark:text-slate-400">
+                          <span className="px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs">
+                            {post.category}
+                          </span>
+                          <span>{post.readTime} min read</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  </a>
                 </article>
               ))}
             </div>
 
-            {/* All Posts Grid */}
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">All Posts</h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {blogPosts.map((post) => (
-                  <article key={post.id} className="card p-4 card-hover group">
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${getCategoryColor(post.category)}`}>
-                          {post.category}
-                        </span>
-                        <div className="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
-                          <Clock size={12} />
-                          <span>{post.readTime}m</span>
-                        </div>
-                      </div>
-                      
-                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
-                        {post.title}
-                      </h4>
-                      
-                      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-                        {post.excerpt}
-                      </p>
-                      
-                      <div className="flex items-center justify-between pt-2 text-xs text-gray-500 dark:text-gray-400">
-                        <span>{formatDate(post.date)}</span>
-                        <a
-                          href={`/blog/${post.slug}`}
-                          className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
-                        >
-                          Read →
-                        </a>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
+            {/* View All */}
+            <div className="text-center pt-12">
+              <a
+                href="/blog"
+                className="inline-flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors group"
+              >
+                <span>View all articles</span>
+                <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+              </a>
             </div>
           </div>
         )}
 
         {/* Certifications Tab */}
         {activeTab === 'certifications' && (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="space-y-12">
             {certifications.map((cert) => (
-              <div key={cert.id} className="card p-6 card-hover group">
+              <div key={cert.id} className="border-l-2 border-blue-200 dark:border-blue-800 pl-10 pb-12 relative">
+                {/* Timeline dot */}
+                <div className="absolute left-0 w-3 h-3 bg-blue-500 dark:bg-blue-400 rounded-full transform -translate-x-1.5 mt-1"></div>
+                
                 <div className="space-y-4">
                   <div className="flex items-start justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                        <Award className="w-6 h-6 text-white" />
+                    <div className="space-y-3">
+                      <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+                        {cert.title}
+                      </h3>
+                      <div className="flex items-center space-x-2 text-slate-600 dark:text-slate-400">
+                        <Award size={16} className="text-blue-500" />
+                        <span>{cert.issuer}</span>
                       </div>
-                      <div>
-                        <h3 className="font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                          {cert.title}
-                        </h3>
-                        <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-                          <User size={14} />
-                          <span>{cert.issuer}</span>
-                        </div>
+                      <div className="text-sm text-slate-500 dark:text-slate-400">
+                        {cert.date}
                       </div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-                      <Calendar size={14} />
-                      <span>Issued: {cert.date}</span>
                     </div>
                     
-                    {cert.credentialId && (
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
-                        <span className="font-medium">Credential ID:</span> {cert.credentialId}
-                      </div>
+                    {cert.url && (
+                      <a
+                        href={cert.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center space-x-1 text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors text-sm"
+                      >
+                        <span>View</span>
+                        <ExternalLink size={14} />
+                      </a>
                     )}
                   </div>
                   
-                  {cert.url && (
-                    <a
-                      href={cert.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group pt-2 border-t border-gray-200 dark:border-gray-700"
-                    >
-                      <LinkIcon size={16} />
-                      <span>View Certificate</span>
-                      <ExternalLink size={14} className="group-hover:translate-x-1 transition-transform" />
-                    </a>
+                  {cert.credentialId && (
+                    <div className="text-xs text-slate-500 dark:text-slate-400 font-mono bg-slate-50 dark:bg-slate-900 px-3 py-2 rounded inline-block">
+                      ID: {cert.credentialId}
+                    </div>
                   )}
                 </div>
               </div>
