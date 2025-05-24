@@ -1,13 +1,16 @@
-'use client';
-
 import { useEffect, useState } from 'react';
-import { Skill } from '@/types';
+
+// Define the Skill type
+interface Skill {
+  name: string;
+  level: number;
+}
 
 interface SkillsRadarChartProps {
   skills: Skill[];
 }
 
-export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
+function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
   const [animatedValues, setAnimatedValues] = useState<number[]>([]);
   const [hoveredSkill, setHoveredSkill] = useState<number | null>(null);
   
@@ -92,15 +95,6 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
   const skillAreaPath = skillPoints.length === 5 
     ? `M ${skillPoints.map(p => `${p.x},${p.y}`).join(' L ')} Z`
     : '';
-
-  // Simplified skill names
-  const skillLabels = [
-    'Requirements',
-    'Design', 
-    'Development',
-    'Testing',
-    'Maintenance'
-  ];
 
   const skillDescriptions = [
     "I've tried this once",
@@ -227,7 +221,7 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
                   onMouseEnter={() => setHoveredSkill(index)}
                   onMouseLeave={() => setHoveredSkill(null)}
                 >
-                  {skillLabels[index]}
+                  {point.skill.name}
                 </text>
               );
             })}
@@ -252,7 +246,7 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
           {hoveredSkill !== null && (
             <div className="absolute top-4 left-4 bg-white dark:bg-slate-800 p-3 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 z-10">
               <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                {skillLabels[hoveredSkill]}
+                {chartSkills[hoveredSkill]?.name}
               </div>
               <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                 Level {chartSkills[hoveredSkill]?.level || 0}/5
@@ -294,6 +288,23 @@ export default function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+// Main component with your skill data
+export default function App() {
+  const skills: Skill[] = [
+    { name: 'Requirements', level: 3 },
+    { name: 'Design', level: 3 },
+    { name: 'Construction', level: 5 },
+    { name: 'Testing', level: 4 },
+    { name: 'Maintenance', level: 3 }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-8">
+      <SkillsRadarChart skills={skills} />
     </div>
   );
 }

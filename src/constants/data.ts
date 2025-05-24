@@ -1,4 +1,4 @@
-import { PersonalInfo, Experience, Skill, TechStack, Project, Certification } from '@/types';
+import { PersonalInfo, Experience, TechStack, Project, Certification } from '@/types';
 
 export const personalInfo: PersonalInfo = {
   name: 'Glorious Satria',
@@ -26,13 +26,6 @@ export const techStack: TechStack[] = [
   { name: 'GraphQL', proficiency: 4 }
 ];
 
-export const engineeringSkills: Skill[] = [
-  { name: 'Software Requirement Engineering', level: 4, category: 'technical' },
-  { name: 'Software Design', level: 4, category: 'technical' },
-  { name: 'Software Construction', level: 4, category: 'technical' },
-  { name: 'Software Testing', level: 4, category: 'technical' },
-  { name: 'Software Evolution and Maintenance', level: 4, category: 'technical' }
-];
 
 export const experiences: Experience[] = [
   {

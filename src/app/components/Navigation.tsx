@@ -77,7 +77,7 @@ export default function Navigation() {
               href="/" 
               className="font-bold text-xl text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
-              GS
+              Satria.
             </Link>
           </div>
 

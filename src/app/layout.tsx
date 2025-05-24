@@ -17,13 +17,13 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Glorious Satria - Software Engineer",
+  title: "Glorious Satria.",
   description: "Software Engineer | Backend & Full-Stack Developer specializing in microservices, AI integration, and modern web architectures.",
   keywords: "software engineer, full-stack developer, backend developer, microservices, React, Node.js, Go, Java",
   authors: [{ name: "Glorious Satria" }],
   creator: "Glorious Satria",
   openGraph: {
-    title: "Glorious Satria - Software Engineer",
+    title: "Glorious Satria.",
     description: "Software Engineer | Backend & Full-Stack Developer",
     url: "https://satriadhm.vercel.app",
     siteName: "Glorious Satria Portfolio",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Glorious Satria - Software Engineer",
+    title: "Glorious Satria.",
     description: "Software Engineer | Backend & Full-Stack Developer",
     creator: "@satriadhm",
   },

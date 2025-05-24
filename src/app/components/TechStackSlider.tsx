@@ -2,135 +2,105 @@
 
 import { useState } from 'react';
 import { TechStack } from '@/types';
+// Simple‑Icons via react-icons gives us pixel‑perfect brand marks without hand‑rolling SVG paths
+import {
+  SiGo,
+  SiTypescript,
+  SiReact,
+  SiNextdotjs,
+  SiNestjs,
+  SiNodedotjs,
+  SiPython,
+  SiPostgresql,
+  SiMongodb,
+  SiDocker,
+  SiDotnet,
+  SiSpringboot,
+  SiAmazonwebservices as SiAmazonaws,
+  SiGraphql,
+} from 'react-icons/si';
 
 interface TechStackSliderProps {
   techStack: TechStack[];
 }
 
-// Tech icons as SVG components with consistent colors
-const TechIcons = {
-  'Go': () => (
-    <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-blue-600 dark:text-blue-400">
-      <path d="M1.811 10.231c-.047 0-.058-.023-.035-.059l.246-.315c.023-.035.081-.058.128-.058h4.172c.046 0 .058.035.035.07l-.199.303c-.023.036-.082.059-.117.059H1.811zM.047 11.306c-.047 0-.059-.023-.035-.058l.245-.316c.023-.035.082-.058.129-.058h5.328c.047 0 .07.035.058.07l-.093.28c-.012.047-.058.082-.105.082H.047zM2.828 12.381c-.047 0-.059-.035-.035-.07l.163-.292c.023-.035.070-.058.117-.058h2.337c.047 0 .07.035.07.082l-.023.28c0 .047-.047.082-.082.082H2.828zM21.293 11.445c-.629.117-1.364.152-1.946.07-.583-.081-1.011-.27-1.234-.583-.152-.211-.199-.434-.152-.645.047-.199.199-.387.434-.551.328-.234.793-.375 1.293-.375.5 0 .934.141 1.234.375.164.129.281.281.328.457.047.164.023.34-.070.504-.129.234-.375.445-.887.748zM20.758 10.034c-.82-.211-2.04-.234-3.398.14-1.357.375-2.52.934-3.222 1.54-.7.606-.934 1.188-.934 1.657 0 .47.234.82.7 1.036.467.217 1.141.234 1.946.058.82-.175 1.54-.515 2.04-.934.5-.42.7-.934.7-1.399 0-.465-.234-.87-.832-1.098z"/>
-    </svg>
-  ),
-  'Java': () => (
-    <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-blue-600 dark:text-blue-400">
-      <path d="M8.851 18.56s-.917.534.653.714c1.902.218 2.874.187 4.969-.211 0 0 .552.346 1.321.646-4.699 2.013-10.633-.118-6.943-1.149M8.276 15.933s-1.028.761.542.924c2.032.209 3.636.227 6.413-.308 0 0 .384.389.987.602-5.679 1.661-12.007.13-7.942-1.218M13.116 11.475c1.158 1.333-.304 2.533-.304 2.533s2.939-1.518 1.589-3.418c-1.261-1.772-2.228-2.652 3.007-5.688 0-.001-8.216 2.051-4.292 6.573M19.33 20.504s.679.559-.747.991c-2.712.822-11.288 1.069-13.669.033-.856-.373.75-.89 1.254-.998.527-.114.828-.093.828-.093-.953-.671-6.156 1.317-2.643 1.887 9.58 1.553 17.462-.7 14.977-1.82M9.292 13.21s-4.362 1.036-1.544 1.412c1.189.159 3.561.123 5.77-.062 1.806-.152 3.618-.477 3.618-.477s-.637.272-1.098.587c-4.429 1.165-12.986.623-10.522-.568 2.082-1.006 3.776-.892 3.776-.892M17.116 17.584c4.503-2.34 2.421-4.589.968-4.285-.355.074-.515.138-.515.138s.132-.207.385-.297c2.875-1.011 5.086 2.981-.928 4.562 0-.001.07-.062.09-.118M14.401 0s2.494 2.494-2.365 6.33c-3.896 3.077-.888 4.832-.001 6.836-2.274-2.053-3.943-3.858-2.824-5.539 1.644-2.469 6.197-3.665 5.19-7.627M9.734 23.924c4.322.277 10.959-.153 11.116-2.198 0 0-.302.775-3.572 1.391-3.688.694-8.239.613-10.937.168 0-.001.553.457 3.393.639"/>
-    </svg>
-  ),
-  'TypeScript': () => (
-    <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-blue-600 dark:text-blue-400">
-      <path d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"/>
-    </svg>
-  ),
-  'React': () => (
-    <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-blue-600 dark:text-blue-400">
-      <path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.71.19-.09.4-.127.563-.128zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.36-.034-.471 0-.92.014-1.36.034.44-.572.895-1.096 1.36-1.564zM2.28 9.59c1.365-.586 2.927-.932 4.502-1.067.25.613.546 1.265.872 1.94-.326.675-.622 1.328-.873 1.94-1.575-.134-3.137-.48-4.501-1.065C1.402 10.977.8 10.17.8 9.59c0-.58.602-1.388 1.48-1.75zm15.44 0c.877.358 1.48 1.17 1.48 1.75 0 .58-.603 1.387-1.48 1.75-1.364.586-2.926.932-4.501 1.065-.25-.613-.546-1.265-.872-1.94.326-.675.622-1.328.873-1.94 1.575.134 3.137.48 4.5 1.065zM17.76 12.02c.065.477.1.955.1 1.43 0 .476-.035.954-.1 1.43-.326-.675-.622-1.328-.873-1.94.25-.613.547-1.265.873-1.92zm-15.52.02c.326.655.622 1.307.872 1.94-.25.613-.546 1.265-.872 1.94-.065-.477-.1-.955-.1-1.43 0-.476.035-.954.1-1.43zm4.99 2.49c1.107.117 2.154.298 3.113.538.112.49.195.964.254 1.42.23 1.868-.054 3.32-.714 3.71-.19.09-.4.127-.563.128-1.012 0-2.514-.808-4.11-2.28.686-.72 1.37-1.537 2.02-2.442zm8.04.024c.66.905 1.345 1.727 2.035 2.447-1.592 1.48-3.087 2.292-4.105 2.295v-.006c-.225 0-.406-.044-.558-.127-.666-.382-.955-1.835-.73-3.704.054-.46.142-.945.25-1.44.96.236 2.006.417 3.107.534zm-7.32 1.267c.471 0 .92-.014 1.36-.034-.44.572-.895 1.096-1.36 1.564-.455-.468-.91-.992-1.36-1.564.44.02.89.034 1.36.034z"/>
-    </svg>
-  ),
-  'Next.js': () => (
-    <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-blue-600 dark:text-blue-400">
-      <path d="M11.5725 0c-.1763 0-.3098.0013-.3584.0067-.0516.0053-.2159.021-.3636.0328-3.4168.3073-6.6501 2.1463-8.6540 4.9728C1.1004 6.584.3802 8.3666.1082 10.255c-.0962.659-.108.8537-.108 1.7474s.012 1.0884.108 1.7476c.652 4.506 3.8591 8.2919 8.2087 9.6945.7789.2511 1.6.4223 2.5337.5255.3636.04 1.9354.04 2.299 0 1.6117-.1783 2.9772-.577 4.3237-1.2643.2065-.1056.2464-.1337.2183-.1573-.0188-.0139-.8987-1.1938-1.9543-2.62l-1.919-2.592-2.4047-3.5583c-1.3231-1.9564-2.4117-3.556-2.4211-3.556-.0094-.0026-.0187 1.5787-.0235 3.509-.0067 3.3802-.0093 3.5162-.0516 3.596-.061.115-.108.1618-.2064.2134-.075.0374-.1408.0445-.5502.0445h-.4996l-.1080-.0692c-.0619-.0374-.1184-.1020-.1487-.1618l-.0348-.0865.0094-4.4972.0095-4.4958.0669-.0847c.0395-.0513.1739-.1156.2383-.1181.0561-.0026 2.3838 3.5583 5.1772 7.9065 2.7933 4.3482 5.1358 7.5991 5.2064 7.2272.0706-.3719.3437-2.5177.6067-4.5953.2630-2.0775.4877-3.8274.4877-3.8976 0-.0701-.0235-.2083-.0516-.3030-.061-.2048-.2045-.3746-.4279-.5056L19.897 7.5465c-.0235-.0139-.0235.0349-.0235.1088v.1206l.0516.0445c.0281.0235.0797.0692.1184.1020.0387.0329.0948.1157.1262.1854.0375.0825.0375.1736.0235 2.3151-.0094 1.2727-.0329 2.3151-.0516 2.3151s-.8977-1.3487-1.9649-2.997L16.827 4.15c-.2065-.3132-.3994-.5306-.6529-.7391-.3357-.2773-.4996-.3505-.9492-.4179-.3132-.0467-.5316-.0467-.8447.0-.3132.0467-.6529.2063-.8977.4179-.3132.2713-.4996.5306-.7061.8437-.2064.3132-.4996.8437-.6529 1.1569-.3132.6529-.4996 1.3487-.4996 2.0776v.6529l.0328.2063c.0844.7061.3992 1.3487.8977 1.8468.5316.5316 1.2273.8437 1.9649.8437.7061 0 1.3487-.2713 1.8468-.7391l.3132-.3132.0939-.1088c.0328-.0374.1408-.1738.2383-.3046.0984-.1307.1877-.2397.1978-.2397.0094 0 .0187.8977.0187 1.9954v1.9954l-.3357.0374c-.1877.0188-.7391-.0561-1.2273-.1669z"/>
-    </svg>
-  ),
-  'Node.js': () => (
-    <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-green-600 dark:text-green-400">
-      <path d="M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L3.075,6.68C2.990,6.729,2.936,6.825,2.936,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.570,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.273-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z M19.099,13.993 c0-1.9-1.284-2.406-3.987-2.763c-2.731-0.361-3.009-0.548-3.009-1.187c0-0.528,0.235-1.233,2.258-1.233 c1.807,0,2.473,0.389,2.747,1.607c0.024,0.115,0.129,0.199,0.247,0.199h1.141c0.071,0,0.138-0.031,0.186-0.081 c0.048-0.054,0.074-0.123,0.067-0.196c-0.177-2.098-1.571-3.076-4.388-3.076c-2.508,0-4.004,1.058-4.004,2.833 c0,1.925,1.488,2.457,3.895,2.695c2.88,0.282,3.103,0.703,3.103,1.269c0,0.983-0.789,1.402-2.642,1.402 c-2.327,0-2.839-0.584-3.011-1.742c-0.02-0.124-0.126-0.215-0.253-0.215h-1.137c-0.141,0-0.254,0.112-0.254,0.253 c0,1.482,0.806,3.248,4.655,3.248C17.501,17.007,19.099,15.91,19.099,13.993z"/>
-    </svg>
-  ),
-  'Python': () => (
-    <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-blue-600 dark:text-blue-400">
-      <path d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z"/>
-    </svg>
-  ),
-  'PostgreSQL': () => (
-    <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-blue-600 dark:text-blue-400">
-      <path d="M23.111 5.729c-.292-1.279-1.969-2.207-3.907-2.207-1.938 0-3.615.928-3.907 2.207-.031.136-.031.272-.031.408v8.017c0 2.207 1.751 4.014 3.938 4.014 2.187 0 3.938-1.807 3.938-4.014V6.137c0-.136 0-.272-.031-.408zm-7.813 0c-.292-1.279-1.969-2.207-3.907-2.207-1.938 0-3.615.928-3.907 2.207-.031.136-.031.272-.031.408v8.017c0 2.207 1.751 4.014 3.938 4.014 2.187 0 3.938-1.807 3.938-4.014V6.137c0-.136 0-.272-.031-.408zm-7.813 0c-.292-1.279-1.969-2.207-3.907-2.207C1.64 3.522-.037 4.45-.329 5.729c-.031.136-.031.272-.031.408v8.017c0 2.207 1.751 4.014 3.938 4.014 2.187 0 3.938-1.807 3.938-4.014V6.137c0-.136 0-.272-.031-.408z"/>
-    </svg>
-  ),
-  'MongoDB': () => (
-    <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-green-600 dark:text-green-400">
-      <path d="M17.193 9.555c-1.264-5.58-4.252-7.414-4.573-8.115-.28-.394-.53-.954-.735-1.44-.036.495-.055.685-.523 1.184-.723.566-4.438 3.682-4.74 10.02-.282 5.912 4.27 9.435 4.888 9.884l.07.05A73.49 73.49 0 0111.91 24h.481c.114-3.032.284-6.097.302-9.058.01-1.732.075-3.532.493-4.387z"/>
-    </svg>
-  ),
-  'Docker': () => (
-    <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-blue-600 dark:text-blue-400">
-      <path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.186m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.184-.186h-2.12a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51-.338 0-.676.03-1.01.092-.239-1.204-.988-2.775-2.48-4.366l-.43-.46-.046.569c-.176.546-.275 1.493-.275 2.456 0 .908.131 1.676.409 2.363-.64.643-1.315.718-1.687.718-.654-.06-1.308-.06-1.962 0H.233c-.039.2-.048.4-.048.601 0 1.5.33 2.977 1.01 4.276 1.07 2.02 2.906 2.967 5.446 2.967 4.021 0 6.958-1.404 8.756-4.183 1.639.015 3.222-.183 4.62-1.468l.429-.4-.734-.4c-.354-.235-.707-.642-.899-1.071-.103-.23-.131-.46-.131-.707 0-.277.046-.554.138-.83l.093-.277-.184-.184c-.184-.184-.708-.599-1.477-.599z"/>
-    </svg>
-  ),
-  'AWS': () => (
-    <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-orange-600 dark:text-orange-400">
-      <path d="M6.763 10.036c0 .296.032.535.088.71.064.176.144.368.256.576.04.063.056.127.056.184 0 .08-.048.16-.152.24l-.503.335c-.072.048-.144.071-.208.071-.08 0-.16-.04-.239-.112-.112-.127-.207-.271-.279-.41-.072-.144-.144-.304-.207-.48-.52.615-1.175.923-1.967.923-.559 0-1.007-.16-1.343-.48-.336-.32-.504-.750-.504-1.279 0-.568.2-1.031.608-1.375.407-.344.95-.518 1.631-.518.224 0 .455.016.695.055.239.032.487.08.727.127v-.415c0-.431-.088-.735-.272-.919-.18-.184-.487-.279-.918-.279-.199 0-.407.024-.615.08-.207.048-.407.12-.58.2-.087.04-.151.063-.184.071-.032.009-.056.016-.08.016-.071 0-.104-.056-.104-.16v-.255c0-.08.016-.144.04-.184.024-.04.071-.08.127-.12.2-.104.439-.19.727-.264.287-.08.583-.112.886-.112.68 0 1.179.154 1.51.465.327.31.494.838.494 1.574v2.062zm-2.455.616c.216 0 .439-.04.671-.127.231-.08.444-.223.625-.415.112-.12.2-.255.239-.415.04-.16.064-.368.064-.624v-.304c-.16-.032-.336-.056-.52-.08-.18-.016-.368-.024-.551-.024-.4 0-.695.08-.903.24-.207.16-.31.384-.31.688 0 .288.071.504.207.647.144.144.351.215.583.215zm4.362.016c-.095 0-.16-.016-.2-.056-.04-.032-.071-.112-.095-.216l-1.063-3.495c-.024-.08-.04-.135-.04-.168 0-.063.032-.104.096-.104h.391c.096 0 .16.016.2.056.04.032.071.112.087.216l.759 2.991.703-2.991c.016-.104.04-.184.087-.216.048-.032.12-.056.2-.056h.32c.095 0 .159.016.199.056.048.032.08.112.096.216l.711 3.023.775-3.023c.016-.104.048-.184.087-.216.04-.032.104-.056.191-.056h.376c.063 0 .095.032.095.104 0 .016 0 .04-.008.071-.008.032-.016.08-.032.144l-1.087 3.495c-.024.104-.056.184-.095.216-.04.032-.104.056-.2.056h-.343c-.096 0-.16-.016-.2-.056-.04-.04-.071-.112-.087-.216l-.695-2.911-.687 2.911c-.016.104-.048.176-.087.216-.04.04-.104.056-.2.056h-.343zm5.271.055c-.4 0-.799-.048-1.175-.144-.375-.096-.671-.2-.879-.32-.08-.048-.135-.104-.159-.144-.024-.04-.04-.104-.04-.168v-.264c0-.104.04-.16.111-.16.032 0 .064.008.104.024.032.016.088.04.144.071.2.088.415.16.647.2.231.04.464.056.695.056.375 0 .663-.071.871-.208.207-.144.318-.336.318-.584 0-.168-.056-.31-.16-.431-.112-.12-.295-.231-.559-.327l-.8-.24c-.4-.127-.695-.32-.886-.58-.184-.254-.279-.543-.279-.863 0-.248.056-.472.16-.671.104-.2.239-.368.415-.512.176-.144.375-.248.6-.32.224-.071.455-.104.695-.104.176 0 .351.016.52.04.168.024.328.056.479.096.144.04.279.088.4.144.12.056.207.104.255.16.048.048.08.104.104.168.024.056.032.12.032.191v.248c0 .104-.04.16-.12.16-.048 0-.12-.024-.2-.056-.231-.104-.487-.16-.767-.16-.351 0-.623.056-.814.175-.191.112-.287.28-.287.496 0 .168.064.31.183.431.12.12.318.24.6.343l.783.24c.4.127.687.31.863.551.176.24.264.511.264.814 0 .255-.056.487-.168.695-.112.207-.264.383-.463.527-.2.144-.440.248-.719.32-.288.071-.58.104-.88.104zm1.375 1.375c-1.311 0-2.422-.096-3.34-.287-.917-.191-1.599-.48-2.046-.863-.447-.384-.671-.863-.671-1.447 0-.2.032-.4.088-.599.056-.2.144-.4.264-.6.12-.199.264-.407.439-.615.176-.208.375-.416.599-.615.2-.176.423-.335.679-.487.256-.15.527-.287.806-.407.279-.12.551-.2.806-.248.256-.047.471-.071.639-.071.296 0 .543.04.735.12.191.08.335.2.423.367.088.168.136.376.136.624 0 .359-.08.703-.24 1.031-.16.328-.4.639-.719.935-.32.296-.711.575-1.175.831-.464.256-.983.479-1.559.671-.528.176-1.039.271-1.527.287-.048.04-.088.088-.12.136-.032.048-.048.104-.048.168 0 .216.096.392.287.535.191.144.456.216.799.216.32 0 .631-.048.935-.144.304-.096.599-.248.879-.455.08-.056.152-.096.208-.12.056-.024.104-.04.144-.04.08 0 .12.064.12.191v.24c0 .08-.016.144-.04.184-.024.04-.072.08-.136.12-.28.191-.615.343-.999.455-.383.112-.799.168-1.247.168z"/>
-    </svg>
-  ),
-  'GraphQL': () => (
-    <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-purple-600 dark:text-purple-400">
-      <path d="M5.636 18.364L12 21.95l6.364-3.586v-7.728L12 7.05l-6.364 3.586v7.728zM12 6.172l6.364 3.586-6.364 3.587L5.636 9.758 12 6.172zM2.879 12l3.586-6.364L12 7.95v7.1L6.465 18.636 2.879 12zm9.243 9.071L12 21.95l-.122-.879v-7.485L17.535 9.464 21.121 12l-9.999 9.071z"/>
-    </svg>
-  )
+// Map the display name coming from props → brand icon component
+const TechIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  Go: SiGo,
+  TypeScript: SiTypescript,
+  React: SiReact,
+  'Next.js': SiNextdotjs,
+  NestJS: SiNestjs,
+  'Node.js': SiNodedotjs,
+  Python: SiPython,
+  PostgreSQL: SiPostgresql,
+  MongoDB: SiMongodb,
+  Docker: SiDocker,
+  Dotnet: SiDotnet,
+  Springboot: SiSpringboot,
+  AWS: SiAmazonaws,
+  GraphQL: SiGraphql,
 };
 
+// Utility helpers -----------------------------------------------------------
+const getProficiencyLevel = (p: number) =>
+  p <= 2 ? 'Beginner' : p === 3 ? 'Intermediate' : p === 4 ? 'Advanced' : 'Expert';
+
+const colorScale = {
+  1: {
+    text: 'text-orange-600 dark:text-orange-400',
+    bg: 'bg-orange-100 dark:bg-orange-900/20',
+    bar: 'bg-orange-500',
+  },
+  2: {
+    text: 'text-orange-600 dark:text-orange-400',
+    bg: 'bg-orange-100 dark:bg-orange-900/20',
+    bar: 'bg-orange-500',
+  },
+  3: {
+    text: 'text-yellow-600 dark:text-yellow-400',
+    bg: 'bg-yellow-100 dark:bg-yellow-900/20',
+    bar: 'bg-yellow-500',
+  },
+  4: {
+    text: 'text-blue-600 dark:text-blue-400',
+    bg: 'bg-blue-100 dark:bg-blue-900/20',
+    bar: 'bg-blue-500',
+  },
+  5: {
+    text: 'text-green-600 dark:text-green-400',
+    bg: 'bg-green-100 dark:bg-green-900/20',
+    bar: 'bg-green-500',
+  },
+} as const;
+
 export default function TechStackSlider({ techStack }: TechStackSliderProps) {
-  const [hoveredTech, setHoveredTech] = useState<string | null>(null);
-
-  const getProficiencyLevel = (proficiency: number) => {
-    if (proficiency <= 2) return 'Beginner';
-    if (proficiency === 3) return 'Intermediate';
-    if (proficiency === 4) return 'Advanced';
-    return 'Expert';
-  };
-
-  const getProficiencyColor = (proficiency: number) => {
-    if (proficiency <= 2) return 'text-orange-600 dark:text-orange-400';
-    if (proficiency === 3) return 'text-yellow-600 dark:text-yellow-400';
-    if (proficiency === 4) return 'text-blue-600 dark:text-blue-400';
-    return 'text-green-600 dark:text-green-400';
-  };
-
-  const getProficiencyBg = (proficiency: number) => {
-    if (proficiency <= 2) return 'bg-orange-100 dark:bg-orange-900/20';
-    if (proficiency === 3) return 'bg-yellow-100 dark:bg-yellow-900/20';
-    if (proficiency === 4) return 'bg-blue-100 dark:bg-blue-900/20';
-    return 'bg-green-100 dark:bg-green-900/20';
-  };
-
-  const getProficiencyBarColor = (proficiency: number) => {
-    if (proficiency <= 2) return 'bg-orange-500';
-    if (proficiency === 3) return 'bg-yellow-500';
-    if (proficiency === 4) return 'bg-blue-500';
-    return 'bg-green-500';
-  };
-
-  // Duplicate techStack for seamless infinite scroll
-  const duplicatedTechStack = [...techStack, ...techStack];
+  const [hovered, setHovered] = useState<string | null>(null);
+  const duplicated = [...techStack, ...techStack]; // infinite marquee
 
   return (
-    <div className="relative overflow-hidden">
-      {/* Slider container */}
-      <div className="flex animate-slide-infinite hover:pause-animation">
-        {duplicatedTechStack.map((tech, index) => {
-          const IconComponent = TechIcons[tech.name as keyof typeof TechIcons];
-          
+    <div className="relative overflow-x-hidden"> {/* y‑overflow visible → tooltips show */}
+      {/* SLIDER */}
+      <div className="flex animate-slide-infinite hover:[animation-play-state:paused]">
+        {duplicated.map((tech, i) => {
+          const Icon = TechIcons[tech.name];
+          const { text, bg, bar } = colorScale[tech.proficiency as keyof typeof colorScale];
+
           return (
             <div
-              key={`${tech.name}-${index}`}
+              key={`${tech.name}-${i}`}
               className="flex-shrink-0 mx-4"
-              onMouseEnter={() => setHoveredTech(tech.name)}
-              onMouseLeave={() => setHoveredTech(null)}
+              onMouseEnter={() => setHovered(tech.name)}
+              onMouseLeave={() => setHovered(null)}
             >
               <div className="relative group">
-                {/* Tech card */}
+                {/* CARD */}
                 <div className="w-40 h-32 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center p-4 cursor-pointer group-hover:scale-105 group-hover:border-blue-300 dark:group-hover:border-blue-600">
                   <div className="w-12 h-12 mb-3 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    {IconComponent ? (
-                      <IconComponent />
+                    {Icon ? (
+                      <Icon className="w-8 h-8" />
                     ) : (
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                        <span className="text-white font-bold text-lg">
-                          {tech.name.charAt(0)}
-                        </span>
-                      </div>
+                      <span className="text-xl font-bold">{tech.name.charAt(0)}</span>
                     )}
                   </div>
                   <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-center text-sm group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
@@ -138,58 +108,38 @@ export default function TechStackSlider({ techStack }: TechStackSliderProps) {
                   </h4>
                 </div>
 
-                {/* Hover tooltip */}
-                {hoveredTech === tech.name && (
-                  <div className="absolute -top-32 left-1/2 transform -translate-x-1/2 z-20 w-56">
+                {/* TOOLTIP */}
+                {hovered === tech.name && (
+                  <div className="absolute -top-36 left-1/2 -translate-x-1/2 z-40 w-56">
                     <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded-xl shadow-xl backdrop-blur-sm">
-                      <div className="text-center">
-                        <div className="flex items-center justify-center mb-3">
-                          <div className="w-8 h-8 mr-2">
-                            {IconComponent && <IconComponent />}
-                          </div>
+                      <div className="text-center space-y-3">
+                        <div className="flex items-center justify-center space-x-2">
+                          {Icon && <Icon className="w-6 h-6" />}
                           <h5 className="font-bold text-gray-900 dark:text-gray-100">{tech.name}</h5>
                         </div>
-                        
-                        {/* Proficiency level */}
-                        <div className="mb-3">
-                          <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${getProficiencyBg(tech.proficiency)} ${getProficiencyColor(tech.proficiency)}`}>
-                            {getProficiencyLevel(tech.proficiency)}
-                          </div>
-                        </div>
 
-                        {/* Proficiency bar */}
-                        <div className="mb-3">
-                          <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 mb-2">
+                        <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${bg} ${text}`}>
+                          {getProficiencyLevel(tech.proficiency)}
+                        </span>
+
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
                             <span>Proficiency</span>
                             <span>{tech.proficiency}/5</span>
                           </div>
                           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div
-                              className={`h-2 rounded-full transition-all duration-500 ${getProficiencyBarColor(tech.proficiency)}`}
-                              style={{ width: `${(tech.proficiency / 5) * 100}%` }}
-                            />
+                            <div style={{ width: `${(tech.proficiency / 5) * 100}%` }} className={`h-2 rounded-full ${bar}`} />
                           </div>
                         </div>
 
-                        {/* Proficiency stars */}
                         <div className="flex justify-center space-x-1">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <div
-                              key={star}
-                              className={`w-3 h-3 rounded-full transition-colors ${
-                                star <= tech.proficiency
-                                  ? getProficiencyBarColor(tech.proficiency).replace('bg-', 'bg-')
-                                  : 'bg-gray-300 dark:bg-gray-600'
-                              }`}
-                            />
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <span key={s} className={`w-3 h-3 rounded-full ${s <= tech.proficiency ? bar : 'bg-gray-300 dark:bg-gray-600'}`} />
                           ))}
                         </div>
                       </div>
-
                       {/* Arrow */}
-                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
-                        <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white dark:border-t-gray-800"></div>
-                      </div>
+                      <div className="absolute left-1/2 -translate-x-1/2 top-full -mt-1 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white dark:border-t-gray-800" />
                     </div>
                   </div>
                 )}
@@ -199,37 +149,33 @@ export default function TechStackSlider({ techStack }: TechStackSliderProps) {
         })}
       </div>
 
-      {/* Gradient overlays for fade effect */}
-      <div className="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-gray-50 dark:from-gray-900/50 to-transparent pointer-events-none z-10"></div>
-      <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-gray-50 dark:from-gray-900/50 to-transparent pointer-events-none z-10"></div>
+      {/* FADE GRADIENTS */}
+      <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-gray-50 dark:from-gray-900/50 to-transparent pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-gray-50 dark:from-gray-900/50 to-transparent pointer-events-none" />
 
-      {/* Stats section */}
+      {/* STATS */}
       <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-        <div className="space-y-2 group cursor-pointer">
-          <div className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors group-hover:scale-110 transform duration-300">
-            {techStack.length}
-          </div>
-          <div className="text-sm text-gray-600 dark:text-gray-400">Technologies</div>
-        </div>
-        <div className="space-y-2 group cursor-pointer">
-          <div className="text-2xl md:text-3xl font-bold text-blue-600 dark:text-blue-400 group-hover:scale-110 transform duration-300">
-            {techStack.filter(t => t.proficiency >= 4).length}
-          </div>
-          <div className="text-sm text-gray-600 dark:text-gray-400">Advanced+</div>
-        </div>
-        <div className="space-y-2 group cursor-pointer">
-          <div className="text-2xl md:text-3xl font-bold text-gray-700 dark:text-gray-300 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors group-hover:scale-110 transform duration-300">
-            {Math.round(techStack.reduce((sum, t) => sum + t.proficiency, 0) / techStack.length * 10) / 10}
-          </div>
-          <div className="text-sm text-gray-600 dark:text-gray-400">Avg Score</div>
-        </div>
-        <div className="space-y-2 group cursor-pointer">
-          <div className="text-2xl md:text-3xl font-bold text-gray-700 dark:text-gray-300 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors group-hover:scale-110 transform duration-300">
-            3+
-          </div>
-          <div className="text-sm text-gray-600 dark:text-gray-400">Years Exp</div>
-        </div>
+        <StatsBlock label="Technologies" value={techStack.length} />
+        <StatsBlock label="Advanced+" value={techStack.filter((t) => t.proficiency >= 4).length} highlight />
+        <StatsBlock label="Avg Score" value={Math.round((techStack.reduce((s, t) => s + t.proficiency, 0) / techStack.length) * 10) / 10} />
+        <StatsBlock label="Years Exp" value="3+" />
       </div>
+    </div>
+  );
+}
+
+// Small helper component for the bottom stats ------------------------------
+function StatsBlock({ value, label, highlight = false }: { value: number | string; label: string; highlight?: boolean }) {
+  return (
+    <div className="space-y-2 group cursor-pointer">
+      <div
+        className={`text-2xl md:text-3xl font-bold transition-colors duration-300 group-hover:scale-110 transform ${
+          highlight ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400'
+        }`}
+      >
+        {value}
+      </div>
+      <div className="text-sm text-gray-600 dark:text-gray-400">{label}</div>
     </div>
   );
 }
