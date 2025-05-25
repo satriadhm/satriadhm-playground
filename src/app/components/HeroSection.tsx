@@ -135,7 +135,7 @@ export default function HeroSection() {
                   <div className="text-xs md:text-sm text-slate-500 dark:text-slate-400">Projects</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">5+</div>
+                  <div className="text-2xl md:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">12+</div>
                   <div className="text-xs md:text-sm text-slate-500 dark:text-slate-400">Technologies</div>
                 </div>
               </div>

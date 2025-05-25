@@ -16,7 +16,7 @@ export const roles = [
   'Backend Developer',
   'Full-Stack Developer',
   'Project Manager',
-  'AI Enthusiast',
+  'AI Integration Enthusiast',
 ];
 
 export const techStack: TechStack[] = [
