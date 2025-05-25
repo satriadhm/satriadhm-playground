@@ -40,7 +40,7 @@ export const experiences: Experience[] = [
     title: 'Research and Development Software Engineer',
     company: 'Formulatrix Indonesia',
     location: 'Indonesia',
-    period: 'Feb 2025 – May 2025',
+    period: 'Feb 2025 – Present',
     type: 'fulltime',
     description: [
       'Formulatrix is a global leader in laboratory automation solutions, revolutionizing scientific research through innovative robotics and software systems. My journey here began as a Graduate Intern, where I quickly demonstrated my capabilities and was offered a full-time position as an R&D Software Engineer.',
