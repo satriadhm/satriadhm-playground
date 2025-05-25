@@ -21,7 +21,7 @@ export default function ExperienceSection() {
   const [selectedType, setSelectedType] = useState<'all' | 'fulltime' | 'parttime' | 'internship'>('all');
   const [expandedExperience, setExpandedExperience] = useState<string | null>(null);
   const [selectedExperienceModal, setSelectedExperienceModal] = useState<Experience | null>(null);
-  const [, setImageExists] = useState<Record<string, boolean>>({});
+  const [imageExists, setImageExists] = useState<Record<string, boolean>>({});
 
   // Check if images exist for each experience
   useEffect(() => {
@@ -30,8 +30,8 @@ export default function ExperienceSection() {
       
       for (const experience of experiences) {
         if (experience.images && experience.images.length > 0) {
-          // For demo purposes, let's assume images exist if they're defined
-          // In production, you would actually check the files
+          // For demo purposes, assume images exist if they're defined in data
+          // In production, you would do actual image validation
           imageExistsMap[experience.id] = true;
         } else {
           imageExistsMap[experience.id] = false;
@@ -60,13 +60,13 @@ export default function ExperienceSection() {
   const getTypeColor = (type: Experience['type']) => {
     switch (type) {
       case 'fulltime':
-        return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/30 dark:text-blue-300 dark:border-blue-800';
+        return 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800/50 dark:text-slate-300 dark:border-slate-700';
       case 'parttime':
-        return 'bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-950/30 dark:text-indigo-300 dark:border-indigo-800';
+        return 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800/50 dark:text-slate-300 dark:border-slate-700';
       case 'internship':
-        return 'bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-950/20 dark:text-blue-400 dark:border-blue-800';
+        return 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800/50 dark:text-slate-300 dark:border-slate-700';
       default:
-        return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/30 dark:text-blue-300 dark:border-blue-800';
+        return 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800/50 dark:text-slate-300 dark:border-slate-700';
     }
   };
 
@@ -116,8 +116,8 @@ export default function ExperienceSection() {
                 onClick={() => setSelectedType(type)}
                 className={`flex items-center space-x-2 px-6 py-3 rounded-md text-sm font-medium transition-all ${
                   selectedType === type
-                    ? 'bg-blue-600 dark:bg-blue-700 text-white shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/20'
+                    ? 'bg-slate-900 dark:bg-slate-600 text-white shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-700/50'
                 }`}
               >
                 {type !== 'all' && getTypeIcon(type)}
@@ -125,7 +125,7 @@ export default function ExperienceSection() {
                   {type === 'all' ? 'All Positions' : getTypeLabel(type)}
                 </span>
                 {type !== 'all' && (
-                  <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-300 px-2 py-1 rounded-full">
                     {groupedExperiences[type].length}
                   </span>
                 )}
@@ -205,10 +205,10 @@ export default function ExperienceSection() {
                         </span>
                         
                         {/* See More Button - Only show if there's additional content */}
-                        {(experience.achievements?.length || experience.images?.length || experience.certificates?.length) && (
+                        {(experience.achievements?.length || imageExists[experience.id] || experience.certificates?.length) && (
                           <button
                             onClick={() => setSelectedExperienceModal(experience)}
-                            className="flex items-center space-x-2 px-4 py-2 bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-950/30 transition-colors group border border-blue-200 dark:border-blue-800"
+                            className="flex items-center space-x-2 px-4 py-2 bg-slate-50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors group border border-slate-200 dark:border-slate-600"
                           >
                             <Eye size={16} />
                             <span className="text-sm font-medium">Details</span>
@@ -231,7 +231,7 @@ export default function ExperienceSection() {
                           onClick={() => setExpandedExperience(
                             expandedExperience === experience.id ? null : experience.id
                           )}
-                          className="flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm"
+                          className="flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors text-sm"
                         >
                           <span>
                             {expandedExperience === experience.id ? 'Show less' : 'Show more'}
@@ -267,14 +267,14 @@ export default function ExperienceSection() {
                     {experience.achievements && experience.achievements.length > 0 && (
                       <div className="mb-4">
                         <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-2 flex items-center">
-                          <Trophy size={16} className="mr-2 text-blue-600 dark:text-blue-400" />
+                          <Trophy size={16} className="mr-2 text-slate-600 dark:text-slate-400" />
                           Key Achievement
                         </h4>
-                        <div className="bg-blue-50 dark:bg-blue-950/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
-                          <p className="text-sm text-blue-800 dark:text-blue-300 font-medium">
+                        <div className="bg-slate-50 dark:bg-slate-700/50 p-3 rounded-lg border border-slate-200 dark:border-slate-600">
+                          <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
                             {experience.achievements[0]}
                             {experience.achievements.length > 1 && (
-                              <span className="text-blue-600 dark:text-blue-400"> and {experience.achievements.length - 1} more...</span>
+                              <span className="text-slate-500 dark:text-slate-400"> and {experience.achievements.length - 1} more...</span>
                             )}
                           </p>
                         </div>
@@ -347,13 +347,13 @@ export default function ExperienceSection() {
               {selectedExperienceModal.achievements && selectedExperienceModal.achievements.length > 0 && (
                 <div>
                   <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center">
-                    <Trophy size={20} className="mr-2 text-blue-600 dark:text-blue-400" />
+                    <Trophy size={20} className="mr-2 text-slate-600 dark:text-slate-400" />
                     Key Achievements
                   </h4>
                   <div className="grid sm:grid-cols-2 gap-4">
                     {selectedExperienceModal.achievements.map((achievement, achIndex) => (
-                      <div key={achIndex} className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                        <p className="text-sm text-blue-800 dark:text-blue-300 font-medium">
+                      <div key={achIndex} className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
+                        <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
                           {achievement}
                         </p>
                       </div>
@@ -380,7 +380,7 @@ export default function ExperienceSection() {
               </div>
 
               {/* Image Gallery - Only show if images exist */}
-              {selectedExperienceModal.images && selectedExperienceModal.images.length > 0 && (
+              {imageExists[selectedExperienceModal.id] && selectedExperienceModal.images && selectedExperienceModal.images.length > 0 && (
                 <div>
                   <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
                     Project Gallery
