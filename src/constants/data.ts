@@ -48,7 +48,7 @@ export const experiences: Experience[] = [
       'Improved the interpolation algorithm used for Rover Device Topology Calibration, resulting in increased precision and reliability of calibration outcomes.',
       'Collaborated with cross-functional teams to deliver high-quality software solutions meeting strict industry standards for laboratory automation systems.'
     ],
-    technologies: ['JavaScript', 'React', 'Node.js', 'Docker', 'Linux', 'Bash'],
+    technologies: ['Dotnet', 'C#', 'C++', 'Docker', 'Linux', 'Bash'],
     achievements: [
       'Improved user accessibility by 40%',
       'Enhanced calibration accuracy by 25%',
@@ -57,7 +57,7 @@ export const experiences: Experience[] = [
     ],
     images: [
       '/images/formulatrix-dashboard.jpg',
-      '/images/formulatrix-rover.png',
+      '/images/formulatrix-rover.jpg',
       '/images/formulatrix-team.jpg'
     ],
     certificates: [

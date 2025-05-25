@@ -251,8 +251,8 @@ export default function ExperienceSection() {
 
       {/* Experience Detail Modal */}
       {selectedExperienceModal && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 dark:border-slate-700">
+        <div className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-4xl max-h-[85vh] overflow-y-auto shadow-2xl border border-slate-200 dark:border-slate-700 mt-4">
             {/* Modal Header */}
             <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-6 flex items-center justify-between">
               <div className="flex items-center space-x-4">
@@ -346,7 +346,7 @@ export default function ExperienceSection() {
                   <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
                     Project Gallery
                   </h4>
-                  <ImageSlider images={selectedExperienceModal.images} />
+                  <ImageSlider images={selectedExperienceModal.images} compact={true} />
                 </div>
               )}
 
