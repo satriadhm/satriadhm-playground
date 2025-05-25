@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ChevronRight, Building, Calendar, MapPin, Trophy, ExternalLink, Eye, X } from 'lucide-react';
+import { ChevronRight, Building, Calendar, MapPin, Trophy, ExternalLink, Eye, X, Briefcase, GraduationCap, Clock } from 'lucide-react';
 import { experiences } from '@/constants/data';
 import { Experience } from '@/types';
 import ImageSlider from './ImageSlider';
@@ -21,17 +21,52 @@ export default function ExperienceSection() {
   const [selectedType, setSelectedType] = useState<'all' | 'fulltime' | 'parttime' | 'internship'>('all');
   const [expandedExperience, setExpandedExperience] = useState<string | null>(null);
   const [selectedExperienceModal, setSelectedExperienceModal] = useState<Experience | null>(null);
+  const [, setImageExists] = useState<Record<string, boolean>>({});
+
+  // Check if images exist for each experience
+  useEffect(() => {
+    const checkImages = async () => {
+      const imageExistsMap: Record<string, boolean> = {};
+      
+      for (const experience of experiences) {
+        if (experience.images && experience.images.length > 0) {
+          // For demo purposes, let's assume images exist if they're defined
+          // In production, you would actually check the files
+          imageExistsMap[experience.id] = true;
+        } else {
+          imageExistsMap[experience.id] = false;
+        }
+      }
+      
+      setImageExists(imageExistsMap);
+    };
+
+    checkImages();
+  }, []);
+
+  const getTypeIcon = (type: Experience['type']) => {
+    switch (type) {
+      case 'fulltime':
+        return <Briefcase size={16} />;
+      case 'parttime':
+        return <Clock size={16} />;
+      case 'internship':
+        return <GraduationCap size={16} />;
+      default:
+        return <Briefcase size={16} />;
+    }
+  };
 
   const getTypeColor = (type: Experience['type']) => {
     switch (type) {
       case 'fulltime':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300';
+        return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/30 dark:text-blue-300 dark:border-blue-800';
       case 'parttime':
-        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
+        return 'bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-950/30 dark:text-indigo-300 dark:border-indigo-800';
       case 'internship':
-        return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300';
+        return 'bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-950/20 dark:text-blue-400 dark:border-blue-800';
       default:
-        return 'bg-gray-100 text-gray-700 dark:bg-gray-800/50 dark:text-gray-300';
+        return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/30 dark:text-blue-300 dark:border-blue-800';
     }
   };
 
@@ -72,22 +107,25 @@ export default function ExperienceSection() {
           </p>
         </div>
 
-        {/* Filter Tabs */}
+        {/* Professional Filter Tabs */}
         <div className="flex justify-center mb-12">
-          <div className="inline-flex bg-white dark:bg-slate-800 rounded-lg p-1 shadow-lg border border-slate-200 dark:border-slate-700">
+          <div className="inline-flex bg-white dark:bg-slate-800 rounded-lg p-1 shadow-sm border border-slate-200 dark:border-slate-700">
             {(['all', 'fulltime', 'parttime', 'internship'] as const).map((type) => (
               <button
                 key={type}
                 onClick={() => setSelectedType(type)}
-                className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${
+                className={`flex items-center space-x-2 px-6 py-3 rounded-md text-sm font-medium transition-all ${
                   selectedType === type
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+                    ? 'bg-blue-600 dark:bg-blue-700 text-white shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/20'
                 }`}
               >
-                {type === 'all' ? 'All' : getTypeLabel(type)}
+                {type !== 'all' && getTypeIcon(type)}
+                <span>
+                  {type === 'all' ? 'All Positions' : getTypeLabel(type)}
+                </span>
                 {type !== 'all' && (
-                  <span className="ml-2 text-xs bg-slate-200 dark:bg-slate-600 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">
                     {groupedExperiences[type].length}
                   </span>
                 )}
@@ -108,12 +146,12 @@ export default function ExperienceSection() {
                 <div className="absolute left-8 top-20 w-0.5 h-full bg-slate-200 dark:bg-slate-700 z-0" />
               )}
 
-              <div className="relative z-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="relative z-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 md:p-8 shadow-sm hover:shadow-md transition-all duration-300">
                 <div className="flex items-start space-x-6">
                   {/* Company Logo/Timeline dot */}
                   <div className="flex-shrink-0">
                     {companyLogos[experience.company] ? (
-                      <div className="w-16 h-16 bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-lg border-2 border-slate-200 dark:border-slate-600 relative overflow-hidden">
+                      <div className="w-16 h-16 bg-white dark:bg-slate-700 rounded-lg flex items-center justify-center shadow-sm border border-slate-200 dark:border-slate-600 relative overflow-hidden">
                         <Image
                           src={companyLogos[experience.company]}
                           alt={`${experience.company} logo`}
@@ -126,12 +164,12 @@ export default function ExperienceSection() {
                             (e.currentTarget.parentNode!.querySelector('.fallback-icon') as HTMLElement)!.style.display = 'flex';
                           }}
                         />
-                        <div className="fallback-icon w-12 h-12 bg-blue-600 rounded-full hidden items-center justify-center absolute inset-0">
+                        <div className="fallback-icon w-12 h-12 bg-slate-600 rounded-lg hidden items-center justify-center absolute inset-0">
                           <Building className="w-6 h-6 text-white" />
                         </div>
                       </div>
                     ) : (
-                      <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-lg">
+                      <div className="w-16 h-16 bg-slate-600 rounded-lg flex items-center justify-center shadow-sm">
                         <Building className="w-8 h-8 text-white" />
                       </div>
                     )}
@@ -161,18 +199,19 @@ export default function ExperienceSection() {
                       </div>
                       
                       <div className="flex items-center space-x-3">
-                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${getTypeColor(experience.type)}`}>
-                          {getTypeLabel(experience.type)}
+                        <span className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium border ${getTypeColor(experience.type)}`}>
+                          {getTypeIcon(experience.type)}
+                          <span>{getTypeLabel(experience.type)}</span>
                         </span>
                         
-                        {/* See More Button */}
+                        {/* See More Button - Only show if there's additional content */}
                         {(experience.achievements?.length || experience.images?.length || experience.certificates?.length) && (
                           <button
                             onClick={() => setSelectedExperienceModal(experience)}
-                            className="flex items-center space-x-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group"
+                            className="flex items-center space-x-2 px-4 py-2 bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-950/30 transition-colors group border border-blue-200 dark:border-blue-800"
                           >
                             <Eye size={16} />
-                            <span className="text-sm font-medium">See More</span>
+                            <span className="text-sm font-medium">Details</span>
                             <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
                           </button>
                         )}
@@ -192,13 +231,13 @@ export default function ExperienceSection() {
                           onClick={() => setExpandedExperience(
                             expandedExperience === experience.id ? null : experience.id
                           )}
-                          className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                          className="flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm"
                         >
                           <span>
                             {expandedExperience === experience.id ? 'Show less' : 'Show more'}
                           </span>
                           <ChevronRight 
-                            size={16} 
+                            size={14} 
                             className={`transition-transform ${
                               expandedExperience === experience.id ? 'rotate-90' : ''
                             }`} 
@@ -210,13 +249,13 @@ export default function ExperienceSection() {
                     {/* Technologies */}
                     <div className="mb-4">
                       <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
-                        Technologies Used:
+                        Technologies & Tools:
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {experience.technologies.map((tech, techIndex) => (
                           <span
                             key={techIndex}
-                            className="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm rounded-full border border-slate-200 dark:border-slate-600"
+                            className="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm rounded-md border border-slate-200 dark:border-slate-600"
                           >
                             {tech}
                           </span>
@@ -228,10 +267,10 @@ export default function ExperienceSection() {
                     {experience.achievements && experience.achievements.length > 0 && (
                       <div className="mb-4">
                         <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-2 flex items-center">
-                          <Trophy size={16} className="mr-2 text-blue-600" />
+                          <Trophy size={16} className="mr-2 text-blue-600 dark:text-blue-400" />
                           Key Achievement
                         </h4>
-                        <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
+                        <div className="bg-blue-50 dark:bg-blue-950/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
                           <p className="text-sm text-blue-800 dark:text-blue-300 font-medium">
                             {experience.achievements[0]}
                             {experience.achievements.length > 1 && (
@@ -254,7 +293,7 @@ export default function ExperienceSection() {
         <div className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-4xl max-h-[85vh] overflow-y-auto shadow-2xl border border-slate-200 dark:border-slate-700 mt-4">
             {/* Modal Header */}
-            <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-6 flex items-center justify-between">
+            <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-6 flex items-center justify-between z-10">
               <div className="flex items-center space-x-4">
                 {companyLogos[selectedExperienceModal.company] ? (
                   <div className="w-12 h-12 bg-white dark:bg-slate-700 rounded-lg flex items-center justify-center shadow-md border border-slate-200 dark:border-slate-600 relative overflow-hidden">
@@ -267,7 +306,7 @@ export default function ExperienceSection() {
                     />
                   </div>
                 ) : (
-                  <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <div className="w-12 h-12 bg-slate-600 rounded-lg flex items-center justify-center">
                     <Building className="w-6 h-6 text-white" />
                   </div>
                 )}
@@ -308,12 +347,12 @@ export default function ExperienceSection() {
               {selectedExperienceModal.achievements && selectedExperienceModal.achievements.length > 0 && (
                 <div>
                   <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center">
-                    <Trophy size={20} className="mr-2 text-blue-600" />
+                    <Trophy size={20} className="mr-2 text-blue-600 dark:text-blue-400" />
                     Key Achievements
                   </h4>
                   <div className="grid sm:grid-cols-2 gap-4">
                     {selectedExperienceModal.achievements.map((achievement, achIndex) => (
-                      <div key={achIndex} className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                      <div key={achIndex} className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
                         <p className="text-sm text-blue-800 dark:text-blue-300 font-medium">
                           {achievement}
                         </p>
@@ -340,13 +379,17 @@ export default function ExperienceSection() {
                 </div>
               </div>
 
-              {/* Image Gallery */}
+              {/* Image Gallery - Only show if images exist */}
               {selectedExperienceModal.images && selectedExperienceModal.images.length > 0 && (
                 <div>
                   <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
                     Project Gallery
                   </h4>
-                  <ImageSlider images={selectedExperienceModal.images} compact={true} />
+                  <ImageSlider 
+                    images={selectedExperienceModal.images} 
+                    compact={true} 
+                    modalMode={true}
+                  />
                 </div>
               )}
 
@@ -363,10 +406,10 @@ export default function ExperienceSection() {
                         href={cert}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center space-x-3 p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors group border border-slate-200 dark:border-slate-600"
+                        className="flex items-center space-x-3 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors group border border-slate-200 dark:border-slate-600"
                       >
-                        <ExternalLink size={20} className="text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
-                        <span className="text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 font-medium">
+                        <ExternalLink size={20} className="text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-300" />
+                        <span className="text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-slate-100 font-medium">
                           View Certificate #{certIndex + 1}
                         </span>
                       </a>
