@@ -88,7 +88,6 @@ export default function TechStackSlider({ techStack }: TechStackSliderProps) {
           <div className="flex animate-slide-infinite hover:pause-animation">
             {duplicated.map((tech, i) => {
               const Icon = TechIcons[tech.name];
-              const { text, bg, bar } = colorScale[tech.proficiency as keyof typeof colorScale];
 
               return (
                 <div

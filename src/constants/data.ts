@@ -34,7 +34,6 @@ export const techStack: TechStack[] = [
   { name: 'GraphQL', proficiency: 4 }
 ];
 
-
 export const experiences: Experience[] = [
   {
     id: 'formulatrix',
@@ -46,16 +45,25 @@ export const experiences: Experience[] = [
     description: [
       'Led the migration of the Rover Updater Mechanism from Whiptail Bash CLI to a modern web-based dashboard, significantly enhancing user accessibility and operational efficiency.',
       'Implemented key enhancements to the Rover Dashboard Smart Alignment feature, optimizing device calibration accuracy and user experience.',
-      'Improved the interpolation algorithm used for Rover Device Topology Calibration, resulting in increased precision and reliability of calibration outcomes.'
+      'Improved the interpolation algorithm used for Rover Device Topology Calibration, resulting in increased precision and reliability of calibration outcomes.',
+      'Collaborated with cross-functional teams to deliver high-quality software solutions meeting strict industry standards for laboratory automation systems.'
     ],
-    technologies: ['JavaScript', 'React', 'Node.js', 'Docker', 'Linux'],
+    technologies: ['JavaScript', 'React', 'Node.js', 'Docker', 'Linux', 'Bash'],
     achievements: [
       'Improved user accessibility by 40%',
       'Enhanced calibration accuracy by 25%',
-      'Reduced system downtime by 30%'
+      'Reduced system downtime by 30%',
+      'Successfully migrated legacy CLI to modern web dashboard'
     ],
-    images: [],
-    certificates: []
+    images: [
+      '/images/formulatrix-dashboard.jpg',
+      '/images/formulatrix-rover.png',
+      '/images/formulatrix-team.jpg'
+    ],
+    certificates: [
+      '/certificates/formulatrix-completion.pdf',
+      '/certificates/formulatrix-excellence.pdf'
+    ]
   },
   {
     id: 'bri',
@@ -67,16 +75,28 @@ export const experiences: Experience[] = [
     description: [
       'Developed and launched 5 microservice servers, achieving 100% compliance with strict software quality assessments using NestJS and GraphQL.',
       'Integrated third-party APIs for notifications, email services, and file handling, enhancing system automation and reliability.',
-      'Implemented MongoDB Aggregation Pipeline to optimize data processing and reporting, improving query performance and reducing computation time.'
+      'Implemented MongoDB Aggregation Pipeline to optimize data processing and reporting, improving query performance and reducing computation time.',
+      'Participated in code reviews and maintained high coding standards across the development team.'
     ],
-    technologies: ['NestJS', 'GraphQL', 'MongoDB', 'TypeScript', 'Docker'],
+    technologies: ['NestJS', 'GraphQL', 'MongoDB', 'TypeScript', 'Docker', 'JWT', 'Redis'],
     achievements: [
       '100% compliance with quality assessments',
       'Improved query performance by 40%',
-      'Successfully integrated 10+ third-party APIs'
+      'Successfully integrated 10+ third-party APIs',
+      'Reduced API response time by 35%',
+      'Maintained 99.9% uptime for all microservices'
     ],
-    images: [],
-    certificates: []
+    images: [
+      '/images/bri-architecture.jpg',
+      '/images/bri-dashboard.jpg',
+      '/images/bri-team.jpg',
+      '/images/bri-presentation.jpg'
+    ],
+    certificates: [
+      '/certificates/bri-indesc-completion.pdf',
+      '/certificates/bri-quality-assessment.pdf',
+      '/certificates/bri-microservices.pdf'
+    ]
   },
   {
     id: 'dinotis',
@@ -89,16 +109,26 @@ export const experiences: Experience[] = [
       'Executed over 100 manual tests on Dinotis Android product, achieving a 30% reduction in critical bugs prior to release.',
       'Delivered detailed defect reports to the development team, leading to a 20% improvement in defect resolution time.',
       'Applied Black-Box Testing methods to validate product functionality, covering 100% of core features to ensure compliance with requirements.',
-      'Conducted targeted research to enhance product, process, and project quality, contributing to a 15% increase in overall testing efficiency.'
+      'Conducted targeted research to enhance product, process, and project quality, contributing to a 15% increase in overall testing efficiency.',
+      'Created comprehensive test documentation and maintained test case repositories for future reference.'
     ],
-    technologies: ['Android Testing', 'Postman', 'Jira', 'TestRail'],
+    technologies: ['Android Testing', 'Postman', 'Jira', 'TestRail', 'Selenium', 'Appium'],
     achievements: [
       '30% reduction in critical bugs',
       '20% improvement in defect resolution time',
-      '100% core feature coverage'
+      '100% core feature coverage',
+      'Created 200+ test cases',
+      'Improved testing efficiency by 15%'
     ],
-    images: [],
-    certificates: []
+    images: [
+      '/images/dinotis-testing.jpg',
+      '/images/dinotis-reports.jpg',
+      '/images/dinotis-team.jpg'
+    ],
+    certificates: [
+      '/certificates/dinotis-qa-internship.pdf',
+      '/certificates/dinotis-testing-excellence.pdf'
+    ]
   },
   {
     id: 'fpt',
@@ -111,16 +141,27 @@ export const experiences: Experience[] = [
       'Successfully designed and implemented microservices architecture using ExpressJS and PostgreSQL, ensuring robust software construction principles and enhancing scalability for 25,000+ users.',
       'Managed server infrastructure for MyFPT employee management mobile apps, guaranteeing uninterrupted operations and seamless user experience for 24 hours server availability.',
       'Structured a Service-Oriented Architecture (Controller-Service-Repository) for the PEAR API, enhancing modularity and achieving a 20% reduction in response time.',
-      'Conducted rigorous API, performance, and load testing using JMeter and Postman, resulting in a 35% reduction in error rates during high-load scenarios.'
+      'Conducted rigorous API, performance, and load testing using JMeter and Postman, resulting in a 35% reduction in error rates during high-load scenarios.',
+      'Collaborated with Vietnamese and international teams, gaining valuable experience in cross-cultural software development.'
     ],
-    technologies: ['ExpressJS', 'PostgreSQL', 'Node.js', 'JMeter', 'Postman'],
+    technologies: ['ExpressJS', 'PostgreSQL', 'Node.js', 'JMeter', 'Postman', 'Docker', 'Git'],
     achievements: [
       'Served 25,000+ users',
       '20% reduction in response time',
-      '35% reduction in error rates'
+      '35% reduction in error rates',
+      '24/7 server availability',
+      'Successfully integrated with mobile apps'
     ],
-    images: [],
-    certificates: []
+    images: [
+      '/images/fpt-office.jpg',
+      '/images/fpt-hanoi.jpg',
+      '/images/fpt-team.jpg',
+      '/images/fpt-project.jpg'
+    ],
+    certificates: [
+      '/certificates/fpt-internship-completion.pdf',
+      '/certificates/fpt-excellence-award.pdf'
+    ]
   },
   {
     id: 'kamarpelajar',
@@ -131,16 +172,27 @@ export const experiences: Experience[] = [
     type: 'internship',
     description: [
       'Developed monolithic software architecture utilizing PHP-Laravel and MySQL, enhancing efficiency and maintainability of the system for 24 hours availability for 5000+ users.',
-      'Created and launched "Pemandu" and "Penghuni" services, enriching travel experiences and streamlining management tasks for KamarPelajar employees.'
+      'Created and launched "Pemandu" and "Penghuni" services, enriching travel experiences and streamlining management tasks for KamarPelajar employees.',
+      'Implemented responsive web design principles to ensure optimal user experience across different devices and platforms.',
+      'Worked remotely with Swedish startup team, demonstrating excellent communication and time management skills across different time zones.'
     ],
-    technologies: ['PHP', 'Laravel', 'MySQL', 'JavaScript', 'Bootstrap'],
+    technologies: ['PHP', 'Laravel', 'MySQL', 'JavaScript', 'Bootstrap', 'Git', 'REST API'],
     achievements: [
       'Served 5,000+ users',
       '24/7 system availability',
-      'Launched 2 major services'
+      'Launched 2 major services',
+      'Successfully worked remotely across time zones',
+      'Improved system efficiency by 25%'
     ],
-    images: [],
-    certificates: []
+    images: [
+      '/images/kamarpelajar-dashboard.jpg',
+      '/images/kamarpelajar-services.jpg',
+      '/images/kamarpelajar-remote-work.jpg'
+    ],
+    certificates: [
+      '/certificates/kamarpelajar-internship.pdf',
+      '/certificates/kamarpelajar-remote-excellence.pdf'
+    ]
   },
   {
     id: 'sagara',
@@ -152,16 +204,24 @@ export const experiences: Experience[] = [
     description: [
       'Designed and implemented microservices software architecture for "AteEat" using Python Django and SQLite, enhancing system scalability and maintainability.',
       'Optimized AteEat\'s database infrastructure via Django database migration, improving data management efficiency and system performance.',
-      'Collaborated effectively across teams to ensure the high quality of processes, products, and project metrics for AteEat.'
+      'Collaborated effectively across teams to ensure the high quality of processes, products, and project metrics for AteEat.',
+      'Gained hands-on experience with agile development methodologies and version control systems.'
     ],
-    technologies: ['Python', 'Django', 'SQLite', 'REST API'],
+    technologies: ['Python', 'Django', 'SQLite', 'REST API', 'Git', 'Postman'],
     achievements: [
       'Improved database efficiency by 25%',
       'Enhanced system scalability',
-      'Cross-team collaboration success'
+      'Cross-team collaboration success',
+      'Delivered project on time and within scope'
     ],
-    images: [],
-    certificates: []
+    images: [
+      '/images/sagara-ateeat.jpg',
+      '/images/sagara-team.jpg',
+      '/images/sagara-architecture.jpg'
+    ],
+    certificates: [
+      '/certificates/sagara-internship-completion.pdf'
+    ]
   }
 ];
 

@@ -1,25 +1,37 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronRight, Building, Calendar, MapPin, Trophy, ExternalLink } from 'lucide-react';
+import Image from 'next/image';
+import { ChevronRight, Building, Calendar, MapPin, Trophy, ExternalLink, Eye, X } from 'lucide-react';
 import { experiences } from '@/constants/data';
 import { Experience } from '@/types';
 import ImageSlider from './ImageSlider';
 
+// Company logos mapping
+const companyLogos: Record<string, string> = {
+  'Formulatrix Indonesia': '/logos/formulatrix.png',
+  'Bank Rakyat Indonesia (INDESC)': '/logos/bri.png',
+  'Dinotis Official': '/logos/dinotis.png',
+  'FPT Software Ltd.': '/logos/fpt.png',
+  'KamarPelajar.id': '/logos/kamarpelajar.png',
+  'Sagara Technology': '/logos/sagara.png',
+};
+
 export default function ExperienceSection() {
   const [selectedType, setSelectedType] = useState<'all' | 'fulltime' | 'parttime' | 'internship'>('all');
   const [expandedExperience, setExpandedExperience] = useState<string | null>(null);
+  const [selectedExperienceModal, setSelectedExperienceModal] = useState<Experience | null>(null);
 
   const getTypeColor = (type: Experience['type']) => {
     switch (type) {
       case 'fulltime':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300';
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300';
       case 'parttime':
-        return 'bg-slate-100 text-slate-700 dark:bg-slate-800/50 dark:text-slate-300';
+        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300';
       case 'internship':
-        return 'bg-slate-100 text-slate-600 dark:bg-slate-800/50 dark:text-slate-400';
+        return 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300';
       default:
-        return 'bg-slate-100 text-slate-700 dark:bg-slate-800/50 dark:text-slate-300';
+        return 'bg-gray-100 text-gray-700 dark:bg-gray-800/50 dark:text-gray-300';
     }
   };
 
@@ -47,7 +59,7 @@ export default function ExperienceSection() {
   };
 
   return (
-    <section id="experience" className="section-padding bg-slate-50 dark:bg-slate-900/50">
+    <section id="experience" className="section-padding bg-white dark:bg-slate-900">
       <div className="max-w-7xl mx-auto container-padding">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -62,7 +74,7 @@ export default function ExperienceSection() {
 
         {/* Filter Tabs */}
         <div className="flex justify-center mb-12">
-          <div className="inline-flex bg-white dark:bg-slate-800 rounded-lg p-1 shadow-sm border border-slate-200 dark:border-slate-700">
+          <div className="inline-flex bg-white dark:bg-slate-800 rounded-lg p-1 shadow-lg border border-slate-200 dark:border-slate-700">
             {(['all', 'fulltime', 'parttime', 'internship'] as const).map((type) => (
               <button
                 key={type}
@@ -96,11 +108,33 @@ export default function ExperienceSection() {
                 <div className="absolute left-8 top-20 w-0.5 h-full bg-slate-200 dark:bg-slate-700 z-0" />
               )}
 
-              <div className="relative z-10 card p-6 md:p-8 card-hover">
+              <div className="relative z-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300">
                 <div className="flex items-start space-x-6">
-                  {/* Timeline dot */}
-                  <div className="flex-shrink-0 w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-lg">
-                    <Building className="w-8 h-8 text-white" />
+                  {/* Company Logo/Timeline dot */}
+                  <div className="flex-shrink-0">
+                    {companyLogos[experience.company] ? (
+                      <div className="w-16 h-16 bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-lg border-2 border-slate-200 dark:border-slate-600 relative overflow-hidden">
+                        <Image
+                          src={companyLogos[experience.company]}
+                          alt={`${experience.company} logo`}
+                          width={48}
+                          height={48}
+                          className="object-contain"
+                          onError={(e) => {
+                            // Fallback to icon if image fails to load
+                            e.currentTarget.style.display = 'none';
+                            (e.currentTarget.parentNode!.querySelector('.fallback-icon') as HTMLElement)!.style.display = 'flex';
+                          }}
+                        />
+                        <div className="fallback-icon w-12 h-12 bg-blue-600 rounded-full hidden items-center justify-center absolute inset-0">
+                          <Building className="w-6 h-6 text-white" />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-lg">
+                        <Building className="w-8 h-8 text-white" />
+                      </div>
+                    )}
                   </div>
 
                   {/* Content */}
@@ -126,9 +160,23 @@ export default function ExperienceSection() {
                         </div>
                       </div>
                       
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${getTypeColor(experience.type)}`}>
-                        {getTypeLabel(experience.type)}
-                      </span>
+                      <div className="flex items-center space-x-3">
+                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${getTypeColor(experience.type)}`}>
+                          {getTypeLabel(experience.type)}
+                        </span>
+                        
+                        {/* See More Button */}
+                        {(experience.achievements?.length || experience.images?.length || experience.certificates?.length) && (
+                          <button
+                            onClick={() => setSelectedExperienceModal(experience)}
+                            className="flex items-center space-x-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group"
+                          >
+                            <Eye size={16} />
+                            <span className="text-sm font-medium">See More</span>
+                            <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                          </button>
+                        )}
+                      </div>
                     </div>
 
                     {/* Description */}
@@ -159,27 +207,8 @@ export default function ExperienceSection() {
                       )}
                     </div>
 
-                    {/* Achievements */}
-                    {experience.achievements && experience.achievements.length > 0 && (
-                      <div className="mb-6">
-                        <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3 flex items-center">
-                          <Trophy size={20} className="mr-2 text-blue-600" />
-                          Key Achievements
-                        </h4>
-                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                          {experience.achievements.map((achievement, achIndex) => (
-                            <div key={achIndex} className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
-                              <p className="text-sm text-blue-800 dark:text-blue-300 font-medium">
-                                {achievement}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
                     {/* Technologies */}
-                    <div className="mb-6">
+                    <div className="mb-4">
                       <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
                         Technologies Used:
                       </h4>
@@ -187,7 +216,7 @@ export default function ExperienceSection() {
                         {experience.technologies.map((tech, techIndex) => (
                           <span
                             key={techIndex}
-                            className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm rounded-full border border-slate-200 dark:border-slate-700"
+                            className="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm rounded-full border border-slate-200 dark:border-slate-600"
                           >
                             {tech}
                           </span>
@@ -195,37 +224,20 @@ export default function ExperienceSection() {
                       </div>
                     </div>
 
-                    {/* Image Slider */}
-                    {experience.images && experience.images.length > 0 && (
-                      <div className="mb-6">
-                        <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">
-                          Project Gallery
+                    {/* Quick Preview of Achievements */}
+                    {experience.achievements && experience.achievements.length > 0 && (
+                      <div className="mb-4">
+                        <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-2 flex items-center">
+                          <Trophy size={16} className="mr-2 text-blue-600" />
+                          Key Achievement
                         </h4>
-                        <ImageSlider images={experience.images} />
-                      </div>
-                    )}
-
-                    {/* Certificates */}
-                    {experience.certificates && experience.certificates.length > 0 && (
-                      <div>
-                        <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3">
-                          Certificates & Recognition
-                        </h4>
-                        <div className="grid sm:grid-cols-2 gap-4">
-                          {experience.certificates.map((cert, certIndex) => (
-                            <a
-                              key={certIndex}
-                              href={cert}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center space-x-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors group"
-                            >
-                              <ExternalLink size={16} className="text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
-                              <span className="text-sm text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                                View Certificate
-                              </span>
-                            </a>
-                          ))}
+                        <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
+                          <p className="text-sm text-blue-800 dark:text-blue-300 font-medium">
+                            {experience.achievements[0]}
+                            {experience.achievements.length > 1 && (
+                              <span className="text-blue-600 dark:text-blue-400"> and {experience.achievements.length - 1} more...</span>
+                            )}
+                          </p>
                         </div>
                       </div>
                     )}
@@ -236,6 +248,136 @@ export default function ExperienceSection() {
           ))}
         </div>
       </div>
+
+      {/* Experience Detail Modal */}
+      {selectedExperienceModal && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 dark:border-slate-700">
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-6 flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                {companyLogos[selectedExperienceModal.company] ? (
+                  <div className="w-12 h-12 bg-white dark:bg-slate-700 rounded-lg flex items-center justify-center shadow-md border border-slate-200 dark:border-slate-600 relative overflow-hidden">
+                    <Image
+                      src={companyLogos[selectedExperienceModal.company]}
+                      alt={`${selectedExperienceModal.company} logo`}
+                      width={32}
+                      height={32}
+                      className="object-contain"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <Building className="w-6 h-6 text-white" />
+                  </div>
+                )}
+                <div>
+                  <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                    {selectedExperienceModal.title}
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    {selectedExperienceModal.company}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedExperienceModal(null)}
+                className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 space-y-8">
+              {/* Full Description */}
+              <div>
+                <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                  Role Description
+                </h4>
+                <div className="space-y-4">
+                  {selectedExperienceModal.description.map((desc, descIndex) => (
+                    <p key={descIndex} className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                      {desc}
+                    </p>
+                  ))}
+                </div>
+              </div>
+
+              {/* All Achievements */}
+              {selectedExperienceModal.achievements && selectedExperienceModal.achievements.length > 0 && (
+                <div>
+                  <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center">
+                    <Trophy size={20} className="mr-2 text-blue-600" />
+                    Key Achievements
+                  </h4>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {selectedExperienceModal.achievements.map((achievement, achIndex) => (
+                      <div key={achIndex} className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                        <p className="text-sm text-blue-800 dark:text-blue-300 font-medium">
+                          {achievement}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Technologies */}
+              <div>
+                <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                  Technologies & Tools
+                </h4>
+                <div className="flex flex-wrap gap-3">
+                  {selectedExperienceModal.technologies.map((tech, techIndex) => (
+                    <span
+                      key={techIndex}
+                      className="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg border border-slate-200 dark:border-slate-600 font-medium"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Image Gallery */}
+              {selectedExperienceModal.images && selectedExperienceModal.images.length > 0 && (
+                <div>
+                  <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                    Project Gallery
+                  </h4>
+                  <ImageSlider images={selectedExperienceModal.images} />
+                </div>
+              )}
+
+              {/* Certificates */}
+              {selectedExperienceModal.certificates && selectedExperienceModal.certificates.length > 0 && (
+                <div>
+                  <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                    Certificates & Recognition
+                  </h4>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {selectedExperienceModal.certificates.map((cert, certIndex) => (
+                      <a
+                        key={certIndex}
+                        href={cert}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center space-x-3 p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors group border border-slate-200 dark:border-slate-600"
+                      >
+                        <ExternalLink size={20} className="text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+                        <span className="text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 font-medium">
+                          View Certificate #{certIndex + 1}
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
