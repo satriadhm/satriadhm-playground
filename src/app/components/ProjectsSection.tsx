@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Github, ExternalLink, Star, GitFork, Calendar, Award, Eye } from 'lucide-react';
 import Image from 'next/image';
 import { projects } from '@/constants/data';
@@ -22,8 +22,14 @@ interface GitHubRepo {
 export default function ProjectsSection() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [githubRepos, setGithubRepos] = useState<GitHubRepo[]>([]);
+  const [allGithubRepos, setAllGithubRepos] = useState<GitHubRepo[]>([]);
+  const [filteredGithubRepos, setFilteredGithubRepos] = useState<GitHubRepo[]>([]);
   const [isLoadingGithub, setIsLoadingGithub] = useState(false);
   const [showGithubRepos, setShowGithubRepos] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalRepos, setTotalRepos] = useState(0);
+  const reposPerPage = 9;
   type Project = typeof projects[number];
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
@@ -36,20 +42,89 @@ export default function ProjectsSection() {
 
   const featuredProjects = projects.filter(p => p.featured);
 
-  // GitHub API integration (optional)
+  // GitHub API integration with pagination and search
   const fetchGitHubRepos = async () => {
     setIsLoadingGithub(true);
     try {
-      const response = await fetch('https://api.github.com/users/satriadhm/repos?sort=updated&per_page=12');
-      if (response.ok) {
-        const repos = await response.json();
-        setGithubRepos(repos);
+      let allRepos: GitHubRepo[] = [];
+      let page = 1;
+      let hasMorePages = true;
+
+      // Fetch all repositories with pagination
+      while (hasMorePages) {
+        const response = await fetch(
+          `https://api.github.com/users/satriadhm/repos?sort=updated&per_page=100&page=${page}`
+        );
+        
+        if (response.ok) {
+          const repos = await response.json();
+          if (repos.length === 0) {
+            hasMorePages = false;
+          } else {
+            allRepos = [...allRepos, ...repos];
+            page++;
+            // GitHub API typically returns less than 100 repos per page when reaching the end
+            if (repos.length < 100) {
+              hasMorePages = false;
+            }
+          }
+        } else {
+          hasMorePages = false;
+        }
       }
+
+      setAllGithubRepos(allRepos);
+      setTotalRepos(allRepos.length);
+      setFilteredGithubRepos(allRepos);
+      
+      // Set initial page of repos
+      const startIndex = (currentPage - 1) * reposPerPage;
+      const endIndex = startIndex + reposPerPage;
+      setGithubRepos(allRepos.slice(startIndex, endIndex));
+      
     } catch (error) {
       console.error('Failed to fetch GitHub repos:', error);
     }
     setIsLoadingGithub(false);
   };
+
+  // Handle search functionality
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    setCurrentPage(1); // Reset to first page when searching
+
+    if (query.trim() === '') {
+      setFilteredGithubRepos(allGithubRepos);
+    } else {
+      const filtered = allGithubRepos.filter(repo =>
+        repo.name.toLowerCase().includes(query.toLowerCase()) ||
+        repo.description?.toLowerCase().includes(query.toLowerCase()) ||
+        repo.topics.some(topic => topic.toLowerCase().includes(query.toLowerCase())) ||
+        repo.language?.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredGithubRepos(filtered);
+    }
+  };
+
+  // Handle pagination
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    const startIndex = (page - 1) * reposPerPage;
+    const endIndex = startIndex + reposPerPage;
+    setGithubRepos(filteredGithubRepos.slice(startIndex, endIndex));
+  };
+
+  // Update repos when filtered repos or current page changes
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * reposPerPage;
+    const endIndex = startIndex + reposPerPage;
+    setGithubRepos(filteredGithubRepos.slice(startIndex, endIndex));
+  }, [filteredGithubRepos, currentPage]);
+
+  // Calculate pagination info
+  const totalPages = Math.ceil(filteredGithubRepos.length / reposPerPage);
+  const startRepo = (currentPage - 1) * reposPerPage + 1;
+  const endRepo = Math.min(currentPage * reposPerPage, filteredGithubRepos.length);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -100,7 +175,7 @@ export default function ProjectsSection() {
             <button
               onClick={() => {
                 setShowGithubRepos(true);
-                if (githubRepos.length === 0) {
+                if (allGithubRepos.length === 0) {
                   fetchGitHubRepos();
                 }
               }}
@@ -329,69 +404,204 @@ export default function ProjectsSection() {
                 <p className="text-slate-600 dark:text-slate-400 mt-4">Loading GitHub repositories...</p>
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {githubRepos.map((repo) => (
-                  <div key={repo.id} className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all duration-300 group">
-                    <div className="space-y-4">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center space-x-2">
-                          <Github size={20} className="text-slate-500" />
-                          <span className="text-sm text-slate-500 dark:text-slate-400">
-                            {repo.language || 'Repository'}
-                          </span>
-                        </div>
-                        <div className="flex items-center space-x-3 text-sm text-slate-500 dark:text-slate-400">
-                          <div className="flex items-center space-x-1">
-                            <Star size={14} />
-                            <span>{repo.stargazers_count}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <GitFork size={14} />
-                            <span>{repo.forks_count}</span>
-                          </div>
-                        </div>
+              <div className="space-y-6">
+                {/* Search and Stats Header */}
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <div className="flex-1 max-w-md">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder="Search repositories..."
+                        value={searchQuery}
+                        onChange={(e) => handleSearch(e.target.value)}
+                        className="w-full px-4 py-3 pl-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                      />
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg className="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
                       </div>
+                    </div>
+                  </div>
+                  
+                  <div className="text-sm text-slate-600 dark:text-slate-400">
+                    Showing {filteredGithubRepos.length > 0 ? startRepo : 0}-{endRepo} of {filteredGithubRepos.length} repositories
+                    {searchQuery && (
+                      <span className="ml-2">
+                        • Filtered from {totalRepos} total
+                      </span>
+                    )}
+                  </div>
+                </div>
 
-                      <div>
-                        <h4 className="font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                          {repo.name.replace(/-/g, ' ').replace(/_/g, ' ')}
-                        </h4>
-                        <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
-                          {repo.description || 'No description available'}
-                        </p>
+                {/* Search Results Info */}
+                {searchQuery && (
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <svg className="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <span className="text-blue-700 dark:text-blue-300 font-medium">
+                          Found {filteredGithubRepos.length} repositories matching &quot;{searchQuery}&quot;
+                        </span>
                       </div>
+                      <button
+                        onClick={() => handleSearch('')}
+                        className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium"
+                      >
+                        Clear search
+                      </button>
+                    </div>
+                  </div>
+                )}
 
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2 text-xs text-slate-500 dark:text-slate-400">
-                          <Calendar size={12} />
-                          <span>Updated {formatDate(repo.updated_at)}</span>
-                        </div>
-                        <a
-                          href={repo.html_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center space-x-1 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors text-sm"
-                        >
-                          <span>View</span>
-                          <ExternalLink size={14} />
-                        </a>
-                      </div>
-
-                      {repo.topics.length > 0 && (
-                        <div className="flex flex-wrap gap-1">
-                          {repo.topics.slice(0, 3).map((topic, index) => (
-                            <span
-                              key={index}
-                              className="px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs rounded-md border border-blue-200 dark:border-blue-800"
-                            >
-                              {topic}
-                            </span>
-                          ))}
-                        </div>
+                {/* Repositories Grid */}
+                {filteredGithubRepos.length === 0 ? (
+                  <div className="text-center py-12">
+                    <div className="text-slate-500 dark:text-slate-400">
+                      {searchQuery ? (
+                        <>
+                          <svg className="mx-auto h-12 w-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                          </svg>
+                          <p className="text-lg font-medium">No repositories found</p>
+                          <p className="mt-1">Try adjusting your search terms</p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-lg font-medium">No repositories available</p>
+                        </>
                       )}
                     </div>
                   </div>
-                ))}
+                ) : (
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {githubRepos.map((repo) => (
+                      <div key={repo.id} className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all duration-300 group">
+                        <div className="space-y-4">
+                          <div className="flex items-start justify-between">
+                            <div className="flex items-center space-x-2">
+                              <Github size={20} className="text-slate-500" />
+                              <span className="text-sm text-slate-500 dark:text-slate-400">
+                                {repo.language || 'Repository'}
+                              </span>
+                            </div>
+                            <div className="flex items-center space-x-3 text-sm text-slate-500 dark:text-slate-400">
+                              <div className="flex items-center space-x-1">
+                                <Star size={14} />
+                                <span>{repo.stargazers_count}</span>
+                              </div>
+                              <div className="flex items-center space-x-1">
+                                <GitFork size={14} />
+                                <span>{repo.forks_count}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div>
+                            <h4 className="font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                              {repo.name.replace(/-/g, ' ').replace(/_/g, ' ')}
+                            </h4>
+                            <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
+                              {repo.description || 'No description available'}
+                            </p>
+                          </div>
+
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-2 text-xs text-slate-500 dark:text-slate-400">
+                              <Calendar size={12} />
+                              <span>Updated {formatDate(repo.updated_at)}</span>
+                            </div>
+                            <a
+                              href={repo.html_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center space-x-1 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors text-sm"
+                            >
+                              <span>View</span>
+                              <ExternalLink size={14} />
+                            </a>
+                          </div>
+
+                          {repo.topics.length > 0 && (
+                            <div className="flex flex-wrap gap-1">
+                              {repo.topics.slice(0, 3).map((topic, index) => (
+                                <span
+                                  key={index}
+                                  className="px-2 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-xs rounded-md border border-blue-200 dark:border-blue-800"
+                                >
+                                  {topic}
+                                </span>
+                              ))}
+                              {repo.topics.length > 3 && (
+                                <span className="px-2 py-1 text-slate-500 dark:text-slate-500 text-xs">
+                                  +{repo.topics.length - 3} more
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8">
+                    <div className="text-sm text-slate-600 dark:text-slate-400">
+                      Page {currentPage} of {totalPages}
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="px-3 py-2 text-sm font-medium text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      >
+                        Previous
+                      </button>
+                      
+                      <div className="flex items-center space-x-1">
+                        {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                          let pageNum;
+                          if (totalPages <= 5) {
+                            pageNum = i + 1;
+                          } else if (currentPage <= 3) {
+                            pageNum = i + 1;
+                          } else if (currentPage >= totalPages - 2) {
+                            pageNum = totalPages - 4 + i;
+                          } else {
+                            pageNum = currentPage - 2 + i;
+                          }
+                          
+                          return (
+                            <button
+                              key={pageNum}
+                              onClick={() => handlePageChange(pageNum)}
+                              className={`w-10 h-10 text-sm font-medium rounded-lg transition-colors ${
+                                currentPage === pageNum
+                                  ? 'bg-blue-600 text-white'
+                                  : 'text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
+                              }`}
+                            >
+                              {pageNum}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      
+                      <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="px-3 py-2 text-sm font-medium text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
