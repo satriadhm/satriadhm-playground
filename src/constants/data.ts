@@ -7,7 +7,7 @@ export const personalInfo: PersonalInfo = {
   linkedin: 'https://linkedin.com/in/gloriousatria',
   github: 'https://github.com/satriadhm',
   location: 'Indonesia',
-  bio: 'Passionate Software Engineer with expertise in full-stack development, solution architecture, and scientific implementation. Currently building Trustcrowd, a platform for future Crowdsourcing based UAT.',
+  bio: 'Passionate Software Engineer with expertise in full-stack development, solution architecture, and scientific implementation. Currently building innovative solutions for laboratory automation and educational technology.',
   profileImage: '/profile.png'
 };
 
@@ -218,51 +218,50 @@ export const experiences: Experience[] = [
 
 export const projects: Project[] = [
   {
-    id: 'trustcrowd',
-    title: 'TrustCrowd',
-    description: 'Developed a Crowdsourced User Acceptance Testing (UAT) platform implementing the M-X algorithm for tester quality control, aiming to manage the variability of tester characteristics.',
-    technologies: ['GraphQL', 'MongoDB', 'React', 'Node.js'],
-    githubUrl: 'https://github.com/satriadhm/trustcrowd',
-    category: 'Web Development',
+    id: 'terrax',
+    title: 'TerraX',
+    description: 'Led a diverse team in the development of TerraX, a revolutionary property transaction platform utilizing blockchain technology, resulting in significant time, labor, and cost savings. Winner of Codefest Indonesia x Dfinity Foundation 2023.',
+    technologies: ['Blockchain', 'Solidity', 'React', 'Web3.js', 'Smart Contracts'],
+    githubUrl: 'https://github.com/satriadhm/terrax',
+    category: 'Blockchain',
     featured: true,
-    images: []
+    images: ['/images/projects/terrax-showcase.png'],
+    achievements: ['First Runner-up Codefest Indonesia 2023', 'Blockchain-based property transactions', 'Smart contract implementation']
   },
   {
     id: 'elemento',
     title: 'Elemento',
-    description: 'Developed an innovative educational platform combining Augmented Reality (AR) and interactive modules for enhancing chemistry learning, specifically electron configuration and covalent bonding concepts.',
-    technologies: ['Unity', 'AR Foundation', 'C#', 'React', 'Node.js'],
+    description: 'Developed an innovative educational platform combining Augmented Reality (AR) and interactive modules for enhancing chemistry learning, specifically electron configuration and covalent bonding concepts. Seamless integration with Golang + Laravel backend.',
+    technologies: ['Unity', 'AR Foundation', 'C#', 'React', 'Node.js', 'Laravel', 'Golang'],
+    githubUrl: 'https://github.com/elemento-learning',
     category: 'AR/VR',
     featured: true,
-    images: []
+    images: ['/images/projects/elemento-showcase.png'],
+    achievements: ['Ministry funding recipient', 'AR-based learning platform', 'Interactive chemistry modules']
   },
   {
     id: 'perisai',
     title: 'PERISAI',
-    description: 'Identified the need for a reporting hub for sexual violence based on peer complaints and designed PERISAI to address this pressing social issue, leveraging technology to empower victims.',
-    technologies: ['React', 'Node.js', 'MongoDB', 'Socket.io'],
+    description: 'Identified the need for a reporting hub for sexual violence based on peer complaints and designed PERISAI to address this pressing social issue, leveraging technology to empower victims and create safer environments.',
+    technologies: ['Kotlin', 'Android', 'React', 'Node.js', 'MongoDB', 'Socket.io'],
+    githubUrl: 'https://github.com/satriadhm/perisai-kotlin',
+    liveUrl: 'https://telkomuniversity-ac-id.webpkgcache.com/doc/-/s/telkomuniversity.ac.id/memberantas-kekerasan-seksual-di-kota-salatiga-dengan-perisai/',
     category: 'Social Impact',
     featured: true,
-    images: []
+    images: ['/images/projects/perisai-showcase.png'],
+    achievements: ['Published research collaboration', 'Mobile app for social safety', 'Integrated reporting system']
   },
   {
-    id: 'terrax',
-    title: 'TerraX',
-    description: 'Led a diverse team in the development of TerraX, a revolutionary property transaction platform utilizing blockchain technology, resulting in significant time, labor, and cost savings.',
-    technologies: ['Blockchain', 'Solidity', 'React', 'Web3.js'],
-    category: 'Blockchain',
+    id: 'earthstock',
+    title: 'EarthStock Solution',
+    description: 'Implemented VGG16 Machine Learning Model with ReforestTree Data to create an innovative solution for environmental monitoring and reforestation tracking using satellite imagery and AI-powered analysis.',
+    technologies: ['Python', 'TensorFlow', 'VGG16', 'Machine Learning', 'Satellite Imagery', 'React', 'Flask API'],
+    githubUrl: 'https://github.com/satriadhm/ess',
+    liveUrl: 'https://github.com/satriadhm/ess-api-v2',
+    category: 'Machine Learning',
     featured: true,
-    images: []
-  },
-  {
-    id: 'kalorize',
-    title: 'KALORIZE – Your Daily Outside Gym Partner',
-    description: 'Designed and implemented microservices software architecture for Kalorize using Go Language Echo Framework and PostgreSQL, ensuring system scalability and maintainability.',
-    technologies: ['Go', 'Echo Framework', 'PostgreSQL', 'Docker'],
-    githubUrl: 'https://github.com/satriadhm/kalorize',
-    category: 'Mobile App',
-    featured: false,
-    images: []
+    images: ['/images/projects/earthstock-showcase.png'],
+    achievements: ['Machine Learning implementation', 'Environmental impact tracking', 'Satellite data processing']
   }
 ];
 
