@@ -158,7 +158,7 @@ export default function TechStackSlider({ techStack }: TechStackSliderProps) {
         <StatsBlock label="Technologies" value={techStack.length} />
         <StatsBlock label="Advanced+" value={techStack.filter((t) => t.proficiency >= 4).length} highlight />
         <StatsBlock label="Avg Score" value={Math.round((techStack.reduce((s, t) => s + t.proficiency, 0) / techStack.length) * 10) / 10} />
-        <StatsBlock label="Years Exp" value="3+" />
+        <StatsBlock label="Years Exp" value="2+" />
       </div>
     </div>
   );

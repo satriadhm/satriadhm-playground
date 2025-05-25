@@ -127,7 +127,7 @@ export default function HeroSection() {
               {/* Stats - Lebih compact */}
               <div className="grid grid-cols-3 gap-8 pt-4 max-w-md mx-auto">
                 <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">3+</div>
+                  <div className="text-2xl md:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">2+</div>
                   <div className="text-xs md:text-sm text-slate-500 dark:text-slate-400">Years Experience</div>
                 </div>
                 <div className="text-center">
