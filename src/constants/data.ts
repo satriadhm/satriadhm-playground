@@ -7,7 +7,7 @@ export const personalInfo: PersonalInfo = {
   linkedin: 'https://linkedin.com/in/gloriousatria',
   github: 'https://github.com/satriadhm',
   location: 'Indonesia',
-  bio: 'Passionate Software Engineer with expertise in full-stack development, microservices architecture, and AI integration. Currently pursuing Bachelor of Software Engineering with a 3.93/4 GPA.',
+  bio: 'Passionate Software Engineer with expertise in full-stack development, solution architecture, and scientific implementation. Currently building Trustcrowd, a platform for future Crowdsourcing based UAT.',
   profileImage: '/profile.png'
 };
 
@@ -43,10 +43,10 @@ export const experiences: Experience[] = [
     period: 'Feb 2025 – May 2025',
     type: 'fulltime',
     description: [
-      'Led the migration of the Rover Updater Mechanism from Whiptail Bash CLI to a modern web-based dashboard, significantly enhancing user accessibility and operational efficiency.',
-      'Implemented key enhancements to the Rover Dashboard Smart Alignment feature, optimizing device calibration accuracy and user experience.',
-      'Improved the interpolation algorithm used for Rover Device Topology Calibration, resulting in increased precision and reliability of calibration outcomes.',
-      'Collaborated with cross-functional teams to deliver high-quality software solutions meeting strict industry standards for laboratory automation systems.'
+      'Formulatrix is a global leader in laboratory automation solutions, revolutionizing scientific research through innovative robotics and software systems. My journey here began as a Graduate Intern, where I quickly demonstrated my capabilities and was offered a full-time position as an R&D Software Engineer.',
+      'In this role, I spearheaded the transformation of critical laboratory automation systems. My primary achievement was leading the complete migration of the Rover Updater Mechanism from a legacy Whiptail Bash CLI system to a modern, intuitive web-based dashboard. This wasn\'t just a technical upgrade—it was about making complex laboratory equipment more accessible to researchers worldwide.',
+      'Working on the Rover Dashboard Smart Alignment feature, I implemented key enhancements that directly impacted the precision of scientific instruments. Every line of code I wrote contributed to more accurate research outcomes in laboratories around the globe. The improved interpolation algorithm I developed for Rover Device Topology Calibration became a cornerstone of the system\'s reliability.',
+      'Collaborating with cross-functional teams of engineers, product managers, and quality assurance specialists, I ensured that every solution met the stringent industry standards required for laboratory automation systems. This experience taught me the critical importance of precision in scientific software development.'
     ],
     technologies: ['Dotnet', 'C#', 'C++', 'Docker', 'Linux', 'Bash'],
     achievements: [
@@ -73,10 +73,10 @@ export const experiences: Experience[] = [
     period: 'Jul 2024 – Dec 2024',
     type: 'parttime',
     description: [
-      'Developed and launched 5 microservice servers, achieving 100% compliance with strict software quality assessments using NestJS and GraphQL.',
-      'Integrated third-party APIs for notifications, email services, and file handling, enhancing system automation and reliability.',
-      'Implemented MongoDB Aggregation Pipeline to optimize data processing and reporting, improving query performance and reducing computation time.',
-      'Participated in code reviews and maintained high coding standards across the development team.'
+      'Bank Rakyat Indonesia (BRI) is Indonesia\'s largest bank and one of the oldest financial institutions in the country, serving millions of customers across the archipelago. I joined BRI through an outsourcing project specifically focused on revamping their digital infrastructure and modernizing their web platforms.',
+      'As part of the INDESC (Indonesia Digital Economy and Society Convergence) initiative, I was entrusted with developing and launching five critical microservice servers that formed the backbone of BRI\'s digital transformation. Working with cutting-edge technologies like NestJS and GraphQL, I ensured that every service achieved 100% compliance with the bank\'s strict software quality assessments—a testament to the rigorous standards required in financial technology.',
+      'The integration of third-party APIs became a fascinating challenge, connecting various external services for notifications, email systems, and file handling. Each integration required careful consideration of security protocols and data integrity, fundamental aspects of banking software. My implementation of MongoDB Aggregation Pipelines revolutionized how the bank processed and reported data, significantly improving system performance.',
+      'Throughout this project, I participated in comprehensive code reviews and maintained the high coding standards that financial institutions demand. This experience deepened my understanding of enterprise-level software development and the critical role technology plays in Indonesia\'s financial ecosystem.'
     ],
     technologies: ['NestJS', 'GraphQL', 'MongoDB', 'TypeScript', 'Docker', 'JWT', 'Redis'],
     achievements: [
@@ -93,9 +93,8 @@ export const experiences: Experience[] = [
       '/images/bri-presentation.jpg'
     ],
     certificates: [
-      '/certificates/bri-indesc-completion.pdf',
-      '/certificates/bri-quality-assessment.pdf',
-      '/certificates/bri-microservices.pdf'
+      '/certificates/bri-main.pdf',
+      '/certificates/bri-kredit.pdf',
     ]
   },
   {
@@ -106,11 +105,10 @@ export const experiences: Experience[] = [
     period: 'Sep 2023 – Mar 2024',
     type: 'internship',
     description: [
-      'Executed over 100 manual tests on Dinotis Android product, achieving a 30% reduction in critical bugs prior to release.',
-      'Delivered detailed defect reports to the development team, leading to a 20% improvement in defect resolution time.',
-      'Applied Black-Box Testing methods to validate product functionality, covering 100% of core features to ensure compliance with requirements.',
-      'Conducted targeted research to enhance product, process, and project quality, contributing to a 15% increase in overall testing efficiency.',
-      'Created comprehensive test documentation and maintained test case repositories for future reference.'
+      'Dinotis Official is an innovative Indonesian startup focused on developing cutting-edge mobile applications and digital solutions. My journey with Dinotis began when I participated in their intensive bootcamp laboratory program, where my performance and dedication caught the attention of their development team, leading to an internship opportunity.',
+      'During this transformative six-month internship, I immersed myself in the world of software quality assurance, becoming the guardian of product reliability. I meticulously executed over 100 manual tests on Dinotis\'s flagship Android product, each test serving as a critical checkpoint to ensure users would have a seamless experience.',
+      'My approach to quality assurance went beyond simple bug detection. I crafted detailed defect reports that served as roadmaps for the development team, helping them understand not just what was broken, but why it mattered and how to fix it efficiently. Applying Black-Box Testing methodologies, I systematically validated every core feature, ensuring 100% coverage and compliance with product requirements.',
+      'The research component of my role allowed me to contribute to the continuous improvement of Dinotis\'s development processes. I analyzed patterns in defects, identified bottlenecks in the testing pipeline, and proposed solutions that enhanced overall efficiency. This experience taught me that quality assurance is not just about finding problems—it\'s about preventing them and building better systems.'
     ],
     technologies: ['Android Testing', 'Postman', 'Jira', 'TestRail', 'Selenium', 'Appium'],
     achievements: [
@@ -121,13 +119,9 @@ export const experiences: Experience[] = [
       'Improved testing efficiency by 15%'
     ],
     images: [
-      '/images/dinotis-testing.jpg',
-      '/images/dinotis-reports.jpg',
-      '/images/dinotis-team.jpg'
     ],
     certificates: [
       '/certificates/dinotis-qa-internship.pdf',
-      '/certificates/dinotis-testing-excellence.pdf'
     ]
   },
   {
@@ -138,11 +132,10 @@ export const experiences: Experience[] = [
     period: 'Aug 2023 - Sep 2023',
     type: 'internship',
     description: [
-      'Successfully designed and implemented microservices architecture using ExpressJS and PostgreSQL, ensuring robust software construction principles and enhancing scalability for 25,000+ users.',
-      'Managed server infrastructure for MyFPT employee management mobile apps, guaranteeing uninterrupted operations and seamless user experience for 24 hours server availability.',
-      'Structured a Service-Oriented Architecture (Controller-Service-Repository) for the PEAR API, enhancing modularity and achieving a 20% reduction in response time.',
-      'Conducted rigorous API, performance, and load testing using JMeter and Postman, resulting in a 35% reduction in error rates during high-load scenarios.',
-      'Collaborated with Vietnamese and international teams, gaining valuable experience in cross-cultural software development.'
+      'FPT Software is one of the largest technology corporations in Vietnam and a leading provider of software outsourcing services globally. Being selected for their Global Internship Program 2023 was a remarkable achievement—I was among the fortunate 2% chosen from over 8,000 applicants worldwide, representing the cream of international talent.',
+      'Living and working in Hanoi for two months provided me with an invaluable cross-cultural experience while tackling complex technical challenges. I was entrusted with designing and implementing a robust microservices architecture using ExpressJS and PostgreSQL, creating systems capable of serving over 25,000 users with unwavering reliability.',
+      'My responsibilities extended to managing the server infrastructure for MyFPT, the company\'s comprehensive employee management mobile application ecosystem. Ensuring 24/7 server availability wasn\'t just about uptime—it was about supporting the daily operations of thousands of FPT employees across multiple countries. I architected a Service-Oriented Architecture following the Controller-Service-Repository pattern for the PEAR API, which became a model for modularity and efficiency.',
+      'The rigorous testing phase involved comprehensive API, performance, and load testing using industry-standard tools like JMeter and Postman. This systematic approach to quality assurance resulted in dramatically improved system reliability. Working alongside Vietnamese and international colleagues broadened my perspective on global software development practices and cross-cultural collaboration in technology.'
     ],
     technologies: ['ExpressJS', 'PostgreSQL', 'Node.js', 'JMeter', 'Postman', 'Docker', 'Git'],
     achievements: [
@@ -160,7 +153,6 @@ export const experiences: Experience[] = [
     ],
     certificates: [
       '/certificates/fpt-internship-completion.pdf',
-      '/certificates/fpt-excellence-award.pdf'
     ]
   },
   {
@@ -171,10 +163,10 @@ export const experiences: Experience[] = [
     period: 'Mar 2023 - Aug 2023',
     type: 'internship',
     description: [
-      'Developed monolithic software architecture utilizing PHP-Laravel and MySQL, enhancing efficiency and maintainability of the system for 24 hours availability for 5000+ users.',
-      'Created and launched "Pemandu" and "Penghuni" services, enriching travel experiences and streamlining management tasks for KamarPelajar employees.',
-      'Implemented responsive web design principles to ensure optimal user experience across different devices and platforms.',
-      'Worked remotely with Swedish startup team, demonstrating excellent communication and time management skills across different time zones.'
+      'KamarPelajar.id is an innovative Swedish-Indonesian startup that bridges the gap between international students and quality accommodation solutions. This unique company operates at the intersection of education, technology, and hospitality, helping students find their perfect home away from home.',
+      'Working remotely with this Stockholm-based team for six months taught me the art of distributed collaboration across continents and time zones. Despite the 6-hour time difference, I successfully integrated with their agile development processes and contributed to their mission of making student life easier worldwide.',
+      'I developed a comprehensive monolithic software architecture using PHP-Laravel and MySQL, creating a robust foundation that supported over 5,000 users with 24/7 availability. The system I built wasn\'t just functional—it was scalable and maintainable, designed to grow with the company\'s expanding user base.',
+      'Two major services emerged from my work: "Pemandu" (Guide) and "Penghuni" (Resident), each designed to address specific pain points in the student accommodation journey. Pemandu enriched the travel and exploration experience for students, while Penghuni streamlined management tasks for KamarPelajar employees. My implementation of responsive web design principles ensured that students could access these services seamlessly across all devices, whether they were using a smartphone while traveling or a laptop while studying.'
     ],
     technologies: ['PHP', 'Laravel', 'MySQL', 'JavaScript', 'Bootstrap', 'Git', 'REST API'],
     achievements: [
@@ -191,7 +183,6 @@ export const experiences: Experience[] = [
     ],
     certificates: [
       '/certificates/kamarpelajar-internship.pdf',
-      '/certificates/kamarpelajar-remote-excellence.pdf'
     ]
   },
   {
@@ -202,10 +193,10 @@ export const experiences: Experience[] = [
     period: 'Dec 2022 - Feb 2023',
     type: 'internship',
     description: [
-      'Designed and implemented microservices software architecture for "AteEat" using Python Django and SQLite, enhancing system scalability and maintainability.',
-      'Optimized AteEat\'s database infrastructure via Django database migration, improving data management efficiency and system performance.',
-      'Collaborated effectively across teams to ensure the high quality of processes, products, and project metrics for AteEat.',
-      'Gained hands-on experience with agile development methodologies and version control systems.'
+      'Sagara Technology is a forward-thinking Indonesian technology company specializing in innovative software solutions and digital transformation services. My journey with Sagara began through their competitive Student Trainee program, where I was selected to work on real-world projects while developing my professional skills.',
+      'This three-month intensive program served as my introduction to professional software development, where I was entrusted with designing and implementing the complete microservices architecture for "AteEat," an innovative food ordering and management platform. Using Python Django and SQLite, I created a system that balanced functionality with scalability.',
+      'The technical challenges I encountered were both educational and practical. Optimizing AteEat\'s database infrastructure through Django database migrations taught me the importance of data management efficiency and system performance optimization. Each migration was carefully planned and executed to ensure zero downtime and improved system responsiveness.',
+      'Working in Sagara\'s collaborative environment, I learned the value of cross-team coordination and agile development methodologies. Every sprint brought new challenges and learning opportunities, from code reviews that sharpened my technical skills to project planning sessions that broadened my understanding of software development lifecycle. This foundational experience at Sagara set the stage for my subsequent achievements in the technology industry.'
     ],
     technologies: ['Python', 'Django', 'SQLite', 'REST API', 'Git', 'Postman'],
     achievements: [
@@ -220,7 +211,7 @@ export const experiences: Experience[] = [
       '/images/sagara-architecture.jpg'
     ],
     certificates: [
-      '/certificates/sagara-internship-completion.pdf'
+      '/certificates/sagara-internship-completion.pdf',
     ]
   }
 ];

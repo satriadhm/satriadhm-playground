@@ -136,15 +136,15 @@ export default function ImageSlider({ images, compact = false, modalMode = false
     const baseClasses = "relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden group";
     
     if (modalMode) {
-      // Modal mode - full width with constrained height
-      return `${baseClasses} w-full max-h-96`;
+      // Modal mode - responsive with max height constraint
+      return `${baseClasses} w-full h-96 flex items-center justify-center`;
     }
     
     if (compact) {
       // Responsive width with max constraint, let height be determined by aspect ratio
-      return `${baseClasses} max-w-md w-full mx-auto`;
+      return `${baseClasses} max-w-md w-full mx-auto ${getAspectRatioClass()}`;
     }
-    return baseClasses;
+    return `${baseClasses} ${getAspectRatioClass()}`;
   };
 
   // Handle click events differently in modal mode
@@ -156,9 +156,9 @@ export default function ImageSlider({ images, compact = false, modalMode = false
   };
 
   return (
-    <div className={modalMode ? "relative" : "relative"} onClick={handleImageClick}>
+    <div className={modalMode ? "relative w-full" : "relative"} onClick={handleImageClick}>
       {/* Main Image */}
-      <div className={`${getContainerClasses()} ${!modalMode ? getAspectRatioClass() : ''}`}>
+      <div className={getContainerClasses()}>
         {isLoading ? (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -168,11 +168,13 @@ export default function ImageSlider({ images, compact = false, modalMode = false
             <Image
               src={validImages[currentIndex]}
               alt={`Slide ${currentIndex + 1}`}
-              fill
-              className="object-cover"
+              fill={modalMode ? false : true}
+              width={modalMode ? 600 : undefined}
+              height={modalMode ? 400 : undefined}
+              className={modalMode ? "object-contain max-h-full max-w-full" : "object-cover"}
               sizes={
                 modalMode 
-                  ? "100vw" 
+                  ? "600px" 
                   : compact 
                     ? "(max-width: 768px) 100vw, 448px" 
                     : "(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 50vw"
@@ -188,18 +190,14 @@ export default function ImageSlider({ images, compact = false, modalMode = false
           <>
             <button
               onClick={prevImage}
-              className={`absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all opacity-0 group-hover:opacity-100 hover:scale-110 ${
-                modalMode ? 'z-10' : ''
-              }`}
+              className={`absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all opacity-0 group-hover:opacity-100 hover:scale-110 z-20`}
               aria-label="Previous image"
             >
               <ChevronLeft size={18} />
             </button>
             <button
               onClick={nextImage}
-              className={`absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all opacity-0 group-hover:opacity-100 hover:scale-110 ${
-                modalMode ? 'z-10' : ''
-              }`}
+              className={`absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-all opacity-0 group-hover:opacity-100 hover:scale-110 z-20`}
               aria-label="Next image"
             >
               <ChevronRight size={18} />
@@ -209,15 +207,13 @@ export default function ImageSlider({ images, compact = false, modalMode = false
 
         {/* Image Counter */}
         {validImages.length > 1 && !isLoading && (
-          <div className={`absolute bottom-2 right-2 bg-black/60 text-white px-2 py-1 rounded text-xs font-medium ${
-            modalMode ? 'z-10' : ''
-          }`}>
+          <div className={`absolute bottom-2 right-2 bg-black/60 text-white px-2 py-1 rounded text-xs font-medium z-20`}>
             {currentIndex + 1} / {validImages.length}
           </div>
         )}
       </div>
 
-      {/* Thumbnail Navigation - More compact and modal-aware */}
+      {/* Thumbnail Navigation - Only show for non-modal mode */}
       {validImages.length > 1 && !modalMode && (
         <div className="flex space-x-2 mt-3 overflow-x-auto pb-2 scrollbar-hide">
           {validImages.map((image, index) => {
@@ -247,6 +243,7 @@ export default function ImageSlider({ images, compact = false, modalMode = false
         </div>
       )}
 
+      {/* Dot Navigation - Show for modal mode */}
       {modalMode && validImages.length > 1 && (
         <div className="flex justify-center space-x-2 mt-4">
           {validImages.map((_, index) => (

@@ -60,13 +60,13 @@ export default function ExperienceSection() {
   const getTypeColor = (type: Experience['type']) => {
     switch (type) {
       case 'fulltime':
-        return 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800/50 dark:text-slate-300 dark:border-slate-700';
+        return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-700';
       case 'parttime':
-        return 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800/50 dark:text-slate-300 dark:border-slate-700';
+        return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-700';
       case 'internship':
-        return 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800/50 dark:text-slate-300 dark:border-slate-700';
+        return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-700';
       default:
-        return 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800/50 dark:text-slate-300 dark:border-slate-700';
+        return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-700';
     }
   };
 
@@ -116,7 +116,7 @@ export default function ExperienceSection() {
                 onClick={() => setSelectedType(type)}
                 className={`flex items-center space-x-2 px-6 py-3 rounded-md text-sm font-medium transition-all ${
                   selectedType === type
-                    ? 'bg-slate-900 dark:bg-slate-600 text-white shadow-sm'
+                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-sm'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-700/50'
                 }`}
               >
@@ -164,12 +164,12 @@ export default function ExperienceSection() {
                             (e.currentTarget.parentNode!.querySelector('.fallback-icon') as HTMLElement)!.style.display = 'flex';
                           }}
                         />
-                        <div className="fallback-icon w-12 h-12 bg-slate-600 rounded-lg hidden items-center justify-center absolute inset-0">
+                        <div className="fallback-icon w-12 h-12 bg-blue-600 rounded-lg hidden items-center justify-center absolute inset-0">
                           <Building className="w-6 h-6 text-white" />
                         </div>
                       </div>
                     ) : (
-                      <div className="w-16 h-16 bg-slate-600 rounded-lg flex items-center justify-center shadow-sm">
+                      <div className="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center shadow-sm">
                         <Building className="w-8 h-8 text-white" />
                       </div>
                     )}
@@ -208,7 +208,7 @@ export default function ExperienceSection() {
                         {(experience.achievements?.length || imageExists[experience.id] || experience.certificates?.length) && (
                           <button
                             onClick={() => setSelectedExperienceModal(experience)}
-                            className="flex items-center space-x-2 px-4 py-2 bg-slate-50 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors group border border-slate-200 dark:border-slate-600"
+                            className="flex items-center space-x-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group border border-blue-200 dark:border-blue-700"
                           >
                             <Eye size={16} />
                             <span className="text-sm font-medium">Details</span>
@@ -231,7 +231,7 @@ export default function ExperienceSection() {
                           onClick={() => setExpandedExperience(
                             expandedExperience === experience.id ? null : experience.id
                           )}
-                          className="flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors text-sm"
+                          className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors text-sm"
                         >
                           <span>
                             {expandedExperience === experience.id ? 'Show less' : 'Show more'}
@@ -267,10 +267,10 @@ export default function ExperienceSection() {
                     {experience.achievements && experience.achievements.length > 0 && (
                       <div className="mb-4">
                         <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-2 flex items-center">
-                          <Trophy size={16} className="mr-2 text-slate-600 dark:text-slate-400" />
+                          <Trophy size={16} className="mr-2 text-blue-600 dark:text-blue-400" />
                           Key Achievement
                         </h4>
-                        <div className="bg-slate-50 dark:bg-slate-700/50 p-3 rounded-lg border border-slate-200 dark:border-slate-600">
+                        <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200 dark:border-blue-700">
                           <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
                             {experience.achievements[0]}
                             {experience.achievements.length > 1 && (
@@ -290,10 +290,10 @@ export default function ExperienceSection() {
 
       {/* Experience Detail Modal */}
       {selectedExperienceModal && (
-        <div className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-4xl max-h-[85vh] overflow-y-auto shadow-2xl border border-slate-200 dark:border-slate-700 mt-4">
+        <div className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 dark:border-slate-700 my-4">
             {/* Modal Header */}
-            <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-6 flex items-center justify-between z-10">
+            <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-6 flex items-center justify-between z-10 rounded-t-2xl">
               <div className="flex items-center space-x-4">
                 {companyLogos[selectedExperienceModal.company] ? (
                   <div className="w-12 h-12 bg-white dark:bg-slate-700 rounded-lg flex items-center justify-center shadow-md border border-slate-200 dark:border-slate-600 relative overflow-hidden">
@@ -306,7 +306,7 @@ export default function ExperienceSection() {
                     />
                   </div>
                 ) : (
-                  <div className="w-12 h-12 bg-slate-600 rounded-lg flex items-center justify-center">
+                  <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
                     <Building className="w-6 h-6 text-white" />
                   </div>
                 )}
@@ -314,7 +314,7 @@ export default function ExperienceSection() {
                   <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                     {selectedExperienceModal.title}
                   </h3>
-                  <p className="text-slate-600 dark:text-slate-400">
+                  <p className="text-blue-600 dark:text-blue-400 font-medium">
                     {selectedExperienceModal.company}
                   </p>
                 </div>
@@ -347,12 +347,12 @@ export default function ExperienceSection() {
               {selectedExperienceModal.achievements && selectedExperienceModal.achievements.length > 0 && (
                 <div>
                   <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center">
-                    <Trophy size={20} className="mr-2 text-slate-600 dark:text-slate-400" />
+                    <Trophy size={20} className="mr-2 text-blue-600 dark:text-blue-400" />
                     Key Achievements
                   </h4>
                   <div className="grid sm:grid-cols-2 gap-4">
                     {selectedExperienceModal.achievements.map((achievement, achIndex) => (
-                      <div key={achIndex} className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg border border-slate-200 dark:border-slate-600">
+                      <div key={achIndex} className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
                         <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">
                           {achievement}
                         </p>
@@ -385,11 +385,13 @@ export default function ExperienceSection() {
                   <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
                     Project Gallery
                   </h4>
-                  <ImageSlider 
-                    images={selectedExperienceModal.images} 
-                    compact={true} 
-                    modalMode={true}
-                  />
+                  <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg">
+                    <ImageSlider 
+                      images={selectedExperienceModal.images} 
+                      compact={false} 
+                      modalMode={true}
+                    />
+                  </div>
                 </div>
               )}
 
@@ -406,9 +408,9 @@ export default function ExperienceSection() {
                         href={cert}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center space-x-3 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors group border border-slate-200 dark:border-slate-600"
+                        className="flex items-center space-x-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors group border border-blue-200 dark:border-blue-700"
                       >
-                        <ExternalLink size={20} className="text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-300" />
+                        <ExternalLink size={20} className="text-blue-500 group-hover:text-blue-700 dark:group-hover:text-blue-300" />
                         <span className="text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-slate-100 font-medium">
                           View Certificate #{certIndex + 1}
                         </span>
