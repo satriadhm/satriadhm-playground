@@ -11,6 +11,14 @@ export const personalInfo: PersonalInfo = {
   profileImage: '/profile.png'
 };
 
+export const roles = [
+  'Software Engineer',
+  'Backend Developer',
+  'Full-Stack Developer',
+  'Project Manager',
+  'AI Enthusiast',
+];
+
 export const techStack: TechStack[] = [
   { name: 'Go', proficiency: 4 },
   { name: 'Java', proficiency: 4 },

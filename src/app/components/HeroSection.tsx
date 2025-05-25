@@ -6,18 +6,13 @@ import Link from 'next/link';
 import { personalInfo, techStack } from '@/constants/data';
 import SkillsRadarChart from './SkillRadarChart';
 import TechStackSlider from './TechStackSlider';
+import { roles } from '@/constants/data';
 
 export default function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [typedText, setTypedText] = useState('');
   const [currentRole, setCurrentRole] = useState(0);
   
-  const roles = [
-    'Software Engineer',
-    'Full-Stack Developer',
-    'Backend Specialist'
-  ];
-
   useEffect(() => {
     setIsVisible(true);
   }, []);
