@@ -10,7 +10,6 @@ const navigationItems = [
   { name: 'Experience', href: '/experience' },
   { name: 'Blog & Certifications', href: '/blog' },
   { name: 'Projects', href: '/projects' },
-  { name: 'Life Journey', href: '/journey' },
   { name: 'Contact', href: '/contact' }
 ];
 

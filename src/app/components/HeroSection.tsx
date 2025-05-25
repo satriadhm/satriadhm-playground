@@ -166,6 +166,41 @@ export default function HeroSection() {
             </span>
           </button>
         </div>
+
+        {/* Easter Egg Button - Bottom Right (Hobbit themed) */}
+        <div className="absolute bottom-8 right-8">
+          <Link
+            href="/journey"
+            className="group relative opacity-0 hover:opacity-100 transition-all duration-500 transform hover:scale-110"
+            title="My Unexpected Journey"
+          >
+            <div className="relative">
+              {/* Hobbit Door */}
+              <div className="w-16 h-16 bg-gradient-to-br from-green-800 to-green-900 rounded-full relative shadow-xl border-4 border-amber-600 group-hover:shadow-2xl transition-all duration-300">
+                {/* Door handle */}
+                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-amber-400 rounded-full shadow-inner"></div>
+                {/* Door lines */}
+                <div className="absolute inset-2 border border-amber-700/30 rounded-full"></div>
+                <div className="absolute inset-3 border border-amber-700/20 rounded-full"></div>
+                
+                {/* Glowing effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              
+              {/* Tooltip */}
+              <div className="absolute bottom-full right-0 mb-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 pointer-events-none">
+                <div className="bg-amber-900 text-amber-100 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap shadow-xl border border-amber-700">
+                  🧙‍♂️ &quot;There and Back Again: A Software Engineer&apos;s Tale&quot;
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-amber-900"></div>
+                </div>
+              </div>
+              
+              {/* Magic sparkles */}
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping transition-opacity duration-300"></div>
+              <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-blue-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping transition-opacity duration-300" style={{ animationDelay: '0.5s' }}></div>
+            </div>
+          </Link>
+        </div>
       </section>
 
       {/* Skills Section */}
