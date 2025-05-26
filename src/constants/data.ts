@@ -173,7 +173,7 @@ export const lifeEvents: LifeEvent[] = [
       '/images/journey/munich-beer-garden.jpg',
       '/images/journey/munich-neuschwanstein.jpg',
       '/images/journey/munich-old-town.jpg',
-      '/images/journey/munich-traditional-food.jpg'g
+      '/images/journey/munich-traditional-food.jpg'
     ],
     rating: 8.9,
     category: 'Euro Adventures'
