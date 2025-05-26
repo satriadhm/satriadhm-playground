@@ -1,55 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useState } from 'react';
-import { ExternalLink, Award, ChevronRight } from 'lucide-react';
+import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState } from 'react';
+import { ExternalLink, Award, ChevronRight, Clock, User, Calendar, Tag } from 'lucide-react';
 import { certifications } from '@/constants/data';
-
-// Mock blog data - you can replace this with actual blog data or API
-const blogPosts = [
-  {
-    id: '1',
-    title: 'Building Scalable Microservices with Go and PostgreSQL',
-    excerpt: 'Learn how to design and implement microservices architecture that can handle thousands of concurrent users while maintaining data consistency.',
-    date: '2024-12-15',
-    category: 'Backend Development',
-    readTime: 8,
-    slug: 'scalable-microservices-go-postgresql',
-    featured: true
-  },
-  {
-    id: '2',
-    title: 'My Journey from Intern to Full-Stack Engineer',
-    excerpt: 'Sharing insights and lessons learned during my career progression in software engineering, from internships to leading development teams.',
-    date: '2024-11-20',
-    category: 'Career',
-    readTime: 6,
-    slug: 'journey-intern-fullstack-engineer',
-    featured: true
-  },
-  {
-    id: '3',
-    title: 'Implementing Real-time Features with GraphQL Subscriptions',
-    excerpt: 'A deep dive into building real-time applications using GraphQL subscriptions, WebSockets, and modern frontend frameworks.',
-    date: '2024-10-10',
-    category: 'Frontend Development',
-    readTime: 12,
-    slug: 'realtime-graphql-subscriptions',
-    featured: false
-  },
-  {
-    id: '4',
-    title: 'Database Optimization Techniques for High-Traffic Applications',
-    excerpt: 'Practical strategies for optimizing database performance, including indexing, query optimization, and connection pooling.',
-    date: '2024-09-05',
-    category: 'Database',
-    readTime: 10,
-    slug: 'database-optimization-techniques',
-    featured: false
-  }
-];
+import { blogPosts } from '../../constants/blogData';
+import { getFeaturedPosts } from '@/constants/blogData';
+import { parseMarkdown } from '@/utils/blog';
 
 export default function BlogCertificationSection() {
   const [activeTab, setActiveTab] = useState<'blog' | 'certifications'>('blog');
+  const [selectedPost, setSelectedPost] = useState<string | null>(null);
+
+  const featuredPosts = getFeaturedPosts();
+  const allPosts = blogPosts;
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -65,6 +29,8 @@ export default function BlogCertificationSection() {
       day: 'numeric'
     });
   };
+
+  const selectedPostData = selectedPost ? allPosts.find((p: { id: string; }) => p.id === selectedPost) : null;
 
   return (
     <section id="blog-certifications" className="py-16 sm:py-24 bg-white dark:bg-slate-950">
@@ -115,34 +81,60 @@ export default function BlogCertificationSection() {
         {activeTab === 'blog' && (
           <div className="space-y-16 sm:space-y-20">
             {/* Featured Article - Mobile Responsive */}
-            {blogPosts.filter(post => post.featured).length > 0 && (
+            {featuredPosts.length > 0 && (
               <article className="border-b border-slate-100 dark:border-slate-800 pb-16 sm:pb-20">
                 <div className="space-y-6 sm:space-y-8">
                   <div className="space-y-4 sm:space-y-6">
                     <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 leading-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
-                      {blogPosts.filter(post => post.featured)[0].title}
+                      {featuredPosts[0].title}
                     </h1>
                     <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
-                      {blogPosts.filter(post => post.featured)[0].excerpt}
+                      {featuredPosts[0].excerpt}
                     </p>
                   </div>
                   
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-slate-500 dark:text-slate-400">
-                      <span className="font-medium">{blogPosts.filter(post => post.featured)[0].category}</span>
+                      <div className="flex items-center space-x-1">
+                        <User size={14} />
+                        <span className="font-medium">{featuredPosts[0].author}</span>
+                      </div>
                       <span className="hidden sm:inline">·</span>
-                      <span>{formatDate(blogPosts.filter(post => post.featured)[0].date)}</span>
+                      <div className="flex items-center space-x-1">
+                        <Tag size={14} />
+                        <span className="font-medium">{featuredPosts[0].category}</span>
+                      </div>
                       <span className="hidden sm:inline">·</span>
-                      <span>{blogPosts.filter(post => post.featured)[0].readTime} min read</span>
+                      <div className="flex items-center space-x-1">
+                        <Calendar size={14} />
+                        <span>{formatDate(featuredPosts[0].date)}</span>
+                      </div>
+                      <span className="hidden sm:inline">·</span>
+                      <div className="flex items-center space-x-1">
+                        <Clock size={14} />
+                        <span>{featuredPosts[0].readTime} min read</span>
+                      </div>
                     </div>
                     
-                    <a
-                      href={`/blog/${blogPosts.filter(post => post.featured)[0].slug}`}
+                    <button
+                      onClick={() => setSelectedPost(featuredPosts[0].id)}
                       className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group self-start"
                     >
                       <span>Read article</span>
                       <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
-                    </a>
+                    </button>
+                  </div>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2">
+                    {featuredPosts[0].tags.slice(0, 5).map((tag: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined, index: Key | null | undefined) => (
+                      <span
+                        key={index}
+                        className="px-2 sm:px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs sm:text-sm font-medium"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
                 </div>
               </article>
@@ -150,9 +142,12 @@ export default function BlogCertificationSection() {
 
             {/* All Articles - Mobile Responsive */}
             <div className="space-y-12 sm:space-y-16">
-              {blogPosts.map((post) => (
-                <article key={post.id} className="group cursor-pointer">
-                  <a href={`/blog/${post.slug}`} className="block">
+              {allPosts.map((post: { id: string | number | bigint | ((prevState: string | null) => string | null) | null | undefined; date: string; title: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; excerpt: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; category: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; readTime: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; author: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; tags: any[]; }) => (
+                <article key={String(post.id)} className="group cursor-pointer">
+                  <button
+                    onClick={() => setSelectedPost(post.id != null ? String(post.id) : null)}
+                    className="block w-full text-left"
+                  >
                     <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-8">
                       <div className="flex-shrink-0 text-sm text-slate-400 dark:text-slate-600 sm:pt-1 sm:w-16 order-2 sm:order-1">
                         {formatDateShort(post.date)}
@@ -169,24 +164,44 @@ export default function BlogCertificationSection() {
                           <span className="px-2 sm:px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs">
                             {post.category}
                           </span>
-                          <span>{post.readTime} min read</span>
+                          <div className="flex items-center space-x-1">
+                            <Clock size={12} />
+                            <span>{post.readTime} min read</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <User size={12} />
+                            <span>{post.author}</span>
+                          </div>
+                        </div>
+                        
+                        {/* Tags preview */}
+                        <div className="flex flex-wrap gap-1">
+                          {post.tags.slice(0, 3).map((tag: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined, index: Key | null | undefined) => (
+                            <span
+                              key={index}
+                              className="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-xs"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                          {post.tags.length > 3 && (
+                            <span className="px-2 py-1 text-slate-500 dark:text-slate-500 text-xs">
+                              +{post.tags.length - 3} more
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>
-                  </a>
+                  </button>
                 </article>
               ))}
             </div>
 
             {/* View All - Mobile Responsive */}
             <div className="text-center pt-8 sm:pt-12">
-              <a
-                href="/blog"
-                className="inline-flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors group"
-              >
-                <span>View all articles</span>
-                <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
-              </a>
+              <div className="inline-flex items-center space-x-2 text-blue-600 dark:text-blue-400 font-medium">
+                <span>Showing {allPosts.length} articles</span>
+              </div>
             </div>
           </div>
         )}
@@ -238,6 +253,65 @@ export default function BlogCertificationSection() {
           </div>
         )}
       </div>
+
+      {/* Blog Post Modal - Mobile Responsive */}
+      {selectedPost && selectedPostData && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-start justify-center p-2 sm:p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-4xl max-h-[95vh] overflow-y-auto shadow-2xl border border-slate-200 dark:border-slate-700 my-2 sm:my-4">
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-4 sm:p-6 flex items-start justify-between z-10 rounded-t-2xl">
+              <div className="flex-1 min-w-0 mr-4">
+                <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+                  {selectedPostData.title}
+                </h1>
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-slate-500 dark:text-slate-400">
+                  <div className="flex items-center space-x-1">
+                    <User size={14} />
+                    <span>{selectedPostData.author}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Calendar size={14} />
+                    <span>{formatDate(selectedPostData.date)}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Clock size={14} />
+                    <span>{selectedPostData.readTime} min read</span>
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedPost(null)}
+                className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 flex-shrink-0"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-4 sm:p-6 space-y-6">
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2">
+                {selectedPostData.tags.map((tag: string, index: Key | null | undefined) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-sm font-medium"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Content */}
+              <div 
+                className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-pre:bg-slate-100 dark:prose-pre:bg-slate-800 prose-code:bg-slate-100 dark:prose-code:bg-slate-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm"
+                dangerouslySetInnerHTML={{ 
+                  __html: parseMarkdown(selectedPostData.content) 
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

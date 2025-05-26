@@ -103,3 +103,43 @@ export interface Skill {
 export interface SkillsRadarChartProps {
   skills: Skill[];
 }
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  category: string;
+  readTime: number;
+  slug: string;
+  featured: boolean;
+  content: string;
+  author: string;
+  tags: string[];
+  image?: string;
+}
+export interface BlogPostDetail {
+  id: string | number;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  featured?: boolean;
+  author: string;
+  date: string;
+  readTime: number;
+  tags: string[];
+}
+
+export interface BlogPostData {
+  title: string;
+  excerpt: string;
+  date: string;
+  category: string;
+  featured: boolean;
+  author: string;
+  tags: string[];
+  image?: string;
+  content: string;
+}
