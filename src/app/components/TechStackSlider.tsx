@@ -27,7 +27,6 @@ interface TechStackSliderProps {
 // Map the display name coming from props → brand icon component
 const TechIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   Go: SiGo,
-  Java: SiGo, // Using Go icon as fallback for Java
   TypeScript: SiTypescript,
   React: SiReact,
   'Next.js': SiNextdotjs,
