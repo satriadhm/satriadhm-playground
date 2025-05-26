@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Play, Info, Star, Calendar, MapPin, Camera, Music, Heart, ChevronLeft, ChevronRight, X, Plane, Mountain, Camera as PhotoIcon } from 'lucide-react';
+import { Play, Info, Star, ChevronLeft, ChevronRight, X, Plane, Mountain, Camera, Music, Heart, Camera as PhotoIcon } from 'lucide-react';
 import Image from 'next/image';
 
 interface LifeEvent {
@@ -14,10 +14,8 @@ interface LifeEvent {
   type: 'travel' | 'cultural' | 'adventure' | 'music' | 'lifestyle';
   images: string[];
   rating: number;
-  duration: string;
   category: string;
   highlight?: boolean;
-  trailer?: string;
 }
 
 const lifeEvents: LifeEvent[] = [
@@ -26,7 +24,7 @@ const lifeEvents: LifeEvent[] = [
     year: '2024',
     title: 'Granada Chronicles',
     subtitle: 'Living the Andalusian Dream as an Exchange Student',
-    description: 'An immersive documentary series following my daily life in the enchanting city of Granada, Spain. From morning coffee at local cafés to evening strolls through the historic Albaicín, experience the authentic Spanish lifestyle through the eyes of an international student discovering flamenco, tapas culture, and lifelong friendships.',
+    description: 'An immersive documentary series following my daily life in the enchanting city of Granada, Spain. From morning coffee at local cafés to evening strolls through the historic Albaicín, experience the authentic Spanish lifestyle through the eyes of an international student.',
     location: 'Granada, Spain',
     type: 'lifestyle',
     images: [
@@ -40,7 +38,6 @@ const lifeEvents: LifeEvent[] = [
       '/images/journey/granada-albaicin-walk.jpg'
     ],
     rating: 9.8,
-    duration: '5 months',
     category: 'Spanish Chronicles',
     highlight: true
   },
@@ -49,7 +46,7 @@ const lifeEvents: LifeEvent[] = [
     year: '2024',
     title: 'Culturise: St.Cruz Stories',
     subtitle: 'Cultural Fusion at Granada\'s International Dormitory',
-    description: 'A vibrant cultural celebration series documenting the incredible Culturise event at St.Cruz dormitory. Watch as students from around the world unite to share their heritage through food, music, dance, and traditions. This heartwarming series captures the magic of international friendship and cultural exchange.',
+    description: 'A vibrant cultural celebration series documenting the incredible Culturise event at St.Cruz dormitory. Watch as students from around the world unite to share their heritage through food, music, dance, and traditions.',
     location: 'St.Cruz Dorm, Granada',
     type: 'cultural',
     images: [
@@ -62,7 +59,6 @@ const lifeEvents: LifeEvent[] = [
       '/images/journey/culturise-night-celebration.jpg'
     ],
     rating: 9.5,
-    duration: '3 days event',
     category: 'Cultural Moments',
     highlight: true
   },
@@ -71,7 +67,7 @@ const lifeEvents: LifeEvent[] = [
     year: '2024',
     title: 'ASEAN Night: The Performance',
     subtitle: 'Rocking the Stage with My Band in Granada',
-    description: 'A concert documentary capturing an unforgettable night where music transcended borders. Follow the behind-the-scenes preparation, nervous energy, and electrifying performance as my band takes the stage at ASEAN Night, bringing Indonesian rhythms to Spanish audiences and creating magical cross-cultural moments.',
+    description: 'A concert documentary capturing an unforgettable night where music transcended borders. Follow the behind-the-scenes preparation, nervous energy, and electrifying performance as my band takes the stage at ASEAN Night.',
     location: 'Granada, Spain',
     type: 'music',
     images: [
@@ -84,7 +80,6 @@ const lifeEvents: LifeEvent[] = [
       '/images/journey/asean-night-celebration.jpg'
     ],
     rating: 9.7,
-    duration: '1 epic night',
     category: 'Musical Performances',
     highlight: true
   },
@@ -93,7 +88,7 @@ const lifeEvents: LifeEvent[] = [
     year: '2024',
     title: 'Paris in One Day',
     subtitle: 'The Ultimate Parisian Adventure from Dawn to Dusk',
-    description: 'An ambitious travel documentary following an incredible 24-hour journey through the City of Light. From sunrise at the Eiffel Tower to midnight along the Seine, experience the whirlwind adventure of seeing Paris\' greatest treasures, tasting authentic French cuisine, and falling in love with the city\'s timeless charm in just one perfect day.',
+    description: 'An ambitious travel documentary following an incredible 24-hour journey through the City of Light. From sunrise at the Eiffel Tower to midnight along the Seine, experience the whirlwind adventure of seeing Paris\' greatest treasures.',
     location: 'Paris, France',
     type: 'travel',
     images: [
@@ -106,7 +101,6 @@ const lifeEvents: LifeEvent[] = [
       '/images/journey/paris-montmartre.jpg'
     ],
     rating: 9.4,
-    duration: '24 hours',
     category: 'Euro Adventures',
     highlight: true
   },
@@ -115,7 +109,7 @@ const lifeEvents: LifeEvent[] = [
     year: '2024',
     title: 'Austrian Alpine Magic',
     subtitle: 'One Day in Austria\'s Breathtaking Landscapes',
-    description: 'A stunning visual journey through Austria\'s magnificent alpine scenery and charming villages. This travel special captures the essence of Austrian culture, from traditional coffee houses in Salzburg to panoramic mountain views, showcasing why Austria remains one of Europe\'s most enchanting destinations.',
+    description: 'A stunning visual journey through Austria\'s magnificent alpine scenery and charming villages. This travel special captures the essence of Austrian culture, from traditional coffee houses in Salzburg to panoramic mountain views.',
     location: 'Austria',
     type: 'adventure',
     images: [
@@ -127,7 +121,6 @@ const lifeEvents: LifeEvent[] = [
       '/images/journey/austria-village-charm.jpg'
     ],
     rating: 9.2,
-    duration: '1 day',
     category: 'Euro Adventures'
   },
   {
@@ -135,7 +128,7 @@ const lifeEvents: LifeEvent[] = [
     year: '2024',
     title: 'Swiss Paradise: Interlaken',
     subtitle: 'Adventure Capital of Switzerland in 24 Hours',
-    description: 'An adrenaline-pumping adventure series set in the heart of the Swiss Alps. Experience the thrill of paragliding over turquoise lakes, exploring charming mountain villages, and witnessing some of the most spectacular alpine scenery on Earth. This high-octane travel special captures the essence of Swiss adventure tourism.',
+    description: 'An adrenaline-pumping adventure series set in the heart of the Swiss Alps. Experience the thrill of paragliding over turquoise lakes, exploring charming mountain villages, and witnessing some of the most spectacular alpine scenery on Earth.',
     location: 'Interlaken, Switzerland',
     type: 'adventure',
     images: [
@@ -147,7 +140,6 @@ const lifeEvents: LifeEvent[] = [
       '/images/journey/interlaken-adventure-sports.jpg'
     ],
     rating: 9.6,
-    duration: '1 action-packed day',
     category: 'Euro Adventures',
     highlight: true
   },
@@ -156,7 +148,7 @@ const lifeEvents: LifeEvent[] = [
     year: '2024',
     title: 'Munich Memories',
     subtitle: 'Bavarian Culture and City Charm in One Day',
-    description: 'A delightful cultural exploration of Munich\'s rich Bavarian heritage. From traditional beer gardens and historic architecture to modern city life, this travel documentary showcases the perfect blend of old and new that makes Munich uniquely charming. Experience authentic German culture, delicious cuisine, and warm Bavarian hospitality.',
+    description: 'A delightful cultural exploration of Munich\'s rich Bavarian heritage. From traditional beer gardens and historic architecture to modern city life, this travel documentary showcases the perfect blend of old and new that makes Munich uniquely charming.',
     location: 'Munich, Germany',
     type: 'cultural',
     images: [
@@ -168,7 +160,6 @@ const lifeEvents: LifeEvent[] = [
       '/images/journey/munich-traditional-food.jpg'
     ],
     rating: 8.9,
-    duration: '1 cultural day',
     category: 'Euro Adventures'
   },
   {
@@ -176,7 +167,7 @@ const lifeEvents: LifeEvent[] = [
     year: '2024',
     title: 'Milan Summer Vibes',
     subtitle: 'Fashion Capital Adventures Under the Italian Sun',
-    description: 'A stylish summer adventure through Milan\'s fashion districts, hidden gems, and vibrant neighborhoods. This travel series captures the essence of Italian summer living, from morning espresso rituals to evening aperitivo culture, showcasing Milan beyond its reputation as just a fashion capital.',
+    description: 'A stylish summer adventure through Milan\'s fashion districts, hidden gems, and vibrant neighborhoods. This travel series captures the essence of Italian summer living, from morning espresso rituals to evening aperitivo culture.',
     location: 'Milan, Italy',
     type: 'lifestyle',
     images: [
@@ -188,7 +179,6 @@ const lifeEvents: LifeEvent[] = [
       '/images/journey/milan-summer-streets.jpg'
     ],
     rating: 9.1,
-    duration: '3 summer days',
     category: 'Summer Escapes',
     highlight: true
   },
@@ -197,7 +187,7 @@ const lifeEvents: LifeEvent[] = [
     year: '2024',
     title: 'Lake Como Dreams',
     subtitle: 'Italian Riviera Paradise and Luxury Living',
-    description: 'A breathtaking summer escape to one of Italy\'s most romantic destinations. This luxury travel series showcases the stunning beauty of Lake Como, from villa gardens and boat rides to lakeside dining and sunset views that inspired countless films and captured hearts worldwide.',
+    description: 'A breathtaking summer escape to one of Italy\'s most romantic destinations. This luxury travel series showcases the stunning beauty of Lake Como, from villa gardens and boat rides to lakeside dining and sunset views.',
     location: 'Lake Como, Italy',
     type: 'travel',
     images: [
@@ -210,7 +200,6 @@ const lifeEvents: LifeEvent[] = [
       '/images/journey/como-luxury-hotels.jpg'
     ],
     rating: 9.8,
-    duration: '2 dream days',
     category: 'Summer Escapes',
     highlight: true
   }
@@ -228,10 +217,8 @@ const categories = [
 export default function LifeJourneySection() {
   const [selectedEvent, setSelectedEvent] = useState<LifeEvent | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  // Hero event (most recent/highlighted)
-  const heroEvent = lifeEvents.find(event => event.id === 'granada-life-2024') || lifeEvents[0];
+  const [heroEvent, setHeroEvent] = useState<LifeEvent>(lifeEvents[0]);
+  const [clickCount, setClickCount] = useState(0);
 
   const getEventsByCategory = (category: string) => {
     if (category === 'Trending Now') {
@@ -273,33 +260,31 @@ export default function LifeJourneySection() {
     return `${rating}/10`;
   };
 
+  const handleEventClick = (event: LifeEvent) => {
+    if (heroEvent.id === event.id) {
+      setClickCount(prev => prev + 1);
+      if (clickCount >= 1) {
+        setSelectedEvent(event);
+        setCurrentImageIndex(0);
+        setClickCount(0);
+      }
+    } else {
+      setHeroEvent(event);
+      setClickCount(0);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Netflix Header */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/90 to-transparent backdrop-blur-sm">
-        <div className="flex items-center justify-between px-4 md:px-8 py-4">
-          <div className="flex items-center space-x-4 md:space-x-8">
-            <h1 className="text-red-600 text-2xl md:text-3xl font-bold">SATRIAFLIX</h1>
-            <nav className="hidden lg:flex space-x-6">
-              <span className="text-white font-medium">My Journey</span>
-              <span className="text-gray-300 hover:text-white transition-colors cursor-pointer">Professional</span>
-              <span className="text-gray-300 hover:text-white transition-colors cursor-pointer">Education</span>
-              <span className="text-gray-300 hover:text-white transition-colors cursor-pointer">Achievements</span>
-            </nav>
-          </div>
-          <div className="hidden md:block text-xs md:text-sm text-gray-300">
-            🧙‍♂️ &quot;There and Back Again: A Software Engineer&apos;s Tale&quot;
-          </div>
-          <button className="md:hidden text-white p-2">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
+    <div className="min-h-screen bg-black text-white" style={{ zIndex: 1 }}>
+      {/* Simple Header - Tidak menimpa navbar utama */}
+      <div className="relative z-10  ">
+        <div className="flex items-center justify-center px-4 py-6">
+          <h1 className="text-red-600 text-2xl md:text-3xl font-bold">SATRIAFLIX</h1>
         </div>
       </div>
 
       {/* Hero Section */}
-      <div className="relative h-screen overflow-hidden">
+      <div className="relative h-screen overflow-hidden" style={{ marginTop: '-80px' }}>
         {/* Hero Background */}
         <div className="absolute inset-0">
           <Image
@@ -310,14 +295,14 @@ export default function LifeJourneySection() {
             priority
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
         </div>
 
-        {/* Hero Content */}
+        {/* Hero Content - Positioned to the left */}
         <div className="relative z-10 h-full flex items-center">
-          <div className="max-w-6xl mx-auto px-4 md:px-8 py-20">
-            <div className="space-y-4 md:space-y-6 max-w-3xl">
+          <div className="max-w-2xl mx-auto px-4 md:px-8 py-20 ml-8">
+            <div className="space-y-4 md:space-y-6">
               {/* Category Badge */}
               <div className="flex flex-wrap items-center gap-3">
                 <span className="bg-red-600 text-white px-3 py-1 rounded text-xs md:text-sm font-bold">
@@ -335,7 +320,7 @@ export default function LifeJourneySection() {
               </div>
 
               {/* Title */}
-              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                 {heroEvent.title}
               </h1>
 
@@ -344,32 +329,24 @@ export default function LifeJourneySection() {
                 {heroEvent.subtitle}
               </p>
 
-              {/* Metadata */}
-              <div className="flex flex-wrap items-center gap-4 text-gray-300 text-sm md:text-base">
+              {/* Rating */}
+              <div className="flex items-center space-x-2 text-gray-300 text-sm md:text-base">
                 <div className="flex items-center space-x-2">
                   <Star className="text-yellow-400 fill-current" size={16} />
                   <span className="text-white font-semibold">{formatRating(heroEvent.rating)}</span>
                 </div>
-                <span>{heroEvent.duration}</span>
-                <div className="flex items-center space-x-2">
-                  <MapPin size={14} />
-                  <span>{heroEvent.location}</span>
-                </div>
+                <span>{heroEvent.location}</span>
               </div>
 
-              {/* Description */}
-              <p className="text-base md:text-lg text-gray-200 leading-relaxed line-clamp-3 md:line-clamp-none">
+              {/* Description - Shortened */}
+              <p className="text-base md:text-lg text-gray-200 leading-relaxed line-clamp-2">
                 {heroEvent.description}
               </p>
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 pt-4">
                 <button
-                  onClick={() => {
-                    setSelectedEvent(heroEvent);
-                    setCurrentImageIndex(0);
-                    setIsPlaying(true);
-                  }}
+                  onClick={() => handleEventClick(heroEvent)}
                   className="flex items-center justify-center space-x-3 bg-white text-black px-6 md:px-8 py-3 rounded font-bold hover:bg-gray-200 transition-all duration-300 hover:scale-105 w-full sm:w-auto"
                 >
                   <Play size={18} fill="currentColor" />
@@ -409,10 +386,7 @@ export default function LifeJourneySection() {
                     <div
                       key={event.id}
                       className="flex-shrink-0 w-64 md:w-80 cursor-pointer group transform hover:scale-105 transition-all duration-300"
-                      onClick={() => {
-                        setSelectedEvent(event);
-                        setCurrentImageIndex(0);
-                      }}
+                      onClick={() => handleEventClick(event)}
                       style={{
                         animationDelay: `${index * 0.1}s`
                       }}
@@ -430,7 +404,7 @@ export default function LifeJourneySection() {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
                         
                         {/* Rating Badge */}
-                        <div className="absolute top-3 right-3 bg-black/80 backdrop-blur-sm px-2 py-1 rounded text-xs md:text-sm font-bold transform translate-y-0 group-hover:-translate-y-1 transition-transform duration-300">
+                        <div className="absolute top-3 right-3 bg-black/80 backdrop-blur-sm px-2 py-1 rounded text-xs md:text-sm font-bold">
                           <div className="flex items-center space-x-1">
                             <Star className="text-yellow-400 fill-current" size={12} />
                             <span>{formatRating(event.rating)}</span>
@@ -449,18 +423,13 @@ export default function LifeJourneySection() {
                           </div>
                         </div>
 
-                        {/* Bottom Gradient Info */}
+                        {/* Bottom Info */}
                         <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4 bg-gradient-to-t from-black/90 to-transparent">
                           <h3 className="text-white font-bold text-sm md:text-lg leading-tight group-hover:text-red-400 transition-colors mb-1">
                             {event.title}
                           </h3>
-                          <div className="flex items-center space-x-2 text-gray-300 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <span>{event.duration}</span>
-                            <span>•</span>
-                            <div className="flex items-center space-x-1">
-                              {getTypeIcon(event.type)}
-                              <span className="hidden sm:inline">{event.category}</span>
-                            </div>
+                          <div className="flex items-center space-x-2 text-gray-300 text-xs">
+                            <span>{event.location}</span>
                           </div>
                         </div>
                       </div>
@@ -476,16 +445,16 @@ export default function LifeJourneySection() {
       {/* Modal */}
       {selectedEvent && (
         <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-2 md:p-4">
-          <div className="bg-gray-900 rounded-lg max-w-6xl w-full max-h-[95vh] overflow-y-auto">
+          <div className="bg-gray-900 rounded-lg max-w-5xl w-full max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
             <div className="relative">
-              <div className="relative h-48 md:h-96 overflow-hidden rounded-t-lg">
+              <div className="relative h-48 md:h-80 overflow-hidden rounded-t-lg">
                 <Image
                   src={selectedEvent.images[currentImageIndex]}
                   alt={selectedEvent.title}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 1200px"
+                  sizes="(max-width: 768px) 100vw, 1000px"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent" />
                 
@@ -530,63 +499,35 @@ export default function LifeJourneySection() {
               </button>
             </div>
 
-            {/* Modal Content */}
-            <div className="p-4 md:p-8 space-y-4 md:space-y-6">
+            {/* Modal Content - Simplified */}
+            <div className="p-4 md:p-6 space-y-4">
               <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-                <div className="space-y-3 md:space-y-4 flex-1">
-                  <h2 className="text-2xl md:text-3xl font-bold text-white">{selectedEvent.title}</h2>
-                  <p className="text-lg md:text-xl text-gray-300">{selectedEvent.subtitle}</p>
-                  
-                  <div className="flex flex-wrap items-center gap-3 md:gap-6 text-gray-400 text-sm md:text-base">
-                    <div className="flex items-center space-x-2">
-                      <Star className="text-yellow-400 fill-current" size={16} />
+                <div className="space-y-3 flex-1">
+                  <h2 className="text-xl md:text-2xl font-bold text-white">{selectedEvent.title}</h2>
+                  <div className="flex items-center space-x-4 text-gray-400 text-sm">
+                    <div className="flex items-center space-x-1">
+                      <Star className="text-yellow-400 fill-current" size={14} />
                       <span className="text-white font-semibold">{formatRating(selectedEvent.rating)}</span>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Calendar size={14} />
-                      <span>{selectedEvent.duration}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <MapPin size={14} />
-                      <span>{selectedEvent.location}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      {getTypeIcon(selectedEvent.type)}
-                      <span>{selectedEvent.category}</span>
-                    </div>
+                    <span>{selectedEvent.location}</span>
                   </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 lg:flex-col">
-                  <button
-                    onClick={() => setIsPlaying(!isPlaying)}
-                    className="flex items-center justify-center space-x-2 bg-white text-black px-4 py-2 rounded font-bold hover:bg-gray-200 transition-colors"
-                  >
-                    <Play size={16} fill="currentColor" />
-                    <span>Play</span>
-                  </button>
-                  <button className="flex items-center justify-center space-x-2 bg-gray-700 text-white px-4 py-2 rounded font-bold hover:bg-gray-600 transition-colors">
-                    <Heart size={16} />
-                    <span>Like</span>
-                  </button>
                 </div>
               </div>
 
-              <p className="text-gray-300 text-base md:text-lg leading-relaxed">
+              <p className="text-gray-300 text-sm md:text-base leading-relaxed">
                 {selectedEvent.description}
               </p>
 
               {/* Image Gallery */}
               {selectedEvent.images.length > 1 && (
                 <div>
-                  <h3 className="text-lg md:text-xl font-bold text-white mb-4">Behind the Scenes</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+                  <h3 className="text-lg font-bold text-white mb-3">Gallery</h3>
+                  <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
                     {selectedEvent.images.map((image, index) => (
                       <button
                         key={index}
                         onClick={() => setCurrentImageIndex(index)}
-                        className={`relative aspect-video overflow-hidden rounded-lg transition-all duration-300 hover:scale-105 ${
+                        className={`relative aspect-video overflow-hidden rounded transition-all duration-300 hover:scale-105 ${
                           index === currentImageIndex ? 'ring-2 ring-red-500' : ''
                         }`}
                       >
@@ -595,11 +536,11 @@ export default function LifeJourneySection() {
                           alt={`${selectedEvent.title} ${index + 1}`}
                           fill
                           className="object-cover"
-                          sizes="(max-width: 768px) 150px, 200px"
+                          sizes="120px"
                         />
                         {index === currentImageIndex && (
                           <div className="absolute inset-0 bg-red-500/20 flex items-center justify-center">
-                            <Play size={20} className="text-white fill-current" />
+                            <Play size={16} className="text-white fill-current" />
                           </div>
                         )}
                       </button>
@@ -607,36 +548,6 @@ export default function LifeJourneySection() {
                   </div>
                 </div>
               )}
-
-              {/* More Details */}
-              <div className="grid md:grid-cols-2 gap-6 pt-4 border-t border-gray-700">
-                <div>
-                  <h4 className="text-white font-bold mb-2">Details</h4>
-                  <div className="space-y-2 text-sm text-gray-400">
-                    <div><span className="text-gray-500">Year:</span> {selectedEvent.year}</div>
-                    <div><span className="text-gray-500">Duration:</span> {selectedEvent.duration}</div>
-                    <div><span className="text-gray-500">Location:</span> {selectedEvent.location}</div>
-                    <div><span className="text-gray-500">Type:</span> {selectedEvent.category}</div>
-                  </div>
-                </div>
-                <div>
-                  <h4 className="text-white font-bold mb-2">Rating</h4>
-                  <div className="flex items-center space-x-2">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star
-                        key={star}
-                        size={16}
-                        className={`${
-                          star <= Math.floor(selectedEvent.rating)
-                            ? 'text-yellow-400 fill-current'
-                            : 'text-gray-600'
-                        }`}
-                      />
-                    ))}
-                    <span className="text-white font-semibold ml-2">{formatRating(selectedEvent.rating)}</span>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
