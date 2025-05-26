@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Play, Info, Star, ChevronLeft, ChevronRight, X, Plane, Mountain, Camera, Music, Heart, Camera as PhotoIcon } from 'lucide-react';
+import { Play, Info, Star, Plane, Mountain, Camera, Music, Heart, Camera as PhotoIcon } from 'lucide-react';
 import Image from 'next/image';
 import { lifeEvents } from '@/constants/data';
 import { LifeEvent } from '@/types';
-
+import LifeJourneyModal from './LifeJourneyModal';
 
 const categories = [
   'Trending Now',
@@ -18,7 +18,6 @@ const categories = [
 
 export default function LifeJourneySection() {
   const [selectedEvent, setSelectedEvent] = useState<LifeEvent | null>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [heroEvent, setHeroEvent] = useState<LifeEvent>(lifeEvents[0]);
   const [clickCount, setClickCount] = useState(0);
 
@@ -27,18 +26,6 @@ export default function LifeJourneySection() {
       return lifeEvents.filter(event => event.highlight).slice(0, 6);
     }
     return lifeEvents.filter(event => event.category === category);
-  };
-
-  const nextImage = () => {
-    if (selectedEvent) {
-      setCurrentImageIndex((prev) => (prev + 1) % selectedEvent.images.length);
-    }
-  };
-
-  const prevImage = () => {
-    if (selectedEvent) {
-      setCurrentImageIndex((prev) => (prev - 1 + selectedEvent.images.length) % selectedEvent.images.length);
-    }
   };
 
   const getTypeIcon = (type: LifeEvent['type']) => {
@@ -67,7 +54,6 @@ export default function LifeJourneySection() {
       setClickCount(prev => prev + 1);
       if (clickCount >= 1) {
         setSelectedEvent(event);
-        setCurrentImageIndex(0);
         setClickCount(0);
       }
     } else {
@@ -78,12 +64,14 @@ export default function LifeJourneySection() {
 
   return (
     <div className="min-h-screen bg-black text-white" style={{ zIndex: 1 }}>
-      <div className="relative z-10  ">
+      {/* Header */}
+      <div className="relative z-10">
         <div className="flex items-center justify-center px-4 py-6">
           <h1 className="text-red-600 text-2xl md:text-3xl font-bold">SATRIAFLIX</h1>
         </div>
       </div>
 
+      {/* Hero Section */}
       <div className="relative h-screen overflow-hidden" style={{ marginTop: '-80px' }}>
         <div className="absolute inset-0">
           <Image
@@ -98,11 +86,11 @@ export default function LifeJourneySection() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
         </div>
 
-        {/* Hero Content - Positioned to the left */}
+        {/* Hero Content */}
         <div className="relative z-10 h-full flex items-center">
           <div className="max-w-2xl mx-auto px-4 md:px-8 py-20 ml-8">
             <div className="space-y-4 md:space-y-6">
-              {/* Category Badge */}
+              {/* Category Badges */}
               <div className="flex flex-wrap items-center gap-3">
                 <span className="bg-red-600 text-white px-3 py-1 rounded text-xs md:text-sm font-bold">
                   SATRIAFLIX SERIES
@@ -137,7 +125,7 @@ export default function LifeJourneySection() {
                 <span>{heroEvent.location}</span>
               </div>
 
-              {/* Description - Shortened */}
+              {/* Description */}
               <p className="text-base md:text-lg text-gray-200 leading-relaxed line-clamp-2">
                 {heroEvent.description}
               </p>
@@ -152,10 +140,7 @@ export default function LifeJourneySection() {
                   <span>Watch Now</span>
                 </button>
                 <button
-                  onClick={() => {
-                    setSelectedEvent(heroEvent);
-                    setCurrentImageIndex(0);
-                  }}
+                  onClick={() => setSelectedEvent(heroEvent)}
                   className="flex items-center justify-center space-x-3 bg-gray-700/80 text-white px-6 md:px-8 py-3 rounded font-bold hover:bg-gray-600 transition-all duration-300 hover:scale-105 backdrop-blur-sm w-full sm:w-auto"
                 >
                   <Info size={18} />
@@ -167,7 +152,7 @@ export default function LifeJourneySection() {
         </div>
       </div>
 
-      {/* Content Rows */}
+      {/* Content Categories */}
       <div className="relative z-20 -mt-32 pb-20">
         {categories.map((category) => {
           const categoryEvents = getEventsByCategory(category);
@@ -186,9 +171,7 @@ export default function LifeJourneySection() {
                       key={event.id}
                       className="flex-shrink-0 w-64 md:w-80 cursor-pointer group transform hover:scale-105 transition-all duration-300"
                       onClick={() => handleEventClick(event)}
-                      style={{
-                        animationDelay: `${index * 0.1}s`
-                      }}
+                      style={{ animationDelay: `${index * 0.1}s` }}
                     >
                       <div className="relative overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300">
                         <div className="relative aspect-video">
@@ -200,6 +183,7 @@ export default function LifeJourneySection() {
                             sizes="(max-width: 768px) 256px, 320px"
                           />
                         </div>
+                        
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
                         
                         {/* Rating Badge */}
@@ -241,116 +225,13 @@ export default function LifeJourneySection() {
         })}
       </div>
 
-      {/* Modal */}
-      {selectedEvent && (
-        <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-2 md:p-4">
-          <div className="bg-gray-900 rounded-lg max-w-5xl w-full max-h-[90vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="relative">
-              <div className="relative h-48 md:h-80 overflow-hidden rounded-t-lg">
-                <Image
-                  src={selectedEvent.images[currentImageIndex]}
-                  alt={selectedEvent.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 1000px"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent" />
-                
-                {/* Image Navigation */}
-                {selectedEvent.images.length > 1 && (
-                  <>
-                    <button
-                      onClick={prevImage}
-                      className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full transition-colors"
-                    >
-                      <ChevronLeft size={20} />
-                    </button>
-                    <button
-                      onClick={nextImage}
-                      className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full transition-colors"
-                    >
-                      <ChevronRight size={20} />
-                    </button>
-                    
-                    {/* Image Indicators */}
-                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                      {selectedEvent.images.map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setCurrentImageIndex(index)}
-                          className={`w-2 h-2 rounded-full transition-colors ${
-                            index === currentImageIndex ? 'bg-white' : 'bg-white/50'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedEvent(null)}
-                className="absolute top-2 md:top-4 right-2 md:right-4 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            {/* Modal Content - Simplified */}
-            <div className="p-4 md:p-6 space-y-4">
-              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-                <div className="space-y-3 flex-1">
-                  <h2 className="text-xl md:text-2xl font-bold text-white">{selectedEvent.title}</h2>
-                  <div className="flex items-center space-x-4 text-gray-400 text-sm">
-                    <div className="flex items-center space-x-1">
-                      <Star className="text-yellow-400 fill-current" size={14} />
-                      <span className="text-white font-semibold">{formatRating(selectedEvent.rating)}</span>
-                    </div>
-                    <span>{selectedEvent.location}</span>
-                  </div>
-                </div>
-              </div>
-
-              <p className="text-gray-300 text-sm md:text-base leading-relaxed">
-                {selectedEvent.description}
-              </p>
-
-              {/* Image Gallery */}
-              {selectedEvent.images.length > 1 && (
-                <div>
-                  <h3 className="text-lg font-bold text-white mb-3">Gallery</h3>
-                  <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
-                    {selectedEvent.images.map((image, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentImageIndex(index)}
-                        className={`relative aspect-video overflow-hidden rounded transition-all duration-300 hover:scale-105 ${
-                          index === currentImageIndex ? 'ring-2 ring-red-500' : ''
-                        }`}
-                      >
-                        <Image
-                          src={image}
-                          alt={`${selectedEvent.title} ${index + 1}`}
-                          fill
-                          className="object-cover"
-                          sizes="120px"
-                        />
-                        {index === currentImageIndex && (
-                          <div className="absolute inset-0 bg-red-500/20 flex items-center justify-center">
-                            <Play size={16} className="text-white fill-current" />
-                          </div>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Modal Component */}
+      <LifeJourneyModal
+        selectedEvent={selectedEvent}
+        onClose={() => setSelectedEvent(null)}
+        getTypeIcon={getTypeIcon}
+        formatRating={formatRating}
+      />
 
       <style jsx global>{`
         .scrollbar-hide {
