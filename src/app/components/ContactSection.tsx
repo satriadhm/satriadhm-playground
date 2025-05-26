@@ -46,113 +46,113 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-20 bg-slate-50 dark:bg-slate-900">
+    <section id="contact" className="py-16 sm:py-20 bg-slate-50 dark:bg-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+        {/* Section Header - Mobile Responsive */}
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3 sm:mb-4">
             Get In Touch
           </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto px-4">
             Ready to collaborate on your next project? Let&apos;s discuss how we can work together
             to create something exceptional.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-12">
-          {/* Contact Information */}
-          <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border border-slate-200 dark:border-slate-700">
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+          {/* Contact Information - Mobile Responsive */}
+          <div className="lg:col-span-2 space-y-6 sm:space-y-8">
+            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-700">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 sm:mb-8">
                 Contact Information
               </h3>
               
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Mail className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">Email Address</h4>
                     <a 
                       href={`mailto:${personalInfo.email}`}
-                      className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                      className="text-sm sm:text-base text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors break-all"
                     >
                       {personalInfo.email}
                     </a>
                   </div>
                 </div>
 
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
                     <MapPin className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">Location</h4>
-                    <p className="text-slate-600 dark:text-slate-400">
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
                       {personalInfo.location}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Clock className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">Response Time</h4>
-                    <p className="text-slate-600 dark:text-slate-400">
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">
                       Usually within 24 hours
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Social Links */}
-              <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-700">
+              {/* Social Links - Mobile Responsive */}
+              <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-slate-200 dark:border-slate-700">
                 <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">Professional Links</h4>
-                <div className="flex space-x-3">
+                <div className="flex flex-wrap gap-3">
                   <a
                     href={personalInfo.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 hover:text-slate-900 dark:hover:text-slate-100 transition-all"
+                    className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 hover:text-slate-900 dark:hover:text-slate-100 transition-all"
                     aria-label="GitHub"
                   >
-                    <Github size={20} />
+                    <Github size={18} />
                   </a>
                   <a
                     href={personalInfo.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-700 dark:hover:text-blue-300 transition-all"
+                    className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-700 dark:hover:text-blue-300 transition-all"
                     aria-label="LinkedIn"
                   >
-                    <Linkedin size={20} />
+                    <Linkedin size={18} />
                   </a>
                   <a
                     href={`mailto:${personalInfo.email}`}
-                    className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 hover:text-slate-900 dark:hover:text-slate-100 transition-all"
+                    className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 hover:text-slate-900 dark:hover:text-slate-100 transition-all"
                     aria-label="Email"
                   >
-                    <Mail size={20} />
+                    <Mail size={18} />
                   </a>
                 </div>
               </div>
             </div>
 
-            {/* Quick Contact Options */}
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+            {/* Quick Contact Options - Mobile Responsive */}
+            <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200 dark:border-slate-700">
               <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">Quick Contact</h4>
               <div className="space-y-3">
                 <a
                   href={`mailto:${personalInfo.email}?subject=Project Collaboration`}
                   className="flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors group"
                 >
-                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
                     <User size={16} className="text-blue-600 dark:text-blue-400" />
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <div className="text-sm font-medium text-slate-900 dark:text-slate-100">Project Collaboration</div>
                     <div className="text-xs text-slate-500 dark:text-slate-400">Discuss your project needs</div>
                   </div>
@@ -162,10 +162,10 @@ export default function ContactSection() {
                   href={`mailto:${personalInfo.email}?subject=Job Opportunity`}
                   className="flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors group"
                 >
-                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
                     <MessageSquare size={16} className="text-green-600 dark:text-green-400" />
                   </div>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <div className="text-sm font-medium text-slate-900 dark:text-slate-100">Career Opportunities</div>
                     <div className="text-xs text-slate-500 dark:text-slate-400">Explore job opportunities</div>
                   </div>
@@ -174,18 +174,18 @@ export default function ContactSection() {
             </div>
           </div>
 
-          {/* Contact Form */}
+          {/* Contact Form - Mobile Responsive */}
           <div className="lg:col-span-3">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border border-slate-200 dark:border-slate-700">
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-700">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                 Send a Message
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 mb-8">
+              <p className="text-slate-600 dark:text-slate-400 mb-6 sm:mb-8 text-sm sm:text-base">
                 Fill out the form below and I&apos;ll get back to you as soon as possible.
               </p>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-semibold text-slate-900 dark:text-slate-100 mb-2">
                       Full Name <span className="text-red-500">*</span>
@@ -197,7 +197,7 @@ export default function ContactSection() {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-sm sm:text-base"
                       placeholder="John Doe"
                     />
                   </div>
@@ -213,7 +213,7 @@ export default function ContactSection() {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-sm sm:text-base"
                       placeholder="john@example.com"
                     />
                   </div>
@@ -230,7 +230,7 @@ export default function ContactSection() {
                     value={formData.subject}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-sm sm:text-base"
                     placeholder="Project Discussion / Job Opportunity / General Inquiry"
                   />
                 </div>
@@ -245,18 +245,18 @@ export default function ContactSection() {
                     value={formData.message}
                     onChange={handleInputChange}
                     required
-                    rows={6}
-                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-colors"
+                    rows={5}
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-colors text-sm sm:text-base"
                     placeholder="Hello! I'd like to discuss..."
                   />
                 </div>
 
-                {/* Submit Button and Status */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                {/* Submit Button and Status - Mobile Responsive */}
+                <div className="flex flex-col gap-4">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="inline-flex items-center justify-center space-x-3 bg-slate-900 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-500 disabled:bg-slate-400 dark:disabled:bg-slate-700 text-white px-8 py-3 rounded-lg font-semibold transition-all hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+                    className="w-full sm:w-auto inline-flex items-center justify-center space-x-3 bg-slate-900 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-500 disabled:bg-slate-400 dark:disabled:bg-slate-700 text-white px-6 sm:px-8 py-3 rounded-lg font-semibold transition-all hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
                   >
                     {isSubmitting ? (
                       <>
@@ -271,17 +271,17 @@ export default function ContactSection() {
                     )}
                   </button>
 
-                  {/* Status Messages */}
+                  {/* Status Messages - Mobile Responsive */}
                   {submitStatus === 'success' && (
-                    <div className="flex items-center space-x-2 text-green-600 dark:text-green-400">
-                      <Check size={18} />
+                    <div className="flex items-center space-x-2 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
+                      <Check size={18} className="flex-shrink-0" />
                       <span className="text-sm font-medium">Message sent successfully!</span>
                     </div>
                   )}
                   
                   {submitStatus === 'error' && (
-                    <div className="flex items-center space-x-2 text-red-600 dark:text-red-400">
-                      <AlertCircle size={18} />
+                    <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
+                      <AlertCircle size={18} className="flex-shrink-0" />
                       <span className="text-sm font-medium">Failed to send. Please try again.</span>
                     </div>
                   )}
@@ -291,9 +291,9 @@ export default function ContactSection() {
           </div>
         </div>
 
-        {/* Bottom Section */}
-        <div className="mt-16 text-center">
-          <div className="inline-flex items-center space-x-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-6 py-3 rounded-full shadow-sm">
+        {/* Bottom Section - Mobile Responsive */}
+        <div className="mt-12 sm:mt-16 text-center">
+          <div className="inline-flex items-center space-x-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 sm:px-6 py-3 rounded-full shadow-sm">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
             <span className="text-slate-600 dark:text-slate-400 text-sm font-medium">
               Currently available for new opportunities

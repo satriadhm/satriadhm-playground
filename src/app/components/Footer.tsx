@@ -13,14 +13,14 @@ export default function Footer() {
 
   return (
     <footer className="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
-      {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid md:grid-cols-3 gap-12">
+      {/* Main Footer Content - Mobile Responsive */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
           
-          {/* Brand Section */}
-          <div className="space-y-6">
+          {/* Brand Section - Mobile Responsive */}
+          <div className="space-y-4 sm:space-y-6 text-center sm:text-left">
             <div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2 sm:mb-3">
                 {personalInfo.name}
               </h3>
               <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
@@ -28,13 +28,13 @@ export default function Footer() {
               </p>
             </div>
             
-            {/* Social Links */}
-            <div className="flex space-x-3">
+            {/* Social Links - Mobile Responsive */}
+            <div className="flex justify-center sm:justify-start space-x-3">
               <a
                 href={personalInfo.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all duration-200"
+                className="p-2.5 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all duration-200"
                 aria-label="GitHub"
               >
                 <Github size={18} />
@@ -43,14 +43,14 @@ export default function Footer() {
                 href={personalInfo.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all duration-200"
+                className="p-2.5 text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all duration-200"
                 aria-label="LinkedIn"
               >
                 <Linkedin size={18} />
               </a>
               <a
                 href={`mailto:${personalInfo.email}`}
-                className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all duration-200"
+                className="p-2.5 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all duration-200"
                 aria-label="Email"
               >
                 <Mail size={18} />
@@ -58,10 +58,10 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="space-y-4">
+          {/* Quick Links - Mobile Responsive */}
+          <div className="space-y-4 text-center sm:text-left">
             <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Quick Links</h4>
-            <div className="space-y-2">
+            <div className="grid grid-cols-2 sm:grid-cols-1 gap-2">
               {[
                 { name: 'Home', href: '/' },
                 { name: 'Experience', href: '/experience' },
@@ -72,7 +72,7 @@ export default function Footer() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="block text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors duration-200 text-sm"
+                  className="block text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors duration-200 text-sm py-1"
                 >
                   {link.name}
                 </Link>
@@ -80,8 +80,8 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Contact Info */}
-          <div className="space-y-4">
+          {/* Contact Info - Mobile Responsive */}
+          <div className="space-y-4 text-center sm:text-left lg:col-span-1 sm:col-span-2 lg:col-span-1">
             <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Get In Touch</h4>
             <div className="space-y-3">
               <div className="text-sm text-slate-600 dark:text-slate-400">
@@ -96,8 +96,8 @@ export default function Footer() {
               </a>
               
               <div className="pt-2 text-xs text-slate-500 dark:text-slate-400">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div className="flex items-center justify-center sm:justify-start space-x-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   <span>Usually responds within 24 hours</span>
                 </div>
               </div>
@@ -106,34 +106,40 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Bar */}
+      {/* Bottom Bar - Mobile Responsive */}
       <div className="border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
             
-            <div className="flex items-center space-x-2 text-slate-500 dark:text-slate-400 text-sm">
-              <span>© {currentYear} {personalInfo.name}</span>
-              <span>•</span>
-              <span>Made with</span>
-              <Heart size={14} className="text-red-500 mx-1" />
-              <span>using</span>
-              <div className="flex items-center space-x-1">
-                <Code2 size={14} className="text-blue-500" />
-                <span>Next.js</span>
+            {/* Copyright - Mobile Responsive */}
+            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 text-slate-500 dark:text-slate-400 text-sm text-center sm:text-left">
+              <div className="flex items-center space-x-2">
+                <span>© {currentYear} {personalInfo.name}</span>
+                <span className="hidden sm:inline">•</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span>Made with</span>
+                <Heart size={14} className="text-red-500 mx-1" />
+                <span>using</span>
+                <div className="flex items-center space-x-1">
+                  <Code2 size={14} className="text-blue-500" />
+                  <span>Next.js</span>
+                </div>
               </div>
             </div>
             
-            <div className="flex items-center space-x-4">
+            {/* Right Side - Mobile Responsive */}
+            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
               <span className="text-xs text-slate-500 dark:text-slate-400">
                 Professional Portfolio
               </span>
               
               <button
                 onClick={scrollToTop}
-                className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all duration-200"
+                className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all duration-200 group"
                 aria-label="Scroll to top"
               >
-                <ArrowUp size={16} />
+                <ArrowUp size={16} className="group-hover:-translate-y-0.5 transition-transform" />
               </button>
             </div>
           </div>

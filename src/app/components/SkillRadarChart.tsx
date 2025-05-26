@@ -1,26 +1,35 @@
+import { SkillsRadarChartProps, Skill } from '@/types';
 import { useEffect, useState } from 'react';
 
 // Define the Skill type
-interface Skill {
-  name: string;
-  level: number;
-}
-
-interface SkillsRadarChartProps {
-  skills: Skill[];
-}
 
 function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
   const [animatedValues, setAnimatedValues] = useState<number[]>([]);
   const [hoveredSkill, setHoveredSkill] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   
-  const size = 400;
+  // Mobile responsive sizing
+  const mobileSize = 300;
+  const desktopSize = 400;
+  const size = isMobile ? mobileSize : desktopSize;
   const center = size / 2;
-  const maxRadius = 120;
+  const maxRadius = isMobile ? 80 : 120;
   const levels = 5;
 
   // Use exactly 5 skills for pentagon
   const chartSkills = skills.slice(0, 5);
+
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     // Animate the values from 0 to actual values
@@ -42,8 +51,8 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
       const x = center + Math.cos(angle) * radius;
       const y = center + Math.sin(angle) * radius;
       
-      // Label position - further out from the chart
-      const labelRadius = maxRadius + 40;
+      // Label position - adjusted for mobile
+      const labelRadius = maxRadius + (isMobile ? 25 : 40);
       const labelX = center + Math.cos(angle) * labelRadius;
       const labelY = center + Math.sin(angle) * labelRadius;
       
@@ -106,19 +115,19 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
 
   return (
     <div className="w-full">
-      {/* Title */}
-      <div className="text-center mb-8">
-        <h3 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+      {/* Title - Mobile Responsive */}
+      <div className="text-center mb-6 sm:mb-8">
+        <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
           Engineering Skills
         </h3>
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base px-4">
           My capabilities across the software development lifecycle
         </p>
       </div>
 
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-12">
-        {/* Pentagon Chart */}
-        <div className="relative" style={{ width: size, height: size }}>
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
+        {/* Pentagon Chart - Mobile Responsive */}
+        <div className="relative flex justify-center" style={{ width: size, height: size }}>
           <svg width={size} height={size} className="overflow-visible">
             {/* Grid lines (concentric pentagons) */}
             {gridLines.map((grid, index) => (
@@ -165,10 +174,10 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
                 key={`point-${index}`}
                 cx={point.x}
                 cy={point.y}
-                r={hoveredSkill === index ? "8" : "6"}
+                r={hoveredSkill === index ? (isMobile ? "6" : "8") : (isMobile ? "4" : "6")}
                 fill="#1e40af"
                 stroke="white"
-                strokeWidth="3"
+                strokeWidth={isMobile ? "2" : "3"}
                 className="transition-all duration-300 cursor-pointer drop-shadow-lg hover:drop-shadow-xl"
                 style={{
                   transitionDelay: `${index * 150}ms`
@@ -178,7 +187,7 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
               />
             ))}
 
-            {/* Skill labels */}
+            {/* Skill labels - Mobile Responsive */}
             {skillPoints.map((point, index) => {
               // Calculate label positioning
               let textAnchor = 'middle';
@@ -187,10 +196,10 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
               
               if (point.labelX > center + 20) {
                 textAnchor = 'start';
-                dx = '10';
+                dx = isMobile ? '8' : '10';
               } else if (point.labelX < center - 20) {
                 textAnchor = 'end';
-                dx = '-10';
+                dx = isMobile ? '-8' : '-10';
               }
               
               if (point.labelY < center - 20) {
@@ -207,7 +216,7 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
                   textAnchor={textAnchor}
                   dy={dy}
                   dx={dx}
-                  fontSize="14"
+                  fontSize={isMobile ? "12" : "14"}
                   fontWeight="500"
                   fill="currentColor"
                   className={`transition-all duration-300 cursor-pointer select-none ${
@@ -226,13 +235,13 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
               );
             })}
 
-            {/* Level numbers on grid */}
+            {/* Level numbers on grid - Mobile Responsive */}
             {gridLines.map((grid, index) => (
               <text
                 key={`level-${index}`}
-                x={center + 8}
-                y={center - grid.radius + 5}
-                fontSize="12"
+                x={center + (isMobile ? 6 : 8)}
+                y={center - grid.radius + (isMobile ? 4 : 5)}
+                fontSize={isMobile ? "10" : "12"}
                 fill="currentColor"
                 opacity={0.6}
                 className="text-slate-500 dark:text-slate-400 select-none"
@@ -242,8 +251,8 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
             ))}
           </svg>
 
-          {/* Hover tooltip */}
-          {hoveredSkill !== null && (
+          {/* Hover tooltip - Mobile Hidden */}
+          {hoveredSkill !== null && !isMobile && (
             <div className="absolute top-4 left-4 bg-white dark:bg-slate-800 p-3 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 z-10">
               <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                 {chartSkills[hoveredSkill]?.name}
@@ -258,29 +267,29 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
           )}
         </div>
 
-        {/* Skill Levels Legend */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 max-w-sm">
-          <h4 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+        {/* Skill Levels Legend - Mobile Responsive */}
+        <div className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 w-full max-w-sm">
+          <h4 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 mb-3 sm:mb-4">
             Skill Levels
           </h4>
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {skillDescriptions.map((description, index) => (
               <div 
                 key={index}
-                className={`flex items-start space-x-3 p-2 rounded-lg transition-colors ${
+                className={`flex items-start space-x-2 sm:space-x-3 p-2 rounded-lg transition-colors ${
                   hoveredSkill !== null && chartSkills[hoveredSkill]?.level === index + 1
                     ? 'bg-blue-50 dark:bg-blue-900/20'
                     : ''
                 }`}
               >
                 <div className={`
-                  flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold
+                  flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-white text-xs sm:text-sm font-bold
                   ${index + 1 <= 2 ? 'bg-slate-500' : 
                     index + 1 <= 4 ? 'bg-blue-600' : 'bg-blue-700'}
                 `}>
                   {index + 1}
                 </div>
-                <div className="text-sm text-slate-700 dark:text-slate-300">
+                <div className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
                   {description}
                 </div>
               </div>
@@ -288,6 +297,13 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
           </div>
         </div>
       </div>
+
+      {/* Mobile Touch Info */}
+      {isMobile && (
+        <div className="text-center mt-6 text-xs text-slate-500 dark:text-slate-400">
+          Tap on skill points to see details
+        </div>
+      )}
     </div>
   );
 }
@@ -295,15 +311,30 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
 // Main component with your skill data
 export default function App() {
   const skills: Skill[] = [
-    { name: 'Requirements', level: 3 },
-    { name: 'Design', level: 3 },
-    { name: 'Construction', level: 5 },
-    { name: 'Testing', level: 4 },
-    { name: 'Maintenance', level: 3 }
+    {
+      name: 'Requirements', level: 3,
+      category: 'technical'
+    },
+    {
+      name: 'Design', level: 3,
+      category: 'technical'
+    },
+    {
+      name: 'Construction', level: 5,
+      category: 'technical'
+    },
+    {
+      name: 'Testing', level: 4,
+      category: 'technical'
+    },
+    {
+      name: 'Maintenance', level: 3,
+      category: 'technical'
+    }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4 sm:p-8">
       <SkillsRadarChart skills={skills} />
     </div>
   );

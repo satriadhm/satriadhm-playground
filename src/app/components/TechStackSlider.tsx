@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TechStack } from '@/types';
 // Simple‑Icons via react-icons gives us pixel‑perfect brand marks without hand‑rolling SVG paths
 import {
@@ -77,36 +77,64 @@ const colorScale = {
 
 export default function TechStackSlider({ techStack }: TechStackSliderProps) {
   const [hovered, setHovered] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Track mouse position for tooltip
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    if (!isMobile) {
+      document.addEventListener('mousemove', handleMouseMove);
+      return () => document.removeEventListener('mousemove', handleMouseMove);
+    }
+  }, [isMobile]);
+
   const duplicated = [...techStack, ...techStack]; // infinite marquee
 
   return (
     <>
-      {/* Main Slider Container - NO overflow hidden di sini */}
-      <div className="relative w-full" style={{ minHeight: '200px' }}>
+      {/* Main Slider Container - Mobile Responsive */}
+      <div className="relative w-full" style={{ minHeight: isMobile ? '140px' : '200px' }}>
         {/* Slider dengan overflow hidden HANYA pada sumbu X */}
         <div style={{ overflowX: 'hidden', overflowY: 'visible' }}>
-          <div className="flex animate-slide-infinite hover:pause-animation">
+          <div className={`flex ${isMobile ? 'animate-slide-infinite' : 'animate-slide-infinite hover:pause-animation'}`}>
             {duplicated.map((tech, i) => {
               const Icon = TechIcons[tech.name];
 
               return (
                 <div
                   key={`${tech.name}-${i}`}
-                  className="flex-shrink-0 mx-4"
+                  className="flex-shrink-0 mx-2 sm:mx-4"
                   style={{ position: 'relative', zIndex: hovered === tech.name ? 9999 : 1 }}
-                  onMouseEnter={() => setHovered(tech.name)}
-                  onMouseLeave={() => setHovered(null)}
+                  onMouseEnter={() => !isMobile && setHovered(tech.name)}
+                  onMouseLeave={() => !isMobile && setHovered(null)}
+                  onClick={() => isMobile && setHovered(hovered === tech.name ? null : tech.name)}
                 >
-                  {/* CARD */}
-                  <div className="w-40 h-32 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center p-4 cursor-pointer hover:scale-105 hover:border-blue-300 dark:hover:border-blue-600">
-                    <div className="w-12 h-12 mb-3 flex items-center justify-center hover:scale-110 transition-transform">
+                  {/* CARD - Mobile Responsive */}
+                  <div className={`${isMobile ? 'w-28 h-20' : 'w-40 h-32'} bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center p-3 sm:p-4 cursor-pointer hover:scale-105 hover:border-blue-300 dark:hover:border-blue-600`}>
+                    <div className={`${isMobile ? 'w-8 h-8 mb-2' : 'w-12 h-12 mb-3'} flex items-center justify-center hover:scale-110 transition-transform`}>
                       {Icon ? (
-                        <Icon className="w-8 h-8" />
+                        <Icon className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'}`} />
                       ) : (
-                        <span className="text-xl font-bold">{tech.name.charAt(0)}</span>
+                        <span className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold`}>{tech.name.charAt(0)}</span>
                       )}
                     </div>
-                    <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-center text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    <h4 className={`font-semibold text-gray-900 dark:text-gray-100 text-center ${isMobile ? 'text-xs' : 'text-sm'} hover:text-blue-600 dark:hover:text-blue-400 transition-colors leading-tight`}>
                       {tech.name}
                     </h4>
                   </div>
@@ -116,26 +144,38 @@ export default function TechStackSlider({ techStack }: TechStackSliderProps) {
           </div>
         </div>
 
-        {/* FADE GRADIENTS */}
-        <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-50 dark:from-slate-900 to-transparent pointer-events-none z-10" />
-        <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-50 dark:from-slate-900 to-transparent pointer-events-none z-10" />
+        {/* FADE GRADIENTS - Mobile Responsive */}
+        <div className={`absolute inset-y-0 left-0 ${isMobile ? 'w-12' : 'w-20'} bg-gradient-to-r from-slate-50 dark:from-slate-900 to-transparent pointer-events-none z-10`} />
+        <div className={`absolute inset-y-0 right-0 ${isMobile ? 'w-12' : 'w-20'} bg-gradient-to-l from-slate-50 dark:from-slate-900 to-transparent pointer-events-none z-10`} />
       </div>
 
-      {/* TOOLTIP PORTAL - Render tooltip di luar container */}
-      {hovered && (
-        <div 
-          className="fixed inset-0 pointer-events-none z-50"
-          style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
-        >
-          <TooltipContent 
+      {/* Mobile Tooltip Panel */}
+      {isMobile && hovered && (
+        <div className="mt-4 mx-4">
+          <TooltipContentMobile 
             tech={techStack.find(t => t.name === hovered)!} 
             Icon={TechIcons[hovered]}
+            onClose={() => setHovered(null)}
           />
         </div>
       )}
 
-      {/* STATS */}
-      <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      {/* Desktop Tooltip Portal */}
+      {!isMobile && hovered && (
+        <div 
+          className="fixed inset-0 pointer-events-none z-50"
+          style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+        >
+          <TooltipContentDesktop 
+            tech={techStack.find(t => t.name === hovered)!} 
+            Icon={TechIcons[hovered]}
+            mousePosition={mousePosition}
+          />
+        </div>
+      )}
+
+      {/* STATS - Mobile Responsive */}
+      <div className="mt-8 sm:mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 text-center">
         <StatsBlock label="Technologies" value={techStack.length} />
         <StatsBlock label="Advanced+" value={techStack.filter((t) => t.proficiency >= 4).length} highlight />
         <StatsBlock label="Avg Score" value={Math.round((techStack.reduce((s, t) => s + t.proficiency, 0) / techStack.length) * 10) / 10} />
@@ -145,20 +185,61 @@ export default function TechStackSlider({ techStack }: TechStackSliderProps) {
   );
 }
 
-// Separate Tooltip Component untuk portal rendering
-function TooltipContent({ tech, Icon }: { tech: TechStack, Icon?: React.ComponentType<{ className?: string }> }) {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+// Mobile Tooltip Component
+function TooltipContentMobile({ tech, Icon, onClose }: { 
+  tech: TechStack, 
+  Icon?: React.ComponentType<{ className?: string }>,
+  onClose: () => void
+}) {
   const { text, bg, bar } = colorScale[tech.proficiency as keyof typeof colorScale];
 
-  // Track mouse position
-  useState(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
+  return (
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-4 rounded-xl shadow-xl backdrop-blur-sm">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center space-x-2">
+          {Icon && <Icon className="w-5 h-5" />}
+          <h5 className="font-bold text-gray-900 dark:text-gray-100">{tech.name}</h5>
+        </div>
+        <button 
+          onClick={onClose}
+          className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1"
+        >
+          ✕
+        </button>
+      </div>
 
-    document.addEventListener('mousemove', handleMouseMove);
-    return () => document.removeEventListener('mousemove', handleMouseMove);
-  });
+      <div className="space-y-3">
+        <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${bg} ${text}`}>
+          {getProficiencyLevel(tech.proficiency)}
+        </span>
+
+        <div className="space-y-1">
+          <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
+            <span>Proficiency</span>
+            <span>{tech.proficiency}/5</span>
+          </div>
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div style={{ width: `${(tech.proficiency / 5) * 100}%` }} className={`h-2 rounded-full ${bar}`} />
+          </div>
+        </div>
+
+        <div className="flex justify-center space-x-1">
+          {[1, 2, 3, 4, 5].map((s) => (
+            <span key={s} className={`w-2 h-2 rounded-full ${s <= tech.proficiency ? bar : 'bg-gray-300 dark:bg-gray-600'}`} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Desktop Tooltip Component
+function TooltipContentDesktop({ tech, Icon, mousePosition }: { 
+  tech: TechStack, 
+  Icon?: React.ComponentType<{ className?: string }>,
+  mousePosition: { x: number, y: number }
+}) {
+  const { text, bg, bar } = colorScale[tech.proficiency as keyof typeof colorScale];
 
   return (
     <div 
@@ -203,18 +284,18 @@ function TooltipContent({ tech, Icon }: { tech: TechStack, Icon?: React.Componen
   );
 }
 
-// Small helper component for the bottom stats ------------------------------
+// Small helper component for the bottom stats - Mobile Responsive
 function StatsBlock({ value, label, highlight = false }: { value: number | string; label: string; highlight?: boolean }) {
   return (
-    <div className="space-y-2 group cursor-pointer">
+    <div className="space-y-1 sm:space-y-2 group cursor-pointer">
       <div
-        className={`text-2xl md:text-3xl font-bold transition-colors duration-300 group-hover:scale-110 transform ${
+        className={`text-xl sm:text-2xl md:text-3xl font-bold transition-colors duration-300 group-hover:scale-110 transform ${
           highlight ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400'
         }`}
       >
         {value}
       </div>
-      <div className="text-sm text-gray-600 dark:text-gray-400">{label}</div>
+      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{label}</div>
     </div>
   );
 }

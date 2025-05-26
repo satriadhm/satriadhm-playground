@@ -67,24 +67,24 @@ export default function BlogCertificationSection() {
   };
 
   return (
-    <section id="blog-certifications" className="py-24 bg-white dark:bg-slate-950">
-      <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12">
-        {/* Section Header */}
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-8">
+    <section id="blog-certifications" className="py-16 sm:py-24 bg-white dark:bg-slate-950">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header - Mobile Responsive */}
+        <div className="text-center mb-16 sm:mb-20">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6 sm:mb-8">
             Writing & Achievements
           </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
             Thoughts on technology, career insights, and professional milestones along my journey as a software engineer.
           </p>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex justify-center mb-20">
-          <div className="flex border-b border-slate-200 dark:border-slate-800">
+        {/* Tab Navigation - Mobile Responsive */}
+        <div className="flex justify-center mb-16 sm:mb-20">
+          <div className="flex border-b border-slate-200 dark:border-slate-800 w-full max-w-md">
             <button
               onClick={() => setActiveTab('blog')}
-              className={`px-10 py-4 text-lg font-medium transition-all relative ${
+              className={`flex-1 px-6 sm:px-10 py-3 sm:py-4 text-base sm:text-lg font-medium transition-all relative ${
                 activeTab === 'blog'
                   ? 'text-blue-600 dark:text-blue-400'
                   : 'text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
@@ -97,7 +97,7 @@ export default function BlogCertificationSection() {
             </button>
             <button
               onClick={() => setActiveTab('certifications')}
-              className={`px-10 py-4 text-lg font-medium transition-all relative ${
+              className={`flex-1 px-6 sm:px-10 py-3 sm:py-4 text-base sm:text-lg font-medium transition-all relative ${
                 activeTab === 'certifications'
                   ? 'text-blue-600 dark:text-blue-400'
                   : 'text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
@@ -111,34 +111,34 @@ export default function BlogCertificationSection() {
           </div>
         </div>
 
-        {/* Blog Posts Tab */}
+        {/* Blog Posts Tab - Mobile Responsive */}
         {activeTab === 'blog' && (
-          <div className="space-y-20">
-            {/* Featured Article */}
+          <div className="space-y-16 sm:space-y-20">
+            {/* Featured Article - Mobile Responsive */}
             {blogPosts.filter(post => post.featured).length > 0 && (
-              <article className="border-b border-slate-100 dark:border-slate-800 pb-20">
-                <div className="space-y-8">
-                  <div className="space-y-6">
-                    <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 leading-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
+              <article className="border-b border-slate-100 dark:border-slate-800 pb-16 sm:pb-20">
+                <div className="space-y-6 sm:space-y-8">
+                  <div className="space-y-4 sm:space-y-6">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 leading-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
                       {blogPosts.filter(post => post.featured)[0].title}
                     </h1>
-                    <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
                       {blogPosts.filter(post => post.featured)[0].excerpt}
                     </p>
                   </div>
                   
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4 text-sm text-slate-500 dark:text-slate-400">
-                      <span className="font-medium">{blogPosts.filter(post => post.featured)[0].title}</span>
-                      <span>·</span>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-slate-500 dark:text-slate-400">
+                      <span className="font-medium">{blogPosts.filter(post => post.featured)[0].category}</span>
+                      <span className="hidden sm:inline">·</span>
                       <span>{formatDate(blogPosts.filter(post => post.featured)[0].date)}</span>
-                      <span>·</span>
+                      <span className="hidden sm:inline">·</span>
                       <span>{blogPosts.filter(post => post.featured)[0].readTime} min read</span>
                     </div>
                     
                     <a
                       href={`/blog/${blogPosts.filter(post => post.featured)[0].slug}`}
-                      className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group"
+                      className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group self-start"
                     >
                       <span>Read article</span>
                       <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
@@ -148,25 +148,25 @@ export default function BlogCertificationSection() {
               </article>
             )}
 
-            {/* All Articles */}
-            <div className="space-y-16">
+            {/* All Articles - Mobile Responsive */}
+            <div className="space-y-12 sm:space-y-16">
               {blogPosts.map((post) => (
                 <article key={post.id} className="group cursor-pointer">
                   <a href={`/blog/${post.slug}`} className="block">
-                    <div className="flex items-start space-x-8">
-                      <div className="flex-shrink-0 text-sm text-slate-400 dark:text-slate-600 pt-1 w-16">
+                    <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-8">
+                      <div className="flex-shrink-0 text-sm text-slate-400 dark:text-slate-600 sm:pt-1 sm:w-16 order-2 sm:order-1">
                         {formatDateShort(post.date)}
                       </div>
                       
-                      <div className="flex-grow space-y-3">
-                        <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
+                      <div className="flex-grow space-y-3 order-1 sm:order-2">
+                        <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
                           {post.title}
                         </h2>
-                        <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm sm:text-base">
                           {post.excerpt}
                         </p>
-                        <div className="flex items-center space-x-3 text-sm text-slate-500 dark:text-slate-400">
-                          <span className="px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-sm text-slate-500 dark:text-slate-400">
+                          <span className="px-2 sm:px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs">
                             {post.category}
                           </span>
                           <span>{post.readTime} min read</span>
@@ -178,8 +178,8 @@ export default function BlogCertificationSection() {
               ))}
             </div>
 
-            {/* View All */}
-            <div className="text-center pt-12">
+            {/* View All - Mobile Responsive */}
+            <div className="text-center pt-8 sm:pt-12">
               <a
                 href="/blog"
                 className="inline-flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors group"
@@ -191,23 +191,23 @@ export default function BlogCertificationSection() {
           </div>
         )}
 
-        {/* Certifications Tab */}
+        {/* Certifications Tab - Mobile Responsive */}
         {activeTab === 'certifications' && (
-          <div className="space-y-12">
+          <div className="space-y-8 sm:space-y-12">
             {certifications.map((cert) => (
-              <div key={cert.id} className="border-l-2 border-blue-200 dark:border-blue-800 pl-10 pb-12 relative">
+              <div key={cert.id} className="border-l-2 border-blue-200 dark:border-blue-800 pl-6 sm:pl-10 pb-8 sm:pb-12 relative">
                 {/* Timeline dot */}
                 <div className="absolute left-0 w-3 h-3 bg-blue-500 dark:bg-blue-400 rounded-full transform -translate-x-1.5 mt-1"></div>
                 
-                <div className="space-y-4">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-3">
-                      <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                    <div className="space-y-2 sm:space-y-3">
+                      <h3 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-slate-100">
                         {cert.title}
                       </h3>
                       <div className="flex items-center space-x-2 text-slate-600 dark:text-slate-400">
-                        <Award size={16} className="text-blue-500" />
-                        <span>{cert.issuer}</span>
+                        <Award size={16} className="text-blue-500 flex-shrink-0" />
+                        <span className="text-sm sm:text-base">{cert.issuer}</span>
                       </div>
                       <div className="text-sm text-slate-500 dark:text-slate-400">
                         {cert.date}
@@ -219,7 +219,7 @@ export default function BlogCertificationSection() {
                         href={cert.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center space-x-1 text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors text-sm"
+                        className="flex items-center space-x-1 text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors text-sm self-start"
                       >
                         <span>View</span>
                         <ExternalLink size={14} />

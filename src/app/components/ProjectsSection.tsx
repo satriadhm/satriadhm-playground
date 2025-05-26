@@ -1,23 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Github, ExternalLink, Star, GitFork, Calendar, Award, Eye } from 'lucide-react';
+import { Github, ExternalLink, Star, GitFork, Calendar, Award, Eye, X } from 'lucide-react';
 import Image from 'next/image';
 import { projects } from '@/constants/data';
+import { GitHubRepo } from '@/types';
 
-interface GitHubRepo {
-  id: number;
-  name: string;
-  description: string;
-  html_url: string;
-  homepage?: string;
-  stargazers_count: number;
-  forks_count: number;
-  language: string;
-  topics: string[];
-  updated_at: string;
-  created_at: string;
-}
 
 export default function ProjectsSection() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -146,25 +134,25 @@ export default function ProjectsSection() {
   };
 
   return (
-    <section id="projects" className="py-20 bg-slate-50 dark:bg-slate-900">
+    <section id="projects" className="py-16 sm:py-20 bg-slate-50 dark:bg-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+        {/* Section Header - Mobile Responsive */}
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3 sm:mb-4">
             Featured Projects
           </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto px-4">
             A collection of projects showcasing my technical skills and problem-solving abilities, 
             ranging from blockchain innovations to AR-based educational platforms and social impact solutions.
           </p>
         </div>
 
-        {/* GitHub Integration Toggle */}
-        <div className="flex justify-center mb-8">
-          <div className="flex bg-white dark:bg-slate-800 rounded-lg p-1 shadow-sm border border-slate-200 dark:border-slate-700">
+        {/* GitHub Integration Toggle - Mobile Responsive */}
+        <div className="flex justify-center mb-6 sm:mb-8 px-4">
+          <div className="flex bg-white dark:bg-slate-800 rounded-lg p-1 shadow-sm border border-slate-200 dark:border-slate-700 w-full max-w-md">
             <button
               onClick={() => setShowGithubRepos(false)}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+              className={`flex-1 px-3 sm:px-4 py-2 sm:py-3 rounded-md text-sm font-medium transition-all ${
                 !showGithubRepos
                   ? 'bg-slate-900 text-white shadow-sm dark:bg-slate-600'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
@@ -179,7 +167,7 @@ export default function ProjectsSection() {
                   fetchGitHubRepos();
                 }
               }}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center space-x-2 ${
+              className={`flex-1 px-3 sm:px-4 py-2 sm:py-3 rounded-md text-sm font-medium transition-all flex items-center justify-center space-x-2 ${
                 showGithubRepos
                   ? 'bg-slate-900 text-white shadow-sm dark:bg-slate-600'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
@@ -194,35 +182,42 @@ export default function ProjectsSection() {
         {/* Featured Projects */}
         {!showGithubRepos && (
           <>
-            {/* Category Filter */}
-            <div className="flex flex-wrap justify-center gap-2 mb-12">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all border ${
-                    selectedCategory === category
-                      ? 'bg-slate-900 text-white shadow-sm border-slate-900 dark:bg-slate-600 dark:border-slate-600'
-                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
-                  }`}
-                >
-                  {category === 'all' ? 'All Projects' : category}
-                  {category !== 'all' && (
-                    <span className="ml-2 text-xs bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-1 rounded-full">
-                      {projects.filter(p => p.category === category).length}
-                    </span>
-                  )}
-                </button>
-              ))}
+            {/* Category Filter - Mobile Responsive */}
+            <div className="mb-8 sm:mb-12 px-4">
+              {/* Mobile: Horizontal scroll */}
+              <div className="overflow-x-auto pb-2">
+                <div className="flex space-x-2 min-w-max">
+                  {categories.map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-full text-sm font-medium transition-all border whitespace-nowrap ${
+                        selectedCategory === category
+                          ? 'bg-slate-900 text-white shadow-sm border-slate-900 dark:bg-slate-600 dark:border-slate-600'
+                          : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
+                      }`}
+                    >
+                      <span>
+                        {category === 'all' ? 'All Projects' : category}
+                      </span>
+                      {category !== 'all' && (
+                        <span className="text-xs bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.5 rounded-full">
+                          {projects.filter(p => p.category === category).length}
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            {/* Featured Projects Showcase */}
-            <div className="grid md:grid-cols-2 gap-8 mb-16">
+            {/* Featured Projects Showcase - Mobile Responsive */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12 sm:mb-16">
               {featuredProjects.slice(0, 2).map((project) => (
                 <div key={project.id} className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300 group overflow-hidden">
-                  {/* Project Image */}
+                  {/* Project Image - Mobile Responsive */}
                   {project.images && project.images.length > 0 && (
-                    <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800">
+                    <div className="relative h-40 sm:h-48 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800">
                       <Image
                         src={project.images[0]}
                         alt={`${project.title} showcase`}
@@ -234,9 +229,9 @@ export default function ProjectsSection() {
                     </div>
                   )}
                   
-                  <div className="p-8 space-y-6">
-                    <div className="flex items-start justify-between">
-                      <span className={`px-3 py-2 rounded-lg text-sm font-medium border ${getCategoryColor(project.category)}`}>
+                  <div className="p-6 sm:p-8 space-y-4 sm:space-y-6">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                      <span className={`self-start px-3 py-2 rounded-lg text-sm font-medium border ${getCategoryColor(project.category)}`}>
                         {project.category}
                       </span>
                       <div className="flex items-center space-x-2">
@@ -273,17 +268,17 @@ export default function ProjectsSection() {
                     </div>
 
                     <div>
-                      <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                         {project.title}
                       </h3>
-                      <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                      <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm sm:text-base">
                         {project.description}
                       </p>
                     </div>
 
-                    {/* Achievements */}
+                    {/* Achievements - Mobile Responsive */}
                     {project.achievements && project.achievements.length > 0 && (
-                      <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                      <div className="bg-blue-50 dark:bg-blue-900/20 p-3 sm:p-4 rounded-lg border border-blue-200 dark:border-blue-800">
                         <div className="flex items-center space-x-2 mb-2">
                           <Award size={16} className="text-blue-600 dark:text-blue-400" />
                           <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">Key Achievements</span>
@@ -300,7 +295,7 @@ export default function ProjectsSection() {
                       {project.technologies.map((tech, index) => (
                         <span
                           key={index}
-                          className="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm rounded-md border border-slate-200 dark:border-slate-600"
+                          className="px-2 sm:px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs sm:text-sm rounded-md border border-slate-200 dark:border-slate-600"
                         >
                           {tech}
                         </span>
@@ -311,15 +306,15 @@ export default function ProjectsSection() {
               ))}
             </div>
 
-            {/* All Projects Grid */}
+            {/* All Projects Grid - Mobile Responsive */}
             <div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-8">
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 sm:mb-8 px-4">
                 {selectedCategory === 'all' ? 'All Projects' : `${selectedCategory} Projects`}
               </h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {filteredProjects.map((project) => (
                   <div key={project.id} className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all duration-300 group overflow-hidden">
-                    {/* Project Image */}
+                    {/* Project Image - Mobile Responsive */}
                     {project.images && project.images.length > 0 && (
                       <div className="relative h-32 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800">
                         <Image
@@ -327,14 +322,14 @@ export default function ProjectsSection() {
                           alt={`${project.title} preview`}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
                       </div>
                     )}
                     
-                    <div className="p-6 space-y-4">
-                      <div className="flex items-start justify-between">
-                        <span className={`px-2 py-1 rounded-md text-xs font-medium border ${getCategoryColor(project.category)}`}>
+                    <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
+                        <span className={`self-start px-2 py-1 rounded-md text-xs font-medium border ${getCategoryColor(project.category)}`}>
                           {project.category}
                         </span>
                         <div className="flex items-center space-x-1">
@@ -364,10 +359,10 @@ export default function ProjectsSection() {
                       </div>
 
                       <div>
-                        <h4 className="font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        <h4 className="font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors text-sm sm:text-base">
                           {project.title}
                         </h4>
-                        <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
+                        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
                           {project.description}
                         </p>
                       </div>
@@ -395,7 +390,7 @@ export default function ProjectsSection() {
           </>
         )}
 
-        {/* GitHub Repos */}
+        {/* GitHub Repos - Mobile Responsive */}
         {showGithubRepos && (
           <div>
             {isLoadingGithub ? (
@@ -405,9 +400,9 @@ export default function ProjectsSection() {
               </div>
             ) : (
               <div className="space-y-6">
-                {/* Search and Stats Header */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                  <div className="flex-1 max-w-md">
+                {/* Search and Stats Header - Mobile Responsive */}
+                <div className="flex flex-col gap-4 px-4">
+                  <div className="w-full">
                     <div className="relative">
                       <input
                         type="text"
@@ -424,25 +419,25 @@ export default function ProjectsSection() {
                     </div>
                   </div>
                   
-                  <div className="text-sm text-slate-600 dark:text-slate-400">
+                  <div className="text-sm text-slate-600 dark:text-slate-400 text-center">
                     Showing {filteredGithubRepos.length > 0 ? startRepo : 0}-{endRepo} of {filteredGithubRepos.length} repositories
                     {searchQuery && (
-                      <span className="ml-2">
+                      <span className="block mt-1">
                         • Filtered from {totalRepos} total
                       </span>
                     )}
                   </div>
                 </div>
 
-                {/* Search Results Info */}
+                {/* Search Results Info - Mobile Responsive */}
                 {searchQuery && (
-                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                    <div className="flex items-center justify-between">
+                  <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mx-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div className="flex items-center space-x-2">
-                        <svg className="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
-                        <span className="text-blue-700 dark:text-blue-300 font-medium">
+                        <span className="text-blue-700 dark:text-blue-300 font-medium text-sm">
                           Found {filteredGithubRepos.length} repositories matching &quot;{searchQuery}&quot;
                         </span>
                       </div>
@@ -456,7 +451,7 @@ export default function ProjectsSection() {
                   </div>
                 )}
 
-                {/* Repositories Grid */}
+                {/* Repositories Grid - Mobile Responsive */}
                 {filteredGithubRepos.length === 0 ? (
                   <div className="text-center py-12">
                     <div className="text-slate-500 dark:text-slate-400">
@@ -476,18 +471,18 @@ export default function ProjectsSection() {
                     </div>
                   </div>
                 ) : (
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {githubRepos.map((repo) => (
-                      <div key={repo.id} className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all duration-300 group">
-                        <div className="space-y-4">
+                      <div key={repo.id} className="bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all duration-300 group">
+                        <div className="space-y-3 sm:space-y-4">
                           <div className="flex items-start justify-between">
                             <div className="flex items-center space-x-2">
-                              <Github size={20} className="text-slate-500" />
-                              <span className="text-sm text-slate-500 dark:text-slate-400">
+                              <Github size={20} className="text-slate-500 flex-shrink-0" />
+                              <span className="text-sm text-slate-500 dark:text-slate-400 truncate">
                                 {repo.language || 'Repository'}
                               </span>
                             </div>
-                            <div className="flex items-center space-x-3 text-sm text-slate-500 dark:text-slate-400">
+                            <div className="flex items-center space-x-2 sm:space-x-3 text-sm text-slate-500 dark:text-slate-400">
                               <div className="flex items-center space-x-1">
                                 <Star size={14} />
                                 <span>{repo.stargazers_count}</span>
@@ -500,10 +495,10 @@ export default function ProjectsSection() {
                           </div>
 
                           <div>
-                            <h4 className="font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                            <h4 className="font-bold text-slate-900 dark:text-slate-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors text-sm sm:text-base">
                               {repo.name.replace(/-/g, ' ').replace(/_/g, ' ')}
                             </h4>
-                            <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
+                            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
                               {repo.description || 'No description available'}
                             </p>
                           </div>
@@ -547,14 +542,14 @@ export default function ProjectsSection() {
                   </div>
                 )}
 
-                {/* Pagination */}
+                {/* Pagination - Mobile Responsive */}
                 {totalPages > 1 && (
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8">
+                  <div className="flex flex-col items-center gap-4 mt-8 px-4">
                     <div className="text-sm text-slate-600 dark:text-slate-400">
                       Page {currentPage} of {totalPages}
                     </div>
                     
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center justify-center gap-2 w-full max-w-sm">
                       <button
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
@@ -563,17 +558,17 @@ export default function ProjectsSection() {
                         Previous
                       </button>
                       
-                      <div className="flex items-center space-x-1">
-                        {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                      <div className="flex items-center space-x-1 overflow-x-auto">
+                        {Array.from({ length: Math.min(3, totalPages) }, (_, i) => {
                           let pageNum;
-                          if (totalPages <= 5) {
+                          if (totalPages <= 3) {
                             pageNum = i + 1;
-                          } else if (currentPage <= 3) {
+                          } else if (currentPage <= 2) {
                             pageNum = i + 1;
-                          } else if (currentPage >= totalPages - 2) {
-                            pageNum = totalPages - 4 + i;
+                          } else if (currentPage >= totalPages - 1) {
+                            pageNum = totalPages - 2 + i;
                           } else {
-                            pageNum = currentPage - 2 + i;
+                            pageNum = currentPage - 1 + i;
                           }
                           
                           return (
@@ -607,14 +602,14 @@ export default function ProjectsSection() {
           </div>
         )}
 
-        {/* Project Detail Modal */}
+        {/* Project Detail Modal - Mobile Responsive */}
         {selectedProject && (
-          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 dark:border-slate-700 my-4">
-              {/* Modal Header */}
-              <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-6 flex items-center justify-between z-10 rounded-t-2xl">
-                <div>
-                  <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4 overflow-y-auto">
+            <div className="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 dark:border-slate-700 my-2 sm:my-4">
+              {/* Modal Header - Mobile Responsive */}
+              <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-4 sm:p-6 flex items-start sm:items-center justify-between z-10 rounded-t-2xl">
+                <div className="flex-1 min-w-0 mr-4">
+                  <h3 className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-slate-100 truncate">
                     {selectedProject.title}
                   </h3>
                   <span className={`inline-block px-3 py-1 rounded-lg text-sm font-medium border mt-2 ${getCategoryColor(selectedProject.category)}`}>
@@ -623,29 +618,29 @@ export default function ProjectsSection() {
                 </div>
                 <button
                   onClick={() => setSelectedProject(null)}
-                  className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700"
+                  className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 flex-shrink-0"
                 >
-                  ✕
+                  <X size={20} />
                 </button>
               </div>
 
-              {/* Modal Content */}
-              <div className="p-6 space-y-8">
+              {/* Modal Content - Mobile Responsive */}
+              <div className="p-4 sm:p-6 space-y-6 sm:space-y-8">
                 {/* Project Image */}
                 {selectedProject.images && selectedProject.images.length > 0 && (
-                  <div className="relative bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-xl overflow-hidden p-4">
-                    <div className="relative w-full" style={{ minHeight: '300px', maxHeight: '500px' }}>
+                  <div className="relative bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-xl overflow-hidden p-3 sm:p-4">
+                    <div className="relative w-full" style={{ minHeight: '200px', maxHeight: '400px' }}>
                       <Image
                         src={selectedProject.images[0]}
                         alt={`${selectedProject.title} showcase`}
                         width={800}
                         height={400}
                         className="object-contain w-full h-full rounded-lg"
-                        sizes="800px"
+                        sizes="(max-width: 768px) 100vw, 800px"
                         style={{ 
                           maxWidth: '100%',
                           height: 'auto',
-                          maxHeight: '500px'
+                          maxHeight: '400px'
                         }}
                       />
                     </div>
@@ -654,10 +649,10 @@ export default function ProjectsSection() {
 
                 {/* Description */}
                 <div>
-                  <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                  <h4 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3 sm:mb-4">
                     Project Description
                   </h4>
-                  <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                  <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
                     {selectedProject.description}
                   </p>
                 </div>
@@ -665,14 +660,14 @@ export default function ProjectsSection() {
                 {/* All Achievements */}
                 {selectedProject.achievements && selectedProject.achievements.length > 0 && (
                   <div>
-                    <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center">
-                      <Award size={20} className="mr-2 text-blue-600 dark:text-blue-400" />
+                    <h4 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3 sm:mb-4 flex items-center">
+                      <Award size={18} className="mr-2 text-blue-600 dark:text-blue-400" />
                       Key Achievements
                     </h4>
-                    <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       {selectedProject.achievements.map((achievement: string, achIndex: number) => (
-                        <div key={achIndex} className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-700">
-                          <p className="text-sm text-blue-700 dark:text-blue-300 font-medium">
+                        <div key={achIndex} className="bg-blue-50 dark:bg-blue-900/20 p-3 sm:p-4 rounded-lg border border-blue-200 dark:border-blue-700">
+                          <p className="text-xs sm:text-sm text-blue-700 dark:text-blue-300 font-medium">
                             {achievement}
                           </p>
                         </div>
@@ -683,14 +678,14 @@ export default function ProjectsSection() {
 
                 {/* Technologies */}
                 <div>
-                  <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                  <h4 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3 sm:mb-4">
                     Technologies Used
                   </h4>
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
                     {selectedProject.technologies.map((tech: string, techIndex: number) => (
                       <span
                         key={techIndex}
-                        className="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg border border-slate-200 dark:border-slate-600 font-medium"
+                        className="px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg border border-slate-200 dark:border-slate-600 font-medium text-sm"
                       >
                         {tech}
                       </span>
@@ -699,13 +694,13 @@ export default function ProjectsSection() {
                 </div>
 
                 {/* Links */}
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                   {selectedProject.githubUrl && (
                     <a
                       href={selectedProject.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center space-x-2 px-6 py-3 bg-slate-900 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-500 text-white rounded-lg transition-colors font-medium"
+                      className="flex items-center justify-center space-x-2 px-6 py-3 bg-slate-900 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-500 text-white rounded-lg transition-colors font-medium"
                     >
                       <Github size={20} />
                       <span>View Code</span>
@@ -716,7 +711,7 @@ export default function ProjectsSection() {
                       href={selectedProject.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center space-x-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg transition-colors font-medium"
+                      className="flex items-center justify-center space-x-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg transition-colors font-medium"
                     >
                       <ExternalLink size={20} />
                       <span>View Live</span>

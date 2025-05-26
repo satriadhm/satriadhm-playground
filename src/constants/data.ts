@@ -476,3 +476,12 @@ export const certifications: Certification[] = [
     credentialId: 'SEDP-2023'
   }
 ];
+
+export const categories = [
+  'Trending Now',
+  'Spanish Chronicles',
+  'Euro Adventures', 
+  'Summer Escapes',
+  'Cultural Moments',
+  'Musical Performances'
+];
