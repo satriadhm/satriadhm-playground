@@ -66,3 +66,17 @@ export interface Skill {
     bio: string;
     profileImage?: string;
   }
+
+  export interface LifeEvent {
+  id: string;
+  year: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  location: string;
+  type: 'travel' | 'cultural' | 'adventure' | 'music' | 'lifestyle';
+  images: string[];
+  rating: number;
+  category: string;
+  highlight?: boolean;
+}

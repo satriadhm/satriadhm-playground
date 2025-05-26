@@ -1,4 +1,4 @@
-import { PersonalInfo, Experience, TechStack, Project, Certification } from '@/types';
+import { PersonalInfo, Experience, TechStack, Project, Certification, LifeEvent } from '@/types';
 
 export const personalInfo: PersonalInfo = {
   name: 'Glorious Satria',
@@ -33,6 +33,194 @@ export const techStack: TechStack[] = [
   { name: 'AWS', proficiency: 3 },
   { name: 'GraphQL', proficiency: 4 }
 ];
+
+export const lifeEvents: LifeEvent[] = [
+  {
+    id: 'granada-life-2024',
+    year: '2024',
+    title: 'Granada Chronicles',
+    subtitle: 'Living the Andalusian Dream as an Exchange Student',
+    description: 'An immersive documentary series following my daily life in the enchanting city of Granada, Spain. From morning coffee at local cafés to evening strolls through the historic Albaicín, experience the authentic Spanish lifestyle through the eyes of an international student.',
+    location: 'Granada, Spain',
+    type: 'lifestyle',
+    images: [
+      '/images/journey/granada-life-hero.jpg',
+      '/images/journey/granada-morning-coffee.jpg',
+      '/images/journey/granada-alhambra-sunset.jpg',
+      '/images/journey/granada-tapas-night.jpg',
+      '/images/journey/granada-flamenco-show.jpg',
+      '/images/journey/granada-friends-plaza.jpg',
+      '/images/journey/granada-university-life.jpg',
+      '/images/journey/granada-albaicin-walk.jpg'
+    ],
+    rating: 9.8,
+    category: 'Spanish Chronicles',
+    highlight: true
+  },
+  {
+    id: 'culturise-granada-2024',
+    year: '2024',
+    title: 'Culturise: St.Cruz Stories',
+    subtitle: 'Cultural Fusion at Granada\'s International Dormitory',
+    description: 'A vibrant cultural celebration series documenting the incredible Culturise event at St.Cruz dormitory. Watch as students from around the world unite to share their heritage through food, music, dance, and traditions.',
+    location: 'St.Cruz Dorm, Granada',
+    type: 'cultural',
+    images: [
+      '/images/journey/culturise-hero.jpg',
+      '/images/journey/culturise-preparation.jpg',
+      '/images/journey/culturise-indonesian-booth.jpg',
+      '/images/journey/culturise-international-food.jpg',
+      '/images/journey/culturise-traditional-dance.jpg',
+      '/images/journey/culturise-group-photo.jpg',
+      '/images/journey/culturise-night-celebration.jpg'
+    ],
+    rating: 9.5,
+    category: 'Cultural Moments',
+    highlight: true
+  },
+  {
+    id: 'asean-night-2024',
+    year: '2024',
+    title: 'ASEAN Night: The Performance',
+    subtitle: 'Rocking the Stage with My Band in Granada',
+    description: 'A concert documentary capturing an unforgettable night where music transcended borders. Follow the behind-the-scenes preparation, nervous energy, and electrifying performance as my band takes the stage at ASEAN Night.',
+    location: 'Granada, Spain',
+    type: 'music',
+    images: [
+      '/images/journey/asean-night-hero.jpg',
+      '/images/journey/asean-night-rehearsal.jpg',
+      '/images/journey/asean-night-backstage.jpg',
+      '/images/journey/asean-night-performance.jpg',
+      '/images/journey/asean-night-crowd.jpg',
+      '/images/journey/asean-night-band-photo.jpg',
+      '/images/journey/asean-night-celebration.jpg'
+    ],
+    rating: 9.7,
+    category: 'Musical Performances',
+    highlight: true
+  },
+  {
+    id: 'paris-adventure-2024',
+    year: '2024',
+    title: 'Paris in One Day',
+    subtitle: 'The Ultimate Parisian Adventure from Dawn to Dusk',
+    description: 'An ambitious travel documentary following an incredible 24-hour journey through the City of Light. From sunrise at the Eiffel Tower to midnight along the Seine, experience the whirlwind adventure of seeing Paris\' greatest treasures.',
+    location: 'Paris, France',
+    type: 'travel',
+    images: [
+      '/images/journey/paris-hero.jpg',
+      '/images/journey/paris-eiffel-sunrise.jpg',
+      '/images/journey/paris-louvre-museum.jpg',
+      '/images/journey/paris-notre-dame.jpg',
+      '/images/journey/paris-cafe-breakfast.jpg',
+      '/images/journey/paris-seine-sunset.jpg',
+      '/images/journey/paris-montmartre.jpg'
+    ],
+    rating: 9.4,
+    category: 'Euro Adventures',
+    highlight: true
+  },
+  {
+    id: 'austria-adventure-2024',
+    year: '2024',
+    title: 'Austrian Alpine Magic',
+    subtitle: 'One Day in Austria\'s Breathtaking Landscapes',
+    description: 'A stunning visual journey through Austria\'s magnificent alpine scenery and charming villages. This travel special captures the essence of Austrian culture, from traditional coffee houses in Salzburg to panoramic mountain views.',
+    location: 'Austria',
+    type: 'adventure',
+    images: [
+      '/images/journey/austria-hero.jpg',
+      '/images/journey/austria-salzburg-old-town.jpg',
+      '/images/journey/austria-alpine-views.jpg',
+      '/images/journey/austria-traditional-cafe.jpg',
+      '/images/journey/austria-mountain-lake.jpg',
+      '/images/journey/austria-village-charm.jpg'
+    ],
+    rating: 9.2,
+    category: 'Euro Adventures'
+  },
+  {
+    id: 'interlaken-adventure-2024',
+    year: '2024',
+    title: 'Swiss Paradise: Interlaken',
+    subtitle: 'Adventure Capital of Switzerland in 24 Hours',
+    description: 'An adrenaline-pumping adventure series set in the heart of the Swiss Alps. Experience the thrill of paragliding over turquoise lakes, exploring charming mountain villages, and witnessing some of the most spectacular alpine scenery on Earth.',
+    location: 'Interlaken, Switzerland',
+    type: 'adventure',
+    images: [
+      '/images/journey/interlaken-hero.jpg',
+      '/images/journey/interlaken-paragliding.jpg',
+      '/images/journey/interlaken-lake-view.jpg',
+      '/images/journey/interlaken-jungfrau.jpg',
+      '/images/journey/interlaken-village.jpg',
+      '/images/journey/interlaken-adventure-sports.jpg'
+    ],
+    rating: 9.6,
+    category: 'Euro Adventures',
+    highlight: true
+  },
+  {
+    id: 'munich-adventure-2024',
+    year: '2024',
+    title: 'Munich Memories',
+    subtitle: 'Bavarian Culture and City Charm in One Day',
+    description: 'A delightful cultural exploration of Munich\'s rich Bavarian heritage. From traditional beer gardens and historic architecture to modern city life, this travel documentary showcases the perfect blend of old and new that makes Munich uniquely charming.',
+    location: 'Munich, Germany',
+    type: 'cultural',
+    images: [
+      '/images/journey/munich-hero.jpg',
+      '/images/journey/munich-marienplatz.jpg',
+      '/images/journey/munich-beer-garden.jpg',
+      '/images/journey/munich-neuschwanstein.jpg',
+      '/images/journey/munich-old-town.jpg',
+      '/images/journey/munich-traditional-food.jpg'
+    ],
+    rating: 8.9,
+    category: 'Euro Adventures'
+  },
+  {
+    id: 'milan-summer-2024',
+    year: '2024',
+    title: 'Milan Summer Vibes',
+    subtitle: 'Fashion Capital Adventures Under the Italian Sun',
+    description: 'A stylish summer adventure through Milan\'s fashion districts, hidden gems, and vibrant neighborhoods. This travel series captures the essence of Italian summer living, from morning espresso rituals to evening aperitivo culture.',
+    location: 'Milan, Italy',
+    type: 'lifestyle',
+    images: [
+      '/images/journey/milan-hero.jpg',
+      '/images/journey/milan-duomo-cathedral.jpg',
+      '/images/journey/milan-fashion-district.jpg',
+      '/images/journey/milan-aperitivo-time.jpg',
+      '/images/journey/milan-brera-district.jpg',
+      '/images/journey/milan-summer-streets.jpg'
+    ],
+    rating: 9.1,
+    category: 'Summer Escapes',
+    highlight: true
+  },
+  {
+    id: 'lake-como-summer-2024',
+    year: '2024',
+    title: 'Lake Como Dreams',
+    subtitle: 'Italian Riviera Paradise and Luxury Living',
+    description: 'A breathtaking summer escape to one of Italy\'s most romantic destinations. This luxury travel series showcases the stunning beauty of Lake Como, from villa gardens and boat rides to lakeside dining and sunset views.',
+    location: 'Lake Como, Italy',
+    type: 'travel',
+    images: [
+      '/images/journey/como-hero.jpg',
+      '/images/journey/como-boat-ride.jpg',
+      '/images/journey/como-villa-gardens.jpg',
+      '/images/journey/como-bellagio-town.jpg',
+      '/images/journey/como-sunset-dinner.jpg',
+      '/images/journey/como-mountain-views.jpg',
+      '/images/journey/como-luxury-hotels.jpg'
+    ],
+    rating: 9.8,
+    category: 'Summer Escapes',
+    highlight: true
+  }
+];
+
 
 export const experiences: Experience[] = [
   {
