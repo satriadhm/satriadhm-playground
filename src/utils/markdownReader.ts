@@ -3,11 +3,7 @@ import { BlogPost } from '@/types';
 
 // Blog file registry - tambahkan file .md baru di sini
 export const BLOG_FILES = [
-  'microservices-go-postgresql.md',
-  'career-journey-intern-fullstack.md',
-  'graphql-subscriptions-realtime.md',
-  // Tambahkan file .md baru di sini
-  // 'contoh-blog-baru.md',
+    'null-go-sqlite3.md',
 ];
 
 // Utility functions
