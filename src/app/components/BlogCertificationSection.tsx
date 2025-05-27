@@ -1,19 +1,37 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState } from 'react';
-import { ExternalLink, Award, ChevronRight, Clock, User, Calendar, Tag } from 'lucide-react';
+import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState, useEffect } from 'react';
+import { ExternalLink, Award, ChevronRight, Clock, User, Calendar, Tag, RefreshCw } from 'lucide-react';
 import { certifications } from '@/constants/data';
-import { blogPosts } from '../../constants/blogData';
-import { getFeaturedPosts } from '@/constants/blogData';
+import { loadBlogPosts, getFeaturedPosts } from '@/constants/blogData';
 import { parseMarkdown } from '@/utils/blog';
+import { BlogPost } from '@/types';
 
 export default function BlogCertificationSection() {
   const [activeTab, setActiveTab] = useState<'blog' | 'certifications'>('blog');
   const [selectedPost, setSelectedPost] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
 
-  const featuredPosts = getFeaturedPosts();
-  const allPosts = blogPosts;
+  // Load blog posts saat komponen mount
+  useEffect(() => {
+    const initializeBlogPosts = async () => {
+      setIsLoading(true);
+      try {
+        const loadedPosts = await loadBlogPosts();
+        setPosts(loadedPosts);
+        setFeaturedPosts(getFeaturedPosts());
+      } catch (error) {
+        console.error('Error loading blog posts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeBlogPosts();
+  }, []);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -30,7 +48,20 @@ export default function BlogCertificationSection() {
     });
   };
 
-  const selectedPostData = selectedPost ? allPosts.find((p: { id: string; }) => p.id === selectedPost) : null;
+  const selectedPostData = selectedPost ? posts.find((p: { id: string; }) => p.id === selectedPost) : null;
+
+  const handleRefresh = async () => {
+    setIsLoading(true);
+    try {
+      const loadedPosts = await loadBlogPosts();
+      setPosts(loadedPosts);
+      setFeaturedPosts(getFeaturedPosts());
+    } catch (error) {
+      console.error('Error reloading blog posts:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <section id="blog-certifications" className="py-16 sm:py-24 bg-white dark:bg-slate-950">
@@ -80,8 +111,29 @@ export default function BlogCertificationSection() {
         {/* Blog Posts Tab - Mobile Responsive */}
         {activeTab === 'blog' && (
           <div className="space-y-16 sm:space-y-20">
+            {/* Loading State */}
+            {isLoading && (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-slate-600 dark:text-slate-400">Loading blog posts...</p>
+              </div>
+            )}
+
+            {/* Refresh Button */}
+            {!isLoading && (
+              <div className="flex justify-center mb-8">
+                <button
+                  onClick={handleRefresh}
+                  className="flex items-center space-x-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors border border-blue-200 dark:border-blue-700"
+                >
+                  <RefreshCw size={16} />
+                  <span>Refresh Posts</span>
+                </button>
+              </div>
+            )}
+
             {/* Featured Article - Mobile Responsive */}
-            {featuredPosts.length > 0 && (
+            {!isLoading && featuredPosts.length > 0 && (
               <article className="border-b border-slate-100 dark:border-slate-800 pb-16 sm:pb-20">
                 <div className="space-y-6 sm:space-y-8">
                   <div className="space-y-4 sm:space-y-6">
@@ -141,68 +193,85 @@ export default function BlogCertificationSection() {
             )}
 
             {/* All Articles - Mobile Responsive */}
-            <div className="space-y-12 sm:space-y-16">
-              {allPosts.map((post: { id: string | number | bigint | ((prevState: string | null) => string | null) | null | undefined; date: string; title: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; excerpt: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; category: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; readTime: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; author: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; tags: any[]; }) => (
-                <article key={String(post.id)} className="group cursor-pointer">
-                  <button
-                    onClick={() => setSelectedPost(post.id != null ? String(post.id) : null)}
-                    className="block w-full text-left"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-8">
-                      <div className="flex-shrink-0 text-sm text-slate-400 dark:text-slate-600 sm:pt-1 sm:w-16 order-2 sm:order-1">
-                        {formatDateShort(post.date)}
-                      </div>
-                      
-                      <div className="flex-grow space-y-3 order-1 sm:order-2">
-                        <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
-                          {post.title}
-                        </h2>
-                        <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm sm:text-base">
-                          {post.excerpt}
-                        </p>
-                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-sm text-slate-500 dark:text-slate-400">
-                          <span className="px-2 sm:px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs">
-                            {post.category}
-                          </span>
-                          <div className="flex items-center space-x-1">
-                            <Clock size={12} />
-                            <span>{post.readTime} min read</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <User size={12} />
-                            <span>{post.author}</span>
-                          </div>
+            {!isLoading && (
+              <div className="space-y-12 sm:space-y-16">
+                {posts.map((post: { id: string | number | bigint | ((prevState: string | null) => string | null) | null | undefined; date: string; title: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; excerpt: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; category: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; readTime: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; author: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; tags: any[]; }) => (
+                  <article key={String(post.id)} className="group cursor-pointer">
+                    <button
+                      onClick={() => setSelectedPost(post.id != null ? String(post.id) : null)}
+                      className="block w-full text-left"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-8">
+                        <div className="flex-shrink-0 text-sm text-slate-400 dark:text-slate-600 sm:pt-1 sm:w-16 order-2 sm:order-1">
+                          {formatDateShort(post.date)}
                         </div>
                         
-                        {/* Tags preview */}
-                        <div className="flex flex-wrap gap-1">
-                          {post.tags.slice(0, 3).map((tag: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined, index: Key | null | undefined) => (
-                            <span
-                              key={index}
-                              className="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-xs"
-                            >
-                              {tag}
+                        <div className="flex-grow space-y-3 order-1 sm:order-2">
+                          <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
+                            {post.title}
+                          </h2>
+                          <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm sm:text-base">
+                            {post.excerpt}
+                          </p>
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-sm text-slate-500 dark:text-slate-400">
+                            <span className="px-2 sm:px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs">
+                              {post.category}
                             </span>
-                          ))}
-                          {post.tags.length > 3 && (
-                            <span className="px-2 py-1 text-slate-500 dark:text-slate-500 text-xs">
-                              +{post.tags.length - 3} more
-                            </span>
-                          )}
+                            <div className="flex items-center space-x-1">
+                              <Clock size={12} />
+                              <span>{post.readTime} min read</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <User size={12} />
+                              <span>{post.author}</span>
+                            </div>
+                          </div>
+                          
+                          {/* Tags preview */}
+                          <div className="flex flex-wrap gap-1">
+                            {post.tags.slice(0, 3).map((tag: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined, index: Key | null | undefined) => (
+                              <span
+                                key={index}
+                                className="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-xs"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                            {post.tags.length > 3 && (
+                              <span className="px-2 py-1 text-slate-500 dark:text-slate-500 text-xs">
+                                +{post.tags.length - 3} more
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </button>
-                </article>
-              ))}
-            </div>
+                    </button>
+                  </article>
+                ))}
+              </div>
+            )}
+
+            {/* Empty State */}
+            {!isLoading && posts.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-slate-600 dark:text-slate-400 mb-4">No blog posts found.</p>
+                <button
+                  onClick={handleRefresh}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Try Again
+                </button>
+              </div>
+            )}
 
             {/* View All - Mobile Responsive */}
-            <div className="text-center pt-8 sm:pt-12">
-              <div className="inline-flex items-center space-x-2 text-blue-600 dark:text-blue-400 font-medium">
-                <span>Showing {allPosts.length} articles</span>
+            {!isLoading && posts.length > 0 && (
+              <div className="text-center pt-8 sm:pt-12">
+                <div className="inline-flex items-center space-x-2 text-blue-600 dark:text-blue-400 font-medium">
+                  <span>Showing {posts.length} articles</span>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
 
