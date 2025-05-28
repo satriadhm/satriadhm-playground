@@ -1,8 +1,10 @@
+// src/app/components/Footer.tsx (Updated)
 'use client';
 
 import { Github, Linkedin, Mail, ArrowUp, Heart, Code2 } from 'lucide-react';
 import Link from 'next/link';
 import { personalInfo } from '@/constants/data';
+import { FooterVisitorCounter } from './VisitorCounter';
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -100,6 +102,27 @@ export default function Footer() {
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   <span>Usually responds within 24 hours</span>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Visitor Counter Section - Mobile Responsive */}
+        <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-slate-200 dark:border-slate-800">
+          <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+            <div className="text-center sm:text-left">
+              <h4 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-2">
+                Portfolio Analytics
+              </h4>
+              <FooterVisitorCounter />
+            </div>
+            
+            <div className="text-center sm:text-right">
+              <div className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+                Thank you for visiting!
+              </div>
+              <div className="text-xs text-slate-400 dark:text-slate-500">
+                Data refreshes automatically
               </div>
             </div>
           </div>
