@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { TechStack } from '@/types';
 // Simple‑Icons via react-icons gives us pixel‑perfect brand marks without hand‑rolling SVG paths
 import {
@@ -79,6 +79,16 @@ export default function TechStackSlider({ techStack }: TechStackSliderProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
+  // Drag/Swipe state
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [dragOffset, setDragOffset] = useState(0);
+  const [currentTranslate, setCurrentTranslate] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
   // Check if mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -103,15 +113,147 @@ export default function TechStackSlider({ techStack }: TechStackSliderProps) {
     }
   }, [isMobile]);
 
-  const duplicated = [...techStack, ...techStack]; // infinite marquee
+  // Auto-play pause when dragging
+  useEffect(() => {
+    if (isDragging) {
+      setIsAutoPlaying(false);
+    } else {
+      // Resume auto-play after a delay
+      const timer = setTimeout(() => {
+        setIsAutoPlaying(true);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isDragging]);
+
+  // Mouse/Touch event handlers
+  const handleStart = useCallback((clientX: number, clientY: number) => {
+    setIsDragging(true);
+    setDragStart({ x: clientX, y: clientY });
+    setIsAutoPlaying(false);
+  }, []);
+
+  const handleMove = useCallback((clientX: number) => {
+    if (!isDragging) return;
+    
+    const deltaX = clientX - dragStart.x;
+    setDragOffset(deltaX);
+  }, [isDragging, dragStart.x]);
+
+  const handleEnd = useCallback(() => {
+    if (!isDragging) return;
+    
+    setIsDragging(false);
+    
+    // Calculate new position based on drag distance
+    const threshold = 100; // Minimum drag distance to trigger slide
+    const cardWidth = isMobile ? 120 : 176; // w-28 = 112px + margin, w-40 = 160px + margin
+    
+    if (Math.abs(dragOffset) > threshold) {
+      const direction = dragOffset > 0 ? 1 : -1;
+      const newTranslate = currentTranslate + (direction * cardWidth);
+      setCurrentTranslate(newTranslate);
+    }
+    
+    setDragOffset(0);
+    
+    // Resume auto-play after delay
+    setTimeout(() => {
+      setIsAutoPlaying(true);
+    }, 3000);
+  }, [isDragging, dragOffset, currentTranslate, isMobile]);
+
+  // Mouse events
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    handleStart(e.clientX, e.clientY);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    handleMove(e.clientX);
+  };
+
+  const handleMouseUp = () => {
+    handleEnd();
+  };
+
+  // Touch events
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    handleStart(touch.clientX, touch.clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    handleMove(touch.clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    e.preventDefault();
+    handleEnd();
+  };
+
+  // Global mouse events for drag continuation outside component
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      handleMove(e.clientX);
+    };
+
+    const handleGlobalMouseUp = () => {
+      handleEnd();
+    };
+
+    document.addEventListener('mousemove', handleGlobalMouseMove);
+    document.addEventListener('mouseup', handleGlobalMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', handleGlobalMouseMove);
+      document.removeEventListener('mouseup', handleGlobalMouseUp);
+    };
+  }, [isDragging, handleMove, handleEnd]);
+
+  const duplicated = [...techStack, ...techStack, ...techStack]; // More duplicates for smoother infinite scroll
+
+  // Calculate transform with drag offset
+  const getTransform = () => {
+    const baseTransform = isAutoPlaying ? 0 : currentTranslate;
+    return `translateX(${baseTransform + dragOffset}px)`;
+  };
 
   return (
     <>
       {/* Main Slider Container - Mobile Responsive */}
       <div className="relative w-full" style={{ minHeight: isMobile ? '140px' : '200px' }}>
         {/* Slider dengan overflow hidden HANYA pada sumbu X */}
-        <div style={{ overflowX: 'hidden', overflowY: 'visible' }}>
-          <div className={`flex ${isMobile ? 'animate-slide-infinite' : 'animate-slide-infinite hover:pause-animation'}`}>
+        <div 
+          ref={containerRef}
+          style={{ overflowX: 'hidden', overflowY: 'visible' }}
+          className="cursor-grab active:cursor-grabbing"
+        >
+          <div 
+            ref={sliderRef}
+            className={`flex select-none ${
+              isAutoPlaying && !isDragging
+                ? isMobile 
+                  ? 'animate-slide-infinite' 
+                  : 'animate-slide-infinite hover:pause-animation'
+                : ''
+            }`}
+            style={{
+              transform: !isAutoPlaying || isDragging ? getTransform() : undefined,
+              transition: isDragging ? 'none' : 'transform 0.3s ease-out',
+            }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={isDragging ? handleMouseMove : undefined}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             {duplicated.map((tech, i) => {
               const Icon = TechIcons[tech.name];
 
@@ -119,21 +261,33 @@ export default function TechStackSlider({ techStack }: TechStackSliderProps) {
                 <div
                   key={`${tech.name}-${i}`}
                   className="flex-shrink-0 mx-2 sm:mx-4"
-                  style={{ position: 'relative', zIndex: hovered === tech.name ? 9999 : 1 }}
-                  onMouseEnter={() => !isMobile && setHovered(tech.name)}
+                  style={{ 
+                    position: 'relative', 
+                    zIndex: hovered === tech.name ? 9999 : 1,
+                    pointerEvents: isDragging ? 'none' : 'auto'
+                  }}
+                  onMouseEnter={() => !isMobile && !isDragging && setHovered(tech.name)}
                   onMouseLeave={() => !isMobile && setHovered(null)}
-                  onClick={() => isMobile && setHovered(hovered === tech.name ? null : tech.name)}
+                  onClick={(e) => {
+                    if (isDragging || Math.abs(dragOffset) > 5) {
+                      e.preventDefault();
+                      return;
+                    }
+                    if (isMobile) {
+                      setHovered(hovered === tech.name ? null : tech.name);
+                    }
+                  }}
                 >
                   {/* CARD - Mobile Responsive */}
-                  <div className={`${isMobile ? 'w-28 h-20' : 'w-40 h-32'} bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center p-3 sm:p-4 cursor-pointer hover:scale-105 hover:border-blue-300 dark:hover:border-blue-600`}>
-                    <div className={`${isMobile ? 'w-8 h-8 mb-2' : 'w-12 h-12 mb-3'} flex items-center justify-center hover:scale-110 transition-transform`}>
+                  <div className={`${isMobile ? 'w-28 h-20' : 'w-40 h-32'} bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm border border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center p-3 sm:p-4 cursor-pointer hover:scale-105 hover:border-blue-300 dark:hover:border-blue-600 ${isDragging ? 'scale-100 cursor-grabbing' : ''}`}>
+                    <div className={`${isMobile ? 'w-8 h-8 mb-2' : 'w-12 h-12 mb-3'} flex items-center justify-center ${!isDragging ? 'hover:scale-110' : ''} transition-transform`}>
                       {Icon ? (
                         <Icon className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'}`} />
                       ) : (
                         <span className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold`}>{tech.name.charAt(0)}</span>
                       )}
                     </div>
-                    <h4 className={`font-semibold text-gray-900 dark:text-gray-100 text-center ${isMobile ? 'text-xs' : 'text-sm'} hover:text-blue-600 dark:hover:text-blue-400 transition-colors leading-tight`}>
+                    <h4 className={`font-semibold text-gray-900 dark:text-gray-100 text-center ${isMobile ? 'text-xs' : 'text-sm'} ${!isDragging ? 'hover:text-blue-600 dark:hover:text-blue-400' : ''} transition-colors leading-tight`}>
                       {tech.name}
                     </h4>
                   </div>
@@ -146,6 +300,18 @@ export default function TechStackSlider({ techStack }: TechStackSliderProps) {
         {/* FADE GRADIENTS - Mobile Responsive */}
         <div className={`absolute inset-y-0 left-0 ${isMobile ? 'w-12' : 'w-20'} bg-gradient-to-r from-slate-50 dark:from-slate-900 to-transparent pointer-events-none z-10`} />
         <div className={`absolute inset-y-0 right-0 ${isMobile ? 'w-12' : 'w-20'} bg-gradient-to-l from-slate-50 dark:from-slate-900 to-transparent pointer-events-none z-10`} />
+        
+        {/* Drag Indicator - Show when dragging */}
+        {isDragging && (
+          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium z-20 pointer-events-none">
+            {dragOffset > 0 ? 'Slide Right →' : dragOffset < 0 ? '← Slide Left' : 'Drag to navigate'}
+          </div>
+        )}
+      </div>
+
+      {/* Instructions - Mobile Responsive */}
+      <div className="text-center mt-4 text-xs text-slate-500 dark:text-slate-400">
+        {isMobile ? 'Touch and drag to navigate • Tap cards for details' : 'Click and drag to navigate • Hover for details'}
       </div>
 
       {/* Mobile Tooltip Panel */}
@@ -160,7 +326,7 @@ export default function TechStackSlider({ techStack }: TechStackSliderProps) {
       )}
 
       {/* Desktop Tooltip Portal */}
-      {!isMobile && hovered && (
+      {!isMobile && hovered && !isDragging && (
         <div 
           className="fixed inset-0 pointer-events-none z-50"
           style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
