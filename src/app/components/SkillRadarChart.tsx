@@ -6,12 +6,12 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
   const [hoveredSkill, setHoveredSkill] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   
-  // Mobile responsive sizing - dikurangi agar lebih kompak
+  // Mobile responsive sizing - diperkecil untuk desktop
   const mobileSize = 280;
-  const desktopSize = 360;
+  const desktopSize = 320; // Dikurangi dari 360 ke 320
   const size = isMobile ? mobileSize : desktopSize;
   const center = size / 2;
-  const maxRadius = isMobile ? 70 : 100; // Dikurangi dari 80/120 ke 70/100
+  const maxRadius = isMobile ? 70 : 85; // Dikurangi dari 100 ke 85
   const levels = 5;
 
   // Use exactly 5 skills for pentagon
@@ -50,7 +50,7 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
       const y = center + Math.sin(angle) * radius;
       
       // Label position - dikurangi jarak labelnya
-      const labelRadius = maxRadius + (isMobile ? 18 : 25); // Dikurangi dari 25/40 ke 18/25
+      const labelRadius = maxRadius + (isMobile ? 18 : 22); // Dikurangi dari 25 ke 22
       const labelX = center + Math.cos(angle) * labelRadius;
       const labelY = center + Math.sin(angle) * labelRadius;
       
@@ -123,17 +123,17 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
         </p>
       </div>
 
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8">
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-6"> {/* Dikurangi gap dari 6 lg:gap-8 ke 4 lg:gap-6 */}
         {/* Pentagon Chart - Mobile Responsive dengan container yang lebih kompak */}
-        <div className="relative flex justify-center items-center" style={{ 
-          width: size + (isMobile ? 60 : 80), // Tambah sedikit ruang untuk label
-          height: size + (isMobile ? 60 : 80) 
+        <div className="relative flex justify-center items-center flex-shrink-0" style={{ 
+          width: size + (isMobile ? 50 : 60), // Dikurangi dari 60/80 ke 50/60
+          height: size + (isMobile ? 50 : 60) // Dikurangi dari 60/80 ke 50/60
         }}>
           <svg 
-            width={size + (isMobile ? 60 : 80)} 
-            height={size + (isMobile ? 60 : 80)} 
+            width={size + (isMobile ? 50 : 60)} 
+            height={size + (isMobile ? 50 : 60)} 
             className="overflow-visible"
-            viewBox={`${-(isMobile ? 30 : 40)} ${-(isMobile ? 30 : 40)} ${size + (isMobile ? 60 : 80)} ${size + (isMobile ? 60 : 80)}`}
+            viewBox={`${-(isMobile ? 25 : 30)} ${-(isMobile ? 25 : 30)} ${size + (isMobile ? 50 : 60)} ${size + (isMobile ? 50 : 60)}`}
           >
             {/* Grid lines (concentric pentagons) */}
             {gridLines.map((grid, index) => (
@@ -180,7 +180,7 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
                 key={`point-${index}`}
                 cx={point.x}
                 cy={point.y}
-                r={hoveredSkill === index ? (isMobile ? "5" : "7") : (isMobile ? "3.5" : "5")}
+                r={hoveredSkill === index ? (isMobile ? "5" : "6") : (isMobile ? "3.5" : "4.5")} // Dikurangi sedikit
                 fill="#1e40af"
                 stroke="white"
                 strokeWidth={isMobile ? "2" : "2.5"}
@@ -273,8 +273,8 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
           )}
         </div>
 
-        {/* Skill Levels Legend - Mobile Responsive */}
-        <div className="bg-white dark:bg-slate-800 p-4 sm:p-5 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 w-full max-w-xs">
+        {/* Skill Levels Legend - Mobile Responsive dengan ukuran yang lebih kompak */}
+        <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 w-full max-w-xs lg:max-w-sm flex-shrink-0"> {/* Tambah flex-shrink-0 dan ubah max-w */}
           <h4 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3">
             Skill Levels
           </h4>
