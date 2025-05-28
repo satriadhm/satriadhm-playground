@@ -6,12 +6,12 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
   const [hoveredSkill, setHoveredSkill] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   
-  // Mobile responsive sizing - diperkecil untuk desktop
-  const mobileSize = 280;
-  const desktopSize = 320; // Dikurangi dari 360 ke 320
+  // Optimized responsive sizing
+  const mobileSize = 240;
+  const desktopSize = 280;
   const size = isMobile ? mobileSize : desktopSize;
   const center = size / 2;
-  const maxRadius = isMobile ? 70 : 85; // Dikurangi dari 100 ke 85
+  const maxRadius = isMobile ? 60 : 75;
   const levels = 5;
 
   // Use exactly 5 skills for pentagon
@@ -49,8 +49,8 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
       const x = center + Math.cos(angle) * radius;
       const y = center + Math.sin(angle) * radius;
       
-      // Label position - dikurangi jarak labelnya
-      const labelRadius = maxRadius + (isMobile ? 18 : 22); // Dikurangi dari 25 ke 22
+      // Label position
+      const labelRadius = maxRadius + (isMobile ? 14 : 18);
       const labelX = center + Math.cos(angle) * labelRadius;
       const labelY = center + Math.sin(angle) * labelRadius;
       
@@ -112,9 +112,9 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
   ];
 
   return (
-    <div className="w-full">
-      {/* Title - Mobile Responsive */}
-      <div className="text-center mb-4 sm:mb-6">
+    <div className="w-full max-w-5xl mx-auto">
+      {/* Title */}
+      <div className="text-center mb-6 sm:mb-8">
         <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
           Engineering Skills
         </h3>
@@ -123,17 +123,17 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
         </p>
       </div>
 
-      <div className="flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-6"> {/* Dikurangi gap dari 6 lg:gap-8 ke 4 lg:gap-6 */}
-        {/* Pentagon Chart - Mobile Responsive dengan container yang lebih kompak */}
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8">
+        {/* Pentagon Chart */}
         <div className="relative flex justify-center items-center flex-shrink-0" style={{ 
-          width: size + (isMobile ? 50 : 60), // Dikurangi dari 60/80 ke 50/60
-          height: size + (isMobile ? 50 : 60) // Dikurangi dari 60/80 ke 50/60
+          width: size + 40,
+          height: size + 40
         }}>
           <svg 
-            width={size + (isMobile ? 50 : 60)} 
-            height={size + (isMobile ? 50 : 60)} 
+            width={size + 40} 
+            height={size + 40} 
             className="overflow-visible"
-            viewBox={`${-(isMobile ? 25 : 30)} ${-(isMobile ? 25 : 30)} ${size + (isMobile ? 50 : 60)} ${size + (isMobile ? 50 : 60)}`}
+            viewBox={`-20 -20 ${size + 40} ${size + 40}`}
           >
             {/* Grid lines (concentric pentagons) */}
             {gridLines.map((grid, index) => (
@@ -180,10 +180,10 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
                 key={`point-${index}`}
                 cx={point.x}
                 cy={point.y}
-                r={hoveredSkill === index ? (isMobile ? "5" : "6") : (isMobile ? "3.5" : "4.5")} // Dikurangi sedikit
+                r={hoveredSkill === index ? (isMobile ? "4" : "5") : (isMobile ? "3" : "4")}
                 fill="#1e40af"
                 stroke="white"
-                strokeWidth={isMobile ? "2" : "2.5"}
+                strokeWidth="2"
                 className="transition-all duration-300 cursor-pointer drop-shadow-lg hover:drop-shadow-xl"
                 style={{
                   transitionDelay: `${index * 150}ms`
@@ -193,24 +193,24 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
               />
             ))}
 
-            {/* Skill labels - Mobile Responsive dengan positioning yang lebih baik */}
+            {/* Skill labels */}
             {skillPoints.map((point, index) => {
               // Calculate label positioning
               let textAnchor = 'middle';
               let dy = '0.3em';
               let dx = '0';
               
-              if (point.labelX > center + 15) {
+              if (point.labelX > center + 10) {
                 textAnchor = 'start';
-                dx = isMobile ? '6' : '8';
-              } else if (point.labelX < center - 15) {
+                dx = isMobile ? '5' : '6';
+              } else if (point.labelX < center - 10) {
                 textAnchor = 'end';
-                dx = isMobile ? '-6' : '-8';
+                dx = isMobile ? '-5' : '-6';
               }
               
-              if (point.labelY < center - 15) {
+              if (point.labelY < center - 10) {
                 dy = '-0.8em';
-              } else if (point.labelY > center + 15) {
+              } else if (point.labelY > center + 10) {
                 dy = '1.5em';
               }
 
@@ -222,7 +222,7 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
                   textAnchor={textAnchor}
                   dy={dy}
                   dx={dx}
-                  fontSize={isMobile ? "11" : "13"}
+                  fontSize={isMobile ? "10" : "12"}
                   fontWeight="500"
                   fill="currentColor"
                   className={`transition-all duration-300 cursor-pointer select-none ${
@@ -241,13 +241,13 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
               );
             })}
 
-            {/* Level numbers on grid - Mobile Responsive */}
+            {/* Level numbers on grid */}
             {gridLines.map((grid, index) => (
               <text
                 key={`level-${index}`}
-                x={center + (isMobile ? 5 : 6)}
-                y={center - grid.radius + (isMobile ? 3 : 4)}
-                fontSize={isMobile ? "9" : "11"}
+                x={center + (isMobile ? 4 : 5)}
+                y={center - grid.radius + (isMobile ? 2 : 3)}
+                fontSize={isMobile ? "8" : "10"}
                 fill="currentColor"
                 opacity={0.6}
                 className="text-slate-500 dark:text-slate-400 select-none"
@@ -257,7 +257,7 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
             ))}
           </svg>
 
-          {/* Hover tooltip - Mobile Hidden dengan positioning yang lebih baik */}
+          {/* Hover tooltip - Desktop only */}
           {hoveredSkill !== null && !isMobile && (
             <div className="absolute top-2 left-2 bg-white dark:bg-slate-800 p-3 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 z-10 max-w-xs">
               <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
@@ -273,16 +273,16 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
           )}
         </div>
 
-        {/* Skill Levels Legend - Mobile Responsive dengan ukuran yang lebih kompak */}
-        <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 w-full max-w-xs lg:max-w-sm flex-shrink-0"> {/* Tambah flex-shrink-0 dan ubah max-w */}
-          <h4 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3">
+        {/* Skill Levels Legend */}
+        <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 w-full max-w-sm flex-shrink-0">
+          <h4 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">
             Skill Levels
           </h4>
           <div className="space-y-2">
             {skillDescriptions.map((description, index) => (
               <div 
                 key={index}
-                className={`flex items-start space-x-2 p-2 rounded-lg transition-colors ${
+                className={`flex items-start space-x-3 p-2 rounded-lg transition-colors ${
                   hoveredSkill !== null && chartSkills[hoveredSkill]?.level === index + 1
                     ? 'bg-blue-50 dark:bg-blue-900/20'
                     : ''
@@ -295,7 +295,7 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
                 `}>
                   {index + 1}
                 </div>
-                <div className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                <div className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
                   {description}
                 </div>
               </div>
