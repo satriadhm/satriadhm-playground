@@ -4,7 +4,7 @@
 import { Github, Linkedin, Mail, ArrowUp, Heart, Code2 } from 'lucide-react';
 import Link from 'next/link';
 import { personalInfo } from '@/constants/data';
-import { FooterVisitorCounter } from './VisitorCounter';
+import FooterVisitorCounter from './VisitorCounter';
 
 export default function Footer() {
   const scrollToTop = () => {
