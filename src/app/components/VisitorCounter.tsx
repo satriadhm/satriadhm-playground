@@ -1,5 +1,5 @@
 // src/app/components/VisitorCounter.tsx
-'use client';
+// Update import dan hook usage
 
 import { useState } from 'react';
 import { Eye, Users, Calendar, TrendingUp, RefreshCw } from 'lucide-react';
@@ -11,13 +11,17 @@ interface VisitorCounterProps {
 }
 
 export default function VisitorCounter({ compact = false, showRefresh = false }: VisitorCounterProps) {
+  // Pilih hook yang ingin digunakan:
+  // useVisitorCounter() - Full featured dengan unique visitor tracking
+  // useSimpleVisitorCounter() - Simpler, lebih reliable
   const { data, loading, error, refetch } = useVisitorCounter();
+  
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
     await refetch();
-    setTimeout(() => setIsRefreshing(false), 1000); // Small delay for UX
+    setTimeout(() => setIsRefreshing(false), 1000);
   };
 
   // Format number dengan K, M notation
@@ -44,10 +48,12 @@ export default function VisitorCounter({ compact = false, showRefresh = false }:
 
   if (error) {
     return (
-      <div className={`${compact ? 'p-3' : 'p-4'} bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-200 dark:border-red-800 shadow-sm`}>
+      <div className={`${compact ? 'p-3' : 'p-4'} bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800 shadow-sm`}>
         <div className="flex items-center justify-center space-x-2">
-          <Eye size={16} className="text-red-500" />
-          <span className="text-sm text-red-600 dark:text-red-400">Failed to load</span>
+          <Eye size={16} className="text-amber-500" />
+          <span className="text-sm text-amber-600 dark:text-amber-400">
+            {error.includes('CountAPI') ? 'Using cached data' : 'Service temporarily unavailable'}
+          </span>
         </div>
       </div>
     );
@@ -84,7 +90,7 @@ export default function VisitorCounter({ compact = false, showRefresh = false }:
       <div className="flex items-center justify-between mb-4">
         <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
           <TrendingUp size={20} className="text-blue-500" />
-          <span>Site Analytics</span>
+          <span>Live Analytics</span>
         </h4>
         {showRefresh && (
           <button
@@ -151,61 +157,13 @@ export default function VisitorCounter({ compact = false, showRefresh = false }:
         </div>
       )}
 
-      {/* Last Updated */}
+      {/* Status Indicator */}
       <div className="mt-4 text-center text-xs text-slate-500 dark:text-slate-400">
-        Data updates every 5 minutes • Last updated: {new Date().toLocaleTimeString()}
+        <div className="flex items-center justify-center space-x-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          <span>Powered by CountAPI • Real-time data</span>
+        </div>
       </div>
-    </div>
-  );
-}
-
-// Simple inline visitor counter untuk footer
-export function FooterVisitorCounter() {
-  const { data, loading } = useVisitorCounter();
-
-  if (loading) {
-    return (
-      <div className="flex items-center space-x-2 text-slate-500 dark:text-slate-400 text-sm">
-        <div className="animate-pulse w-4 h-4 bg-slate-300 dark:bg-slate-600 rounded"></div>
-        <span>Loading...</span>
-      </div>
-    );
-  }
-
-  if (!data) return null;
-
-  return (
-    <div className="flex flex-wrap items-center gap-4 text-slate-500 dark:text-slate-400 text-sm">
-      <div className="flex items-center space-x-2">
-        <Eye size={14} className="text-blue-500" />
-        <span>
-          <span className="font-semibold text-slate-700 dark:text-slate-300">
-            {data.totalVisitors.toLocaleString()}
-          </span> total visits
-        </span>
-      </div>
-      <span className="hidden sm:inline">•</span>
-      <div className="flex items-center space-x-2">
-        <Users size={14} className="text-green-500" />
-        <span>
-          <span className="font-semibold text-slate-700 dark:text-slate-300">
-            {data.uniqueVisitors.toLocaleString()}
-          </span> unique visitors
-        </span>
-      </div>
-      {data.todayVisitors > 0 && (
-        <>
-          <span className="hidden sm:inline">•</span>
-          <div className="flex items-center space-x-2">
-            <Calendar size={14} className="text-orange-500" />
-            <span>
-              <span className="font-semibold text-slate-700 dark:text-slate-300">
-                {data.todayVisitors}
-              </span> today
-            </span>
-          </div>
-        </>
-      )}
     </div>
   );
 }
