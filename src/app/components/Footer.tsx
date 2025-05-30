@@ -4,7 +4,7 @@
 import { Github, Linkedin, Mail, ArrowUp, Heart, Code2 } from 'lucide-react';
 import Link from 'next/link';
 import { personalInfo } from '@/constants/data';
-import FooterVisitorCounter from './VisitorCounter';
+// import FooterVisitorCounter from './VisitorCounter';
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -107,7 +107,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Visitor Counter Section - Mobile Responsive */}
+        {/* Visitor Counter Section - Mobile Responsive
         <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-slate-200 dark:border-slate-800">
           <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
             <div className="text-center sm:text-left">
@@ -126,7 +126,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Bottom Bar - Mobile Responsive */}
