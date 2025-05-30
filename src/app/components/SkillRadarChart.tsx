@@ -8,10 +8,10 @@ function SkillsRadarChart({ skills }: SkillsRadarChartProps) {
   
   // Mobile responsive sizing - dikurangi agar lebih kompak
   const mobileSize = 280;
-  const desktopSize = 360;
+  const desktopSize = 420;
   const size = isMobile ? mobileSize : desktopSize;
   const center = size / 2;
-  const maxRadius = isMobile ? 70 : 100; // Dikurangi dari 80/120 ke 70/100
+  const maxRadius = isMobile ? 100 : 120; // Dikurangi dari 80/120 ke 70/100
   const levels = 5;
 
   // Use exactly 5 skills for pentagon
