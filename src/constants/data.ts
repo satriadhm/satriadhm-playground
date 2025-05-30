@@ -453,27 +453,62 @@ export const projects: Project[] = [
   }
 ];
 
-export const certifications: Certification[] = [
-  {
-    id: 'indesc-completion',
-    title: 'INDESC Program Completion',
-    issuer: 'Bank Rakyat Indonesia',
+ export const certifications: Certification[] = [
+   {
+    id: 'findit-hackathon-2024',
+    title: 'Second Winner - Hackathon FindIT 2024',
+    issuer: 'FindIT 2024',
     date: '2024',
-    credentialId: 'BRI-INDESC-2024'
+    credentialId: 'FINDIT-2024',
+    url: '/certificates/findit-hackathon-2024.pdf'
   },
   {
-    id: 'codefest-winner',
-    title: 'First Runner-up - Codefest Indonesia x Dfinity Foundation',
+    id: 'codefest-hackathon-2023',
+    title: 'Second Winner - Codefest Hackathon 2023',
     issuer: 'Dfinity Foundation',
     date: '2023',
-    credentialId: 'CODEFEST-2023'
+    credentialId: 'HACKATHON-2023',
+    url: '/certificates/codefest-hackathon-2023.pdf'
   },
   {
-    id: 'ministry-funding',
-    title: 'Student Entrepreneurship Development Program',
+    id: 'ux-competition-winner',
+    title: 'Second Place - UX Competition Future Innovation and Discovery IT!',
+    issuer: 'KMTETI Faculty of Engineering UGM',
+    date: 'June 2-3, 2023',
+    credentialId: 'UX-COMP-2023',
+    url: '/certificates/ux-competition-ugm-2023.pdf'
+  },
+  {
+    id: 'motionhack-winner',
+    title: 'First Winner - MOTIONHACK 2.0 x DINOTIS',
+    issuer: 'Telkom University & DINOTIS',
+    date: 'February 21-25, 2023',
+    credentialId: 'MOTION-2023',
+    url: '/certificates/motionhack-winner-2023.pdf'
+  },
+  {
+    id: 'lidm-finalist',
+    title: 'Finalist - National Student Digital Innovation Competition (LIDM) 2024',
     issuer: 'Ministry of Education, Culture, Research, and Technology',
-    date: '2023',
-    credentialId: 'SEDP-2023'
+    date: 'June 9-13, 2024',
+    credentialId: '16433/BPTI/DIKTI/2024',
+    url: '/certificates/lidm-finalist-2024.pdf'
+  },
+  {
+    id: 'data-analytics-participant',
+    title: 'Participant - Data Analytics Competition',
+    issuer: 'KMTETI Faculty of Engineering UGM',
+    date: '2022',
+    credentialId: 'DATA-ANALYTICS-2022',
+    url: '/certificates/data-analytics-ugm-2022.pdf'
+  },
+  {
+    id: 'p2mw-participant',
+    title: 'Student Entrepreneurship Development Program (P2MW) 2024',
+    issuer: 'Ministry of Education, Culture, Research, and Technology',
+    date: 'November 2, 2024',
+    credentialId: '7011/E2/KM.01.01/2024',
+    url: '/certificates/p2mw-2024.pdf'
   }
 ];
 
