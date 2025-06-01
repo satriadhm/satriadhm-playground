@@ -1,4 +1,4 @@
-// src/utils/blog.ts - Fixed version with working highlighting and formatting
+// src/utils/blog.ts - Fixed version with enhanced JavaScript highlighting for HTML content
 export interface BlogPost {
   id: string;
   title: string;
@@ -25,7 +25,7 @@ export interface BlogMetadata {
   tags: string[];
   image?: string;
 }
-// src/utils/blog.ts - Fixed version with working highlighting
+
 export function parseMarkdown(markdown: string): string {
   if (!markdown || typeof markdown !== 'string') {
     return '<p class="mb-4 text-slate-700 dark:text-slate-300">No content available</p>';
@@ -168,10 +168,9 @@ function addSyntaxHighlighting(code: string, language: string): string {
 }
 
 function highlightJava(code: string): string {
-  // Assuming 'code' a_rgument is already HTML-escaped from a prior step (e.g., by escapeHtml(rawCode)).
-  let result = code;
+  let result = escapeHtml(code);
 
-  // Keywords - These regexes should generally work on escaped text as keywords don't contain HTML special chars.
+  // Keywords
   result = result.replace(/\b(public|private|protected|static|final|class|interface|extends|implements|import|package|if|else|for|while|do|switch|case|break|continue|return|try|catch|finally|throw|throws|new|this|super|abstract|synchronized|volatile|transient|native|strictfp)\b/g, '<span class="hl-keyword">$1</span>');
   
   // Annotations
@@ -180,15 +179,13 @@ function highlightJava(code: string): string {
   // Types
   result = result.replace(/\b(int|long|short|byte|double|float|boolean|char|String|void|Object|List|Long|LocalDateTime|ResponseEntity|HttpStatus|GenerationType)\b/g, '<span class="hl-type">$1</span>');
   
-  // Strings - MODIFIED to work with &quot;
-  // This regex matches content between &quot; entities.
+  // Strings
   result = result.replace(/&quot;((?:(?!&quot;).)*)&quot;/g, '<span class="hl-string">&quot;$1&quot;</span>');
   
   // Numbers
   result = result.replace(/\b(\d+\.?\d*[fFdDlL]?)\b/g, '<span class="hl-number">$1</span>');
   
-  // Comments - Standard // and /* */ comments. Assumes / and * are not escaped by escapeHtml in a way that breaks this.
-  // escapeHtml typically doesn't escape / or *.
+  // Comments
   result = result.replace(/\/\/(.*)$/gm, '<span class="hl-comment">//$1</span>');
   result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="hl-comment">/*$1*/</span>');
   
@@ -216,19 +213,43 @@ function highlightSQL(code: string): string {
 function highlightJavaScript(code: string): string {
   let result = escapeHtml(code);
   
-  // Keywords
-  result = result.replace(/\b(const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|async|await|class|extends|import|export|from|default|new|this|super|typeof|instanceof)\b/g, '<span class="hl-keyword">$1</span>');
+  // JavaScript Keywords
+  result = result.replace(/\b(const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|async|await|class|extends|import|export|from|default|new|this|super|typeof|instanceof|null|undefined|true|false)\b/g, '<span class="hl-keyword">$1</span>');
   
-  // Strings
-  result = result.replace(/"([^"]*)"/g, '<span class="hl-string">"$1"</span>');
-  result = result.replace(/'([^']*)'/g, '<span class="hl-string">\'$1\'</span>');
-  result = result.replace(/`([^`]*)`/g, '<span class="hl-string">`$1`</span>');
+  // Built-in objects and methods
+  result = result.replace(/\b(console|document|window|Array|Object|String|Number|Boolean|Date|Math|JSON|Promise|Error|RegExp|getElementById|querySelector|addEventListener|createElement|appendChild|innerHTML|textContent|style|className|setAttribute|getAttribute|push|pop|shift|unshift|slice|splice|map|filter|reduce|forEach|find|findIndex|includes|indexOf|join|split|replace|toLowerCase|toUpperCase|trim|parseInt|parseFloat|isNaN|setTimeout|setInterval|clearTimeout|clearInterval)\b/g, '<span class="hl-builtin">$1</span>');
+  
+  // HTML tag names in strings (for template literals and HTML in JS)
+  result = result.replace(/(&lt;\/?)(\w+)([^&gt;]*&gt;)/g, '$1<span class="hl-html-tag">$2</span>$3');
+  
+  // HTML attributes in strings
+  result = result.replace(/(\w+)(\s*=\s*)(&quot;[^&quot;]*&quot;|&#x27;[^&#x27;]*&#x27;)/g, '<span class="hl-html-attr">$1</span>$2<span class="hl-html-value">$3</span>');
+  
+  // Template literals with backticks
+  result = result.replace(/`((?:[^`\\]|\\.)*)` /g, '<span class="hl-template-literal">`$1`</span>');
+  
+  // Template literal interpolation
+  result = result.replace(/\$\{([^}]+)\}/g, '<span class="hl-template-interpolation">${<span class="hl-template-expression">$1</span>}</span>');
+  
+  // Regular strings (double quotes)
+  result = result.replace(/&quot;((?:(?!&quot;|&lt;|&gt;).)*)&quot;/g, '<span class="hl-string">&quot;$1&quot;</span>');
+  
+  // Regular strings (single quotes)
+  result = result.replace(/&#x27;((?:(?!&#x27;|&lt;|&gt;).)*)&#x27;/g, '<span class="hl-string">&#x27;$1&#x27;</span>');
+  
+  // String literals containing HTML tags
+  result = result.replace(/(&quot;[^&quot;]*&lt;[^&gt;]*&gt;[^&quot;]*&quot;)/g, '<span class="hl-string-with-html">$1</span>');
+  result = result.replace(/(&#x27;[^&#x27;]*&lt;[^&gt;]*&gt;[^&#x27;]*&#x27;)/g, '<span class="hl-string-with-html">$1</span>');
   
   // Numbers
   result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="hl-number">$1</span>');
   
   // Comments
   result = result.replace(/\/\/(.*)$/gm, '<span class="hl-comment">//$1</span>');
+  result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="hl-comment">/*$1*/</span>');
+  
+  // JSX/React specific
+  result = result.replace(/\b(React|Component|useState|useEffect|useContext|useReducer|useCallback|useMemo|useRef|props|state|render|componentDidMount|componentDidUpdate|componentWillUnmount)\b/g, '<span class="hl-react">$1</span>');
   
   return result;
 }
@@ -243,14 +264,15 @@ function highlightGo(code: string): string {
   result = result.replace(/\b(int|int8|int16|int32|int64|uint|uint8|uint16|uint32|uint64|float32|float64|bool|string|byte|rune|error)\b/g, '<span class="hl-type">$1</span>');
   
   // Strings
-  result = result.replace(/"([^"]*)"/g, '<span class="hl-string">"$1"</span>');
-  result = result.replace(/`([^`]*)`/g, '<span class="hl-string">`$1`</span>');
+  result = result.replace(/&quot;((?:(?!&quot;).)*)&quot;/g, '<span class="hl-string">&quot;$1&quot;</span>');
+  result = result.replace(/`((?:(?!`).)*)` /g, '<span class="hl-string">`$1`</span>');
   
   // Numbers
   result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="hl-number">$1</span>');
   
   // Comments
   result = result.replace(/\/\/(.*)$/gm, '<span class="hl-comment">//$1</span>');
+  result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="hl-comment">/*$1*/</span>');
   
   return result;
 }
@@ -293,12 +315,15 @@ function highlightBash(code: string): string {
 }
 
 function escapeHtml(text: string): string {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+  const map: { [key: string]: string } = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#x27;',
+    '`': '&#x60;'
+  };
+  return text.replace(/[&<>"'`]/g, (match) => map[match]);
 }
 
 export function calculateReadingTime(content: string): number {

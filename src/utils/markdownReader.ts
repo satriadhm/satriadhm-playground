@@ -5,6 +5,7 @@ import { BlogPost } from '@/types';
 export const BLOG_FILES = [
     'null-go-sqlite3.md',
     'service-java-arch.md',
+    'markdown-typescript-parse.md',
 
 ];
 
