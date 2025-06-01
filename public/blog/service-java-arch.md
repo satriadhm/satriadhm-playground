@@ -9,8 +9,6 @@ tags: [Java, Design Principle, Backend, Clean Architecture]
 image: /images/blog/java-folder-architecture.jpg
 ---
 
-# How to Define a Suitable Architecture for your Backend Service?
-
 **Disclaimer**: In this article, the terms project, class, interface, and model refer to Object-Oriented Programming (OOP) concepts and implementations in Java.
 
 There are many ways to define a service architecture, especially a folder architecture. But of course, we don't want to trouble many people and ourselves, right? I will share one (of many) ways to make your service more maintainable.
