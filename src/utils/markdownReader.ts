@@ -4,6 +4,8 @@ import { BlogPost } from '@/types';
 // Blog file registry - tambahkan file .md baru di sini
 export const BLOG_FILES = [
     'null-go-sqlite3.md',
+    'service-java-arch.md',
+
 ];
 
 // Utility functions
