@@ -1,47 +1,33 @@
 // src/app/blog/[slug]/page.tsx
-"use client";
+'use client';
 
-import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
-import { getPostBySlug, blogPosts, loadBlogPosts } from "@/constants/blogData";
-import { BlogPostDetail } from "@/types";
-import BlogDetailComponent from "@/app/components/BlogDetailComponent";
+import { useParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { getPostBySlug, blogPosts, loadBlogPosts } from '@/constants/blogData';
+import { BlogPostDetail } from '@/types';
+import BlogDetailSimple from '@/app/components/BlogDetailSimple';
 
 export default function BlogDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
   const [post, setPost] = useState<BlogPostDetail | null>(null);
-  const [relatedPosts, setRelatedPosts] = useState<BlogPostDetail[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadPostData = async () => {
       setIsLoading(true);
-
+      
       try {
         // Load posts if not already loaded
         if (blogPosts.length === 0) {
           await loadBlogPosts();
         }
-
+        
         // Find the post by slug
         const foundPost = getPostBySlug(slug);
-
-        if (foundPost) {
-          setPost(foundPost);
-
-          // Get related posts from same category
-          const related = blogPosts
-            .filter(
-              (p) => p.category === foundPost.category && p.id !== foundPost.id
-            )
-            .slice(0, 3);
-          setRelatedPosts(related);
-        } else {
-          setPost(null);
-        }
+        setPost(foundPost || null);
       } catch (error) {
-        console.error("Error loading post:", error);
+        console.error('Error loading post:', error);
         setPost(null);
       } finally {
         setIsLoading(false);
@@ -54,10 +40,9 @@ export default function BlogDetailPage() {
   }, [slug]);
 
   return (
-    <BlogDetailComponent
-      slug={slug}
-      post={isLoading ? null : post}
-      relatedPosts={relatedPosts}
+    <BlogDetailSimple 
+      post={post}
+      isLoading={isLoading}
     />
   );
 }

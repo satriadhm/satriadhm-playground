@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState, useEffect } from 'react';
-import { ExternalLink, Award, ChevronRight, Clock, User, Calendar, Tag, RefreshCw } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ExternalLink, Award, RefreshCw } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { certifications } from '@/constants/data';
 import { loadBlogPosts, getFeaturedPosts } from '@/constants/blogData';
 import { BlogPost } from '@/types';
+import BlogPostCard from './BlogPostCard';
 
 export default function BlogCertificationSection() {
   const router = useRouter();
@@ -32,21 +32,6 @@ export default function BlogCertificationSection() {
 
     initializeBlogPosts();
   }, []);
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
-  const formatDateShort = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric'
-    });
-  };
 
   const handleRefresh = async () => {
     setIsLoading(true);
@@ -136,119 +121,23 @@ export default function BlogCertificationSection() {
 
             {/* Featured Article - Mobile Responsive */}
             {!isLoading && featuredPosts.length > 0 && (
-              <article 
-                className="border-b border-slate-100 dark:border-slate-800 pb-16 sm:pb-20 cursor-pointer"
+              <BlogPostCard
+                post={featuredPosts[0]}
                 onClick={() => handlePostClick(featuredPosts[0])}
-              >
-                <div className="space-y-6 sm:space-y-8">
-                  <div className="space-y-4 sm:space-y-6">
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 leading-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                      {featuredPosts[0].title}
-                    </h1>
-                    <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
-                      {featuredPosts[0].excerpt}
-                    </p>
-                  </div>
-                  
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-slate-500 dark:text-slate-400">
-                      <div className="flex items-center space-x-1">
-                        <User size={14} />
-                        <span className="font-medium">{featuredPosts[0].author}</span>
-                      </div>
-                      <span className="hidden sm:inline">·</span>
-                      <div className="flex items-center space-x-1">
-                        <Tag size={14} />
-                        <span className="font-medium">{featuredPosts[0].category}</span>
-                      </div>
-                      <span className="hidden sm:inline">·</span>
-                      <div className="flex items-center space-x-1">
-                        <Calendar size={14} />
-                        <span>{formatDate(featuredPosts[0].date)}</span>
-                      </div>
-                      <span className="hidden sm:inline">·</span>
-                      <div className="flex items-center space-x-1">
-                        <Clock size={14} />
-                        <span>{featuredPosts[0].readTime} min read</span>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group self-start">
-                      <span>Read article</span>
-                      <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
-                    </div>
-                  </div>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2">
-                    {featuredPosts[0].tags.slice(0, 5).map((tag: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined, index: Key | null | undefined) => (
-                      <span
-                        key={index}
-                        className="px-2 sm:px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs sm:text-sm font-medium"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </article>
+                variant="featured"
+              />
             )}
 
             {/* All Articles - Mobile Responsive */}
             {!isLoading && (
-              <div className="space-y-12 sm:space-y-16">
+              <div className="space-y-4 sm:space-y-6">
                 {posts.map((post: BlogPost) => (
-                                  <article key={String(post.id)} className="group cursor-pointer">
-                                    <button
-                                      onClick={() => handlePostClick(post)}
-                                      className="block w-full text-left"
-                                    >
-                      <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-8">
-                        <div className="flex-shrink-0 text-sm text-slate-400 dark:text-slate-600 sm:pt-1 sm:w-16 order-2 sm:order-1">
-                          {formatDateShort(post.date)}
-                        </div>
-                        
-                        <div className="flex-grow space-y-3 order-1 sm:order-2">
-                          <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
-                            {post.title}
-                          </h2>
-                          <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm sm:text-base">
-                            {post.excerpt}
-                          </p>
-                          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-sm text-slate-500 dark:text-slate-400">
-                            <span className="px-2 sm:px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-xs">
-                              {post.category}
-                            </span>
-                            <div className="flex items-center space-x-1">
-                              <Clock size={12} />
-                              <span>{post.readTime} min read</span>
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <User size={12} />
-                              <span>{post.author}</span>
-                            </div>
-                          </div>
-                          
-                          {/* Tags preview */}
-                          <div className="flex flex-wrap gap-1">
-                            {post.tags.slice(0, 3).map((tag: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined, index: Key | null | undefined) => (
-                              <span
-                                key={index}
-                                className="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded text-xs"
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                            {post.tags.length > 3 && (
-                              <span className="px-2 py-1 text-slate-500 dark:text-slate-500 text-xs">
-                                +{post.tags.length - 3} more
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </button>
-                  </article>
+                  <BlogPostCard
+                    key={post.id}
+                    post={post}
+                    onClick={() => handlePostClick(post)}
+                    variant="list"
+                  />
                 ))}
               </div>
             )}
