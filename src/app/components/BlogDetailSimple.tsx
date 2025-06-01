@@ -1,4 +1,4 @@
-// src/app/components/BlogDetailSimple.tsx - Simplified safe version
+// src/app/components/BlogDetailSimple.tsx - Fixed version
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -71,7 +71,7 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
 
   return (
     <div className="min-h-screen pt-16 bg-white dark:bg-slate-950">
-      <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
+      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         {/* Back Button */}
         <button
           onClick={handleBackClick}
@@ -136,17 +136,17 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
           )}
         </header>
 
-        {/* Article Content */}
-        <div className="mb-12 blog-content">
+        {/* Article Content - CRITICAL: Apply blog-content class here */}
+        <div className="mb-12">
           <div 
-            className="prose prose-lg max-w-none"
+            className="blog-content prose prose-lg max-w-none"
             dangerouslySetInnerHTML={{ 
               __html: parseMarkdown(post.content) 
             }}
           />
         </div>
 
-        {/* Simple Footer */}
+        {/* Footer */}
         <footer className="border-t border-slate-200 dark:border-slate-800 pt-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="text-sm text-slate-500 dark:text-slate-400">

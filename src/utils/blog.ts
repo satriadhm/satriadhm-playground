@@ -25,8 +25,7 @@ export interface BlogMetadata {
   tags: string[];
   image?: string;
 }
-
-// Fixed markdown parser with working highlighting
+// src/utils/blog.ts - Fixed version with working highlighting
 export function parseMarkdown(markdown: string): string {
   if (!markdown || typeof markdown !== 'string') {
     return '<p class="mb-4 text-slate-700 dark:text-slate-300">No content available</p>';
@@ -104,24 +103,17 @@ function processLine(line: string): string {
     return `<li class="mb-1 text-slate-700 dark:text-slate-300">${processInlineFormatting(trimmed.substring(2))}</li>`;
   }
 
-  // Numbered lists
-  if (/^\d+\.\s/.test(trimmed)) {
-    const content = trimmed.replace(/^\d+\.\s/, '');
-    return `<li class="mb-1 text-slate-700 dark:text-slate-300">${processInlineFormatting(content)}</li>`;
-  }
-
   // Regular paragraphs
   return `<p class="mb-3 text-slate-700 dark:text-slate-300 leading-relaxed">${processInlineFormatting(trimmed)}</p>`;
 }
 
 function processInlineFormatting(text: string): string {
-  // First escape HTML
   let result = escapeHtml(text);
   
-  // Process bold - fix the regex to work with escaped HTML
+  // Process bold
   result = result.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-slate-900 dark:text-slate-100">$1</strong>');
   
-  // Process italic (single asterisk, but not part of bold)
+  // Process italic
   result = result.replace(/\*([^*]+)\*/g, '<em class="italic">$1</em>');
   
   // Process inline code
@@ -139,14 +131,13 @@ function createCodeBlock(code: string, language: string): string {
     html += `<div class="code-header">${language.toUpperCase()}</div>`;
   }
   
-  html += `<pre class="code-block"><code>${highlightedCode}</code></pre>`;
+  html += `<div class="code-block"><pre><code>${highlightedCode}</code></pre></div>`;
   html += '</div>';
   
   return html;
 }
 
 function addSyntaxHighlighting(code: string, language: string): string {
-  // Don't escape HTML here - we want to add HTML tags for highlighting
   const lang = language.toLowerCase();
   
   if (lang === 'java') {
@@ -173,29 +164,30 @@ function addSyntaxHighlighting(code: string, language: string): string {
     return highlightBash(code);
   }
   
-  // Fallback - just escape HTML
   return escapeHtml(code);
 }
 
 function highlightJava(code: string): string {
-  // First escape HTML
   let result = escapeHtml(code);
   
-  // Keywords - more comprehensive list
-  result = result.replace(/\b(public|private|protected|static|final|class|interface|extends|implements|import|package|if|else|for|while|do|switch|case|break|continue|return|try|catch|finally|throw|throws|new|this|super|abstract|synchronized|volatile|transient|native|strictfp|@Override|@Entity|@Table|@Id|@GeneratedValue|@Column|@CreationTimestamp|@UpdateTimestamp|@Service|@Transactional|@RestController|@RequestMapping|@PostMapping|@GetMapping|@PutMapping|@DeleteMapping|@PathVariable|@RequestBody|@Valid|@NotBlank|@Email|@Size)\b/g, '<span class="text-purple-400 font-medium">$1</span>');
+  // Keywords - Use class-based approach
+  result = result.replace(/\b(public|private|protected|static|final|class|interface|extends|implements|import|package|if|else|for|while|do|switch|case|break|continue|return|try|catch|finally|throw|throws|new|this|super|abstract|synchronized|volatile|transient|native|strictfp)\b/g, '<span class="hl-keyword">$1</span>');
+  
+  // Annotations
+  result = result.replace(/\b(@Override|@Entity|@Table|@Id|@GeneratedValue|@Column|@CreationTimestamp|@UpdateTimestamp|@Service|@Transactional|@RestController|@RequestMapping|@PostMapping|@GetMapping|@PutMapping|@DeleteMapping|@PathVariable|@RequestBody|@Valid|@NotBlank|@Email|@Size|@Mapper)\b/g, '<span class="hl-annotation">$1</span>');
   
   // Types
-  result = result.replace(/\b(int|long|short|byte|double|float|boolean|char|String|void|Object|List|Long|LocalDateTime|ResponseEntity|HttpStatus|GenerationType)\b/g, '<span class="text-blue-400 font-medium">$1</span>');
+  result = result.replace(/\b(int|long|short|byte|double|float|boolean|char|String|void|Object|List|Long|LocalDateTime|ResponseEntity|HttpStatus|GenerationType)\b/g, '<span class="hl-type">$1</span>');
   
   // Strings
-  result = result.replace(/"([^"]*)"/g, '<span class="text-green-400">"$1"</span>');
+  result = result.replace(/"([^"]*)"/g, '<span class="hl-string">"$1"</span>');
   
   // Numbers
-  result = result.replace(/\b(\d+\.?\d*[fFdDlL]?)\b/g, '<span class="text-orange-400">$1</span>');
+  result = result.replace(/\b(\d+\.?\d*[fFdDlL]?)\b/g, '<span class="hl-number">$1</span>');
   
   // Comments
-  result = result.replace(/\/\/(.*)$/gm, '<span class="text-gray-400 italic">//$1</span>');
-  result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="text-gray-400 italic">/*$1*/</span>');
+  result = result.replace(/\/\/(.*)$/gm, '<span class="hl-comment">//$1</span>');
+  result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="hl-comment">/*$1*/</span>');
   
   return result;
 }
@@ -204,16 +196,16 @@ function highlightSQL(code: string): string {
   let result = escapeHtml(code);
   
   // SQL Keywords
-  result = result.replace(/\b(CREATE|TABLE|SELECT|FROM|WHERE|INSERT|UPDATE|DELETE|PRIMARY|KEY|FOREIGN|REFERENCES|CONSTRAINT|INDEX|DATABASE|ALTER|DROP|VARCHAR|CHAR|TEXT|INT|INTEGER|BIGINT|SMALLINT|DECIMAL|FLOAT|DOUBLE|BOOLEAN|DATE|DATETIME|TIMESTAMP|TIME|DEFAULT|NOT|NULL|UNIQUE|AUTO_INCREMENT|ON|UPDATE|CURRENT_TIMESTAMP)\b/gi, '<span class="text-purple-400 font-medium">$&</span>');
+  result = result.replace(/\b(CREATE|TABLE|SELECT|FROM|WHERE|INSERT|UPDATE|DELETE|PRIMARY|KEY|FOREIGN|REFERENCES|CONSTRAINT|INDEX|DATABASE|ALTER|DROP|VARCHAR|CHAR|TEXT|INT|INTEGER|BIGINT|SMALLINT|DECIMAL|FLOAT|DOUBLE|BOOLEAN|DATE|DATETIME|TIMESTAMP|TIME|DEFAULT|NOT|NULL|UNIQUE|AUTO_INCREMENT|ON|UPDATE|CURRENT_TIMESTAMP)\b/gi, '<span class="hl-keyword">$&</span>');
   
   // Strings
-  result = result.replace(/'([^']*)'/g, '<span class="text-green-400">\'$1\'</span>');
+  result = result.replace(/'([^']*)'/g, '<span class="hl-string">\'$1\'</span>');
   
   // Numbers
-  result = result.replace(/\b(\d+)\b/g, '<span class="text-orange-400">$1</span>');
+  result = result.replace(/\b(\d+)\b/g, '<span class="hl-number">$1</span>');
   
   // Comments
-  result = result.replace(/--(.*)$/gm, '<span class="text-gray-400 italic">--$1</span>');
+  result = result.replace(/--(.*)$/gm, '<span class="hl-comment">--$1</span>');
   
   return result;
 }
@@ -222,18 +214,18 @@ function highlightJavaScript(code: string): string {
   let result = escapeHtml(code);
   
   // Keywords
-  result = result.replace(/\b(const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|async|await|class|extends|import|export|from|default|new|this|super|typeof|instanceof)\b/g, '<span class="text-purple-400 font-medium">$1</span>');
+  result = result.replace(/\b(const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|try|catch|finally|throw|async|await|class|extends|import|export|from|default|new|this|super|typeof|instanceof)\b/g, '<span class="hl-keyword">$1</span>');
   
   // Strings
-  result = result.replace(/"([^"]*)"/g, '<span class="text-green-400">"$1"</span>');
-  result = result.replace(/'([^']*)'/g, '<span class="text-green-400">\'$1\'</span>');
-  result = result.replace(/`([^`]*)`/g, '<span class="text-green-400">`$1`</span>');
+  result = result.replace(/"([^"]*)"/g, '<span class="hl-string">"$1"</span>');
+  result = result.replace(/'([^']*)'/g, '<span class="hl-string">\'$1\'</span>');
+  result = result.replace(/`([^`]*)`/g, '<span class="hl-string">`$1`</span>');
   
   // Numbers
-  result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="text-orange-400">$1</span>');
+  result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="hl-number">$1</span>');
   
   // Comments
-  result = result.replace(/\/\/(.*)$/gm, '<span class="text-gray-400 italic">//$1</span>');
+  result = result.replace(/\/\/(.*)$/gm, '<span class="hl-comment">//$1</span>');
   
   return result;
 }
@@ -242,20 +234,20 @@ function highlightGo(code: string): string {
   let result = escapeHtml(code);
   
   // Keywords
-  result = result.replace(/\b(package|import|func|var|const|type|struct|interface|if|else|for|range|switch|case|default|break|continue|return|go|chan|select|defer|panic|recover|map|slice|make|append|len|cap|copy|delete|new)\b/g, '<span class="text-purple-400 font-medium">$1</span>');
+  result = result.replace(/\b(package|import|func|var|const|type|struct|interface|if|else|for|range|switch|case|default|break|continue|return|go|chan|select|defer|panic|recover|map|slice|make|append|len|cap|copy|delete|new)\b/g, '<span class="hl-keyword">$1</span>');
   
   // Types
-  result = result.replace(/\b(int|int8|int16|int32|int64|uint|uint8|uint16|uint32|uint64|float32|float64|bool|string|byte|rune|error)\b/g, '<span class="text-blue-400 font-medium">$1</span>');
+  result = result.replace(/\b(int|int8|int16|int32|int64|uint|uint8|uint16|uint32|uint64|float32|float64|bool|string|byte|rune|error)\b/g, '<span class="hl-type">$1</span>');
   
   // Strings
-  result = result.replace(/"([^"]*)"/g, '<span class="text-green-400">"$1"</span>');
-  result = result.replace(/`([^`]*)`/g, '<span class="text-green-400">`$1`</span>');
+  result = result.replace(/"([^"]*)"/g, '<span class="hl-string">"$1"</span>');
+  result = result.replace(/`([^`]*)`/g, '<span class="hl-string">`$1`</span>');
   
   // Numbers
-  result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="text-orange-400">$1</span>');
+  result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="hl-number">$1</span>');
   
   // Comments
-  result = result.replace(/\/\/(.*)$/gm, '<span class="text-gray-400 italic">//$1</span>');
+  result = result.replace(/\/\/(.*)$/gm, '<span class="hl-comment">//$1</span>');
   
   return result;
 }
@@ -264,16 +256,16 @@ function highlightJSON(code: string): string {
   let result = escapeHtml(code);
   
   // Keys
-  result = result.replace(/"([^"]+)"(\s*:)/g, '<span class="text-blue-400 font-medium">"$1"</span>$2');
+  result = result.replace(/"([^"]+)"(\s*:)/g, '<span class="hl-type">"$1"</span>$2');
   
   // String values
-  result = result.replace(/:\s*"([^"]*)"/g, ': <span class="text-green-400">"$1"</span>');
+  result = result.replace(/:\s*"([^"]*)"/g, ': <span class="hl-string">"$1"</span>');
   
   // Numbers
-  result = result.replace(/:\s*(\d+\.?\d*)/g, ': <span class="text-orange-400">$1</span>');
+  result = result.replace(/:\s*(\d+\.?\d*)/g, ': <span class="hl-number">$1</span>');
   
   // Booleans and null
-  result = result.replace(/:\s*(true|false|null)\b/g, ': <span class="text-purple-400 font-medium">$1</span>');
+  result = result.replace(/:\s*(true|false|null)\b/g, ': <span class="hl-keyword">$1</span>');
   
   return result;
 }
@@ -281,29 +273,23 @@ function highlightJSON(code: string): string {
 function highlightBash(code: string): string {
   let result = escapeHtml(code);
   
-  // Commands (after $ prompt)
-  result = result.replace(/^(\$\s*)(\w+)/gm, '$1<span class="text-yellow-400 font-medium">$2</span>');
+  // Commands
+  result = result.replace(/^(\$\s*)(\w+)/gm, '$1<span class="hl-keyword">$2</span>');
   
   // Flags
-  result = result.replace(/(\s)(--?\w+)/g, '$1<span class="text-cyan-400">$2</span>');
+  result = result.replace(/(\s)(--?\w+)/g, '$1<span class="hl-type">$2</span>');
   
   // Strings
-  result = result.replace(/"([^"]*)"/g, '<span class="text-green-400">"$1"</span>');
-  result = result.replace(/'([^']*)'/g, '<span class="text-green-400">\'$1\'</span>');
+  result = result.replace(/"([^"]*)"/g, '<span class="hl-string">"$1"</span>');
+  result = result.replace(/'([^']*)'/g, '<span class="hl-string">\'$1\'</span>');
   
   // Comments
-  result = result.replace(/#(.*)$/gm, '<span class="text-gray-400 italic">#$1</span>');
+  result = result.replace(/#(.*)$/gm, '<span class="hl-comment">#$1</span>');
   
   return result;
 }
 
 function escapeHtml(text: string): string {
-  const div = typeof document !== 'undefined' ? document.createElement('div') : null;
-  if (div) {
-    div.textContent = text;
-    return div.innerHTML;
-  }
-  
   return text
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
