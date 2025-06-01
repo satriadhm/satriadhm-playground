@@ -152,8 +152,6 @@ public class UserServiceImpl implements UserService {
             .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
         return userMapper.toResponseDTO(user);
     }
-    
-    // Other method implementations...
 }
 ```
 

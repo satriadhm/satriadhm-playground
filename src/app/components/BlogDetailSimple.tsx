@@ -1,4 +1,4 @@
-// src/app/components/BlogDetailSimple.tsx
+// src/app/components/BlogDetailSimple.tsx - Simplified safe version
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -20,6 +20,10 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
       month: 'long',
       day: 'numeric'
     });
+  };
+
+  const handleBackClick = () => {
+    router.push('/blog');
   };
 
   if (isLoading) {
@@ -51,10 +55,10 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
             Article Not Found
           </h1>
           <p className="text-slate-600 dark:text-slate-400 mb-8">
-            The article you&apos;re looking for doesn&apos;t exist or has been moved.
+            The article you are looking for does not exist or has been moved.
           </p>
           <button
-            onClick={() => router.push('/blog')}
+            onClick={handleBackClick}
             className="inline-flex items-center space-x-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
           >
             <ArrowLeft size={16} />
@@ -70,7 +74,7 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
       <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         {/* Back Button */}
         <button
-          onClick={() => router.push('/blog')}
+          onClick={handleBackClick}
           className="inline-flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors mb-8 group"
         >
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
@@ -133,16 +137,9 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
         </header>
 
         {/* Article Content */}
-        <div className="mb-12">
+        <div className="mb-12 blog-content">
           <div 
-            className="prose prose-lg max-w-none
-              prose-headings:text-slate-900 dark:prose-headings:text-slate-100 prose-headings:font-bold
-              prose-p:text-slate-700 dark:prose-p:text-slate-300 prose-p:leading-relaxed
-              prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
-              prose-strong:text-slate-900 dark:prose-strong:text-slate-100
-              prose-code:bg-slate-100 dark:prose-code:bg-slate-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm
-              prose-pre:bg-slate-100 dark:prose-pre:bg-slate-800 prose-pre:border prose-pre:border-slate-200 dark:prose-pre:border-slate-700
-              prose-blockquote:border-l-blue-500 prose-blockquote:bg-blue-50 dark:prose-blockquote:bg-blue-950/20 prose-blockquote:pl-6 prose-blockquote:py-4"
+            className="prose prose-lg max-w-none"
             dangerouslySetInnerHTML={{ 
               __html: parseMarkdown(post.content) 
             }}
@@ -156,7 +153,7 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
               Published on {formatDate(post.date)} by {post.author}
             </div>
             <button
-              onClick={() => router.push('/blog')}
+              onClick={handleBackClick}
               className="inline-flex items-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors text-sm"
             >
               <ArrowLeft size={14} />
