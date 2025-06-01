@@ -78,7 +78,7 @@ DTO (Data Transfer Object) is used as a blueprint of the data contained in the d
 4. **Validation**: They can include validation rules specific to each use case
 
 ```java
-// Input DTO for creating a user
+// Input DTO: creating a user
 public class CreateUserDTO {
     @NotBlank(message = "Email is required")
     @Email(message = "Email should be valid")
@@ -95,7 +95,7 @@ public class CreateUserDTO {
     // Constructors, getters, and setters
 }
 
-// Output DTO for returning user information
+// Output DTO: returning user information
 public class UserResponseDTO {
     private Long id;
     private String email;
