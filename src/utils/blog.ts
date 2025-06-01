@@ -168,9 +168,10 @@ function addSyntaxHighlighting(code: string, language: string): string {
 }
 
 function highlightJava(code: string): string {
-  let result = escapeHtml(code);
-  
-  // Keywords - Use class-based approach
+  // Assuming 'code' a_rgument is already HTML-escaped from a prior step (e.g., by escapeHtml(rawCode)).
+  let result = code;
+
+  // Keywords - These regexes should generally work on escaped text as keywords don't contain HTML special chars.
   result = result.replace(/\b(public|private|protected|static|final|class|interface|extends|implements|import|package|if|else|for|while|do|switch|case|break|continue|return|try|catch|finally|throw|throws|new|this|super|abstract|synchronized|volatile|transient|native|strictfp)\b/g, '<span class="hl-keyword">$1</span>');
   
   // Annotations
@@ -179,13 +180,15 @@ function highlightJava(code: string): string {
   // Types
   result = result.replace(/\b(int|long|short|byte|double|float|boolean|char|String|void|Object|List|Long|LocalDateTime|ResponseEntity|HttpStatus|GenerationType)\b/g, '<span class="hl-type">$1</span>');
   
-  // Strings
-  result = result.replace(/"([^"]*)"/g, '<span class="hl-string">"$1"</span>');
+  // Strings - MODIFIED to work with &quot;
+  // This regex matches content between &quot; entities.
+  result = result.replace(/&quot;((?:(?!&quot;).)*)&quot;/g, '<span class="hl-string">&quot;$1&quot;</span>');
   
   // Numbers
   result = result.replace(/\b(\d+\.?\d*[fFdDlL]?)\b/g, '<span class="hl-number">$1</span>');
   
-  // Comments
+  // Comments - Standard // and /* */ comments. Assumes / and * are not escaped by escapeHtml in a way that breaks this.
+  // escapeHtml typically doesn't escape / or *.
   result = result.replace(/\/\/(.*)$/gm, '<span class="hl-comment">//$1</span>');
   result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="hl-comment">/*$1*/</span>');
   
