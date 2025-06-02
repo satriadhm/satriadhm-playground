@@ -1,4 +1,4 @@
-// src/utils/blog.ts - Fixed version with enhanced JavaScript highlighting for HTML content
+// src/utils/blog.ts - Complete file with table support
 export interface BlogPost {
   id: string;
   title: string;
@@ -45,6 +45,8 @@ function processContent(text: string): string {
   let inCodeBlock = false;
   let codeLanguage = '';
   let codeContent: string[] = [];
+  let inTable = false;
+  let tableRows: string[] = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -70,11 +72,31 @@ function processContent(text: string): string {
       continue;
     }
 
-    // Process non-code lines
+    // Handle tables
+    if (isTableRow(line)) {
+      if (!inTable) {
+        inTable = true;
+        tableRows = [];
+      }
+      tableRows.push(line);
+      continue;
+    } else if (inTable) {
+      // End of table
+      result.push(createTable(tableRows));
+      inTable = false;
+      tableRows = [];
+    }
+
+    // Process non-code, non-table lines
     const processedLine = processLine(line);
     if (processedLine) {
       result.push(processedLine);
     }
+  }
+
+  // Handle any remaining table at end of content
+  if (inTable && tableRows.length > 0) {
+    result.push(createTable(tableRows));
   }
 
   return result.join('\n');
@@ -120,6 +142,66 @@ function processInlineFormatting(text: string): string {
   result = result.replace(/`([^`]+)`/g, '<code class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-1 py-0.5 rounded text-xs font-mono">$1</code>');
   
   return result;
+}
+
+function isTableRow(line: string): boolean {
+  const trimmed = line.trim();
+  return trimmed.includes('|') && !trimmed.startsWith('#') && !trimmed.startsWith('-') && trimmed !== '';
+}
+
+function createTable(tableRows: string[]): string {
+  if (tableRows.length === 0) return '';
+
+  let html = '<div class="table-container mb-6 overflow-x-auto">';
+  html += '<table class="min-w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden shadow-sm">';
+  
+  let isFirstRow = true;
+  let headerProcessed = false;
+
+  for (let i = 0; i < tableRows.length; i++) {
+    const row = tableRows[i].trim();
+    
+    // Skip separator rows (like |--------|---------|)
+    if (row.includes('---') || row.includes('===')) {
+      headerProcessed = true;
+      continue;
+    }
+
+    const cells = row.split('|').map(cell => cell.trim()).filter(cell => cell !== '');
+    
+    if (cells.length === 0) continue;
+
+    if (isFirstRow && !headerProcessed) {
+      // Header row
+      html += '<thead class="bg-slate-50 dark:bg-slate-900">';
+      html += '<tr>';
+      cells.forEach((cell, index) => {
+        const cellContent = processInlineFormatting(cell);
+        html += `<th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-700">${cellContent}</th>`;
+      });
+      html += '</tr>';
+      html += '</thead>';
+      html += '<tbody class="divide-y divide-slate-200 dark:divide-slate-700">';
+      isFirstRow = false;
+    } else {
+      // Data row
+      html += '<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">';
+      cells.forEach((cell, index) => {
+        const cellContent = processInlineFormatting(cell);
+        const isNumeric = /^[\d,.\s%+-]+$/.test(cell.trim());
+        const alignment = isNumeric ? 'text-right' : 'text-left';
+        
+        html += `<td class="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-slate-100 ${alignment} border-b border-slate-200 dark:border-slate-700">${cellContent}</td>`;
+      });
+      html += '</tr>';
+    }
+  }
+
+  html += '</tbody>';
+  html += '</table>';
+  html += '</div>';
+
+  return html;
 }
 
 function createCodeBlock(code: string, language: string): string {
