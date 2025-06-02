@@ -1,5 +1,5 @@
 // src/hooks/useVisitorCounter.ts
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import countapi from 'countapi-js';
 
 interface VisitorData {
@@ -37,7 +37,7 @@ export function useVisitorCounter(): VisitorCounterHook {
     return visitorId;
   };
 
-  const fetchVisitorData = async () => {
+  const fetchVisitorData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -124,11 +124,11 @@ export function useVisitorCounter(): VisitorCounterHook {
     } finally {
       setLoading(false);
     }
-  };
+  }, [namespace]);
 
-  const refetch = async () => {
+  const refetch = useCallback(async () => {
     await fetchVisitorData();
-  };
+  }, [fetchVisitorData]);
 
   useEffect(() => {
     fetchVisitorData();
@@ -137,7 +137,7 @@ export function useVisitorCounter(): VisitorCounterHook {
     const interval = setInterval(fetchVisitorData, 5 * 60 * 1000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchVisitorData]);
 
   return { data, loading, error, refetch };
 }
@@ -150,7 +150,7 @@ export function useSimpleVisitorCounter(): VisitorCounterHook {
 
   const namespace = 'satriadhm-portfolio';
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
     
@@ -208,9 +208,11 @@ export function useSimpleVisitorCounter(): VisitorCounterHook {
     } finally {
       setLoading(false);
     }
-  };
+  }, [namespace]);
 
-  const refetch = fetchData;
+  const refetch = useCallback(async () => {
+    await fetchData();
+  }, [fetchData]);
 
   useEffect(() => {
     fetchData();
@@ -219,7 +221,7 @@ export function useSimpleVisitorCounter(): VisitorCounterHook {
     const interval = setInterval(fetchData, 10 * 60 * 1000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchData]);
 
   return { data, loading, error, refetch };
 }
@@ -230,7 +232,7 @@ export function useDevVisitorCounter(): VisitorCounterHook {
   const [loading, setLoading] = useState(false);
   const [error] = useState<string | null>(null);
 
-  const generateRealisticData = () => {
+  const generateRealisticData = useCallback(() => {
     const baseDate = new Date('2024-01-01');
     const daysSinceLaunch = Math.floor((Date.now() - baseDate.getTime()) / (1000 * 60 * 60 * 24));
     
@@ -244,9 +246,9 @@ export function useDevVisitorCounter(): VisitorCounterHook {
       todayVisitors,
       isNewVisitor: Math.random() > 0.7
     };
-  };
+  }, []);
 
-  const refetch = async () => {
+  const refetch = useCallback(async () => {
     setLoading(true);
     
     // Simulate API delay
@@ -254,11 +256,11 @@ export function useDevVisitorCounter(): VisitorCounterHook {
     
     setData(generateRealisticData());
     setLoading(false);
-  };
+  }, [generateRealisticData]);
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   return { data, loading, error, refetch };
 }
