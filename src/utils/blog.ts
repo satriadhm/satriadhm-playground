@@ -175,7 +175,7 @@ function createTable(tableRows: string[]): string {
       // Header row
       html += '<thead class="bg-slate-50 dark:bg-slate-900">';
       html += '<tr>';
-      cells.forEach((cell, index) => {
+      cells.forEach((cell) => {
         const cellContent = processInlineFormatting(cell);
         html += `<th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-700">${cellContent}</th>`;
       });
