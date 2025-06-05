@@ -276,7 +276,6 @@ export const experiences: Experience[] = [
     ],
     images: [
       '/images/bri-architecture.jpg',
-      '/images/bri-dashboard.jpg',
       '/images/bri-team.jpg',
       '/images/bri-presentation.jpg'
     ],
