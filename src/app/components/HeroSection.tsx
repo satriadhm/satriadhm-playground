@@ -111,7 +111,7 @@ export default function HeroSection() {
                   href="/experience"
                   className="group bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-6 sm:px-8 py-3 rounded-xl font-medium transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-2 sm:space-x-3 w-full sm:w-auto justify-center"
                 >
-                  <span>View My Work</span>
+                  <span>Explore my Experience</span>
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
                 

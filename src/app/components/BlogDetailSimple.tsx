@@ -223,4 +223,4 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
       </article>
     </div>
   );
-}
+}  
