@@ -61,7 +61,7 @@ The 4th semester was my 2nd craziest semester because I took too many programs, 
 
 I still cannot believe that I am living a fast-paced life. One year I called myself dumb and didn't really understand a single principle in Data Structure, but another year I went to Vietnam as a Software Engineer intern in one of the biggest DX (Digital Transformation) industries in Southeast Asia.
 
-One of the main things that helped me to get accepted was the role I held as a Practicum and Lecture Assistant, even though I didn't really understand programming. I used to memorize the trade-offs between Searching and Sorting algorithms, and that was the particular question asked of me in the interview.
+One of the main things that helped me to get accepted was the role I held as a Practicum and Lecture Assistant, even though I didn't really understand programming. I used to memorize the trade-offs between two searching algorithms, and that was the particular question being asked to me in the interview.
 
 I wondered if I hadn't asked my Professor to let me re-learn the material as a Lecture Assistant, things would have been different. Life was great in Vietnam, and I could say that it was my first flight and live-abroad experience ever. It opened a lot more opportunities, and I did live a great life there, something I couldn't get in my country.
 
