@@ -105,7 +105,7 @@ This was the semester I got to make a decision about my final thesis topic. Yeah
 
 This is my last semester in college. This is the time all my mistakes start to haunt me. I failed to get a full time position in a Japanese start up company because of the incapability I had during the interview. I got rejected by several companies because I didn't have enough portfolios and haven't documented it on any platforms. One company betrayed me, and I got to continue my thesis during the Tech Winter times in Indonesia.
 
-The beginning of this semester was so sick and awful. But there was a time that I tried to apply to a US-based company in my hometown, Formulatrix. The recruitment process was tough. But the test focused heavily on OOP and .NET programming, topics I used to find enjoyable back in my fourth semester.
+The beginning of this semester was so sick and awful. But there was a time that I tried to apply to a US-based company in my hometown, [Formulatrix](https://formulatrix.com/). The recruitment process was tough. But the test focused heavily on OOP and .NET programming, topics I used to find enjoyable back in my fourth semester.
 
 **So the fundamentals have helped me, again, with the recruitment process.**
 
@@ -115,7 +115,7 @@ Later I continued to finish my thesis and published it at an International Confe
 
 I can say that I got advantages by actually learning the topic, **from the fundamentals**. So for me, **career is as far as the fundamentals**.
 
-Now I need to step back as I will graduate soon and continue working at Formulatrix, to just re-learn computer science (not really Software Engineering because I need the fundamentals). I believe **a few steps back leads to a higher jump in the future**, so let's see what can I get after this, and I hope you can learn from my mistakes.
+Now I need to step back as I will graduate soon and continue working at [Formulatrix](https://formulatrix.com/), to just re-learn computer science (not really Software Engineering because I need the fundamentals). I believe **a few steps back leads to a higher jump in the future**, so let's see what can I get after this, and I hope you can learn from my mistakes.
 
 ### The Five Critical Mistakes to Avoid
 

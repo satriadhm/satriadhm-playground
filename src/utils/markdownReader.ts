@@ -1,16 +1,10 @@
-// src/utils/markdownReader.ts
+// src/utils/markdownReader.ts - Simplified client-side only version
 import { BlogPost } from '@/types';
 
-// Blog file registry - tambahkan file .md baru di sini
-export const BLOG_FILES = [
-    'null-go-sqlite3.md',
-    'service-java-arch.md',
-    'markdown-typescript-parse.md',
-    'benchmark-linq-stream.md',
-    'steps-self-findings.md'
-];
+// NOTE: File discovery is now handled by the API route
+// This file now only contains client-side utilities
 
-// Utility functions
+// Utility functions for client-side processing
 const generateSlug = (title: string): string => {
   return title
     .toLowerCase()
@@ -26,8 +20,8 @@ const calculateReadingTime = (content: string): number => {
   return Math.ceil(words / wordsPerMinute);
 };
 
-// Parse frontmatter dari markdown file
-const parseFrontmatter = (content: string) => {
+// Parse frontmatter for client-side processing (if needed)
+export const parseFrontmatter = (content: string) => {
   const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
   const match = content.match(frontmatterRegex);
   
@@ -79,82 +73,7 @@ const parseFrontmatter = (content: string) => {
   return { frontmatter, content: markdownContent };
 };
 
-// Load single blog post from file
-export const loadBlogPost = async (filename: string): Promise<BlogPost | null> => {
-  try {
-    const response = await fetch(`/blog/${filename}`);
-    if (!response.ok) {
-      console.warn(`Could not load blog post: ${filename}`);
-      return null;
-    }
-
-    const content = await response.text();
-    const { frontmatter, content: markdownContent } = parseFrontmatter(content);
-
-    const post: BlogPost = {
-      id: generateSlug(frontmatter.title ?? ''),
-      slug: generateSlug(frontmatter.title ?? ''),
-      title: frontmatter.title ?? '',
-      excerpt: frontmatter.excerpt ?? '',
-      date: frontmatter.date ?? '',
-      category: frontmatter.category ?? '',
-      featured: frontmatter.featured || false,
-      author: frontmatter.author ?? '',
-      tags: frontmatter.tags || [],
-      content: markdownContent,
-      readTime: calculateReadingTime(markdownContent),
-      image: frontmatter.image
-    };
-
-    return post;
-  } catch (error) {
-    console.error(`Error loading blog post ${filename}:`, error);
-    return null;
-  }
-};
-
-// Load all blog posts dari file registry
-export const loadAllBlogPosts = async (): Promise<BlogPost[]> => {
-  try {
-    const posts: BlogPost[] = [];
-
-    // Load posts concurrently
-    const postPromises = BLOG_FILES.map(filename => loadBlogPost(filename));
-    const loadedPosts = await Promise.all(postPromises);
-
-    // Filter out null results and add to posts array
-    loadedPosts.forEach(post => {
-      if (post) {
-        posts.push(post);
-      }
-    });
-
-    // Sort by date (newest first)
-    posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-    
-    return posts;
-  } catch (error) {
-    console.error('Error loading blog posts:', error);
-    return [];
-  }
-};
-
-// Auto-discover blog files (optional, untuk deteksi otomatis)
-export const discoverBlogFiles = async (): Promise<string[]> => {
-  try {
-    // Karena kita tidak bisa enumerate files di browser,
-    // kita perlu menggunakan registry manual di BLOG_FILES
-    // Atau implementasi server-side endpoint untuk list files
-    
-    // Untuk sekarang, return file registry
-    return BLOG_FILES;
-  } catch (error) {
-    console.error('Error discovering blog files:', error);
-    return BLOG_FILES;
-  }
-};
-
-// Validation untuk memastikan blog post memiliki frontmatter yang lengkap
+// Validation for blog posts
 export const validateBlogPost = (post: unknown): post is BlogPost => {
   const requiredFields = ['title', 'excerpt', 'date', 'category', 'author', 'content'];
 
@@ -179,7 +98,7 @@ export const validateBlogPost = (post: unknown): post is BlogPost => {
   return true;
 };
 
-// Template generator untuk blog post baru
+// Template generator for new blog posts (development helper)
 export const generateBlogTemplate = (title: string): string => {
   const slug = generateSlug(title);
   const currentDate = new Date().toISOString().split('T')[0];
@@ -213,7 +132,7 @@ Wrap up your thoughts.
 `;
 };
 
-// Helper untuk membuat file blog baru (untuk development)
+// Development helper for creating new blog files
 export const createNewBlogFile = (title: string, content?: string) => {
   const filename = `${generateSlug(title)}.md`;
   const template = content || generateBlogTemplate(title);
@@ -222,7 +141,42 @@ export const createNewBlogFile = (title: string, content?: string) => {
   console.log('---');
   console.log(template);
   console.log('---');
-  console.log(`Don't forget to add '${filename}' to BLOG_FILES in markdownReader.ts!`);
+  console.log(`The file will be automatically discovered on next page refresh!`);
   
   return { filename, template };
+};
+
+// Client-side blog post processing utilities
+export const processBlogPost = (rawPost: Partial<BlogPost>): BlogPost | null => {
+  try {
+    if (!rawPost.title || !rawPost.content) {
+      throw new Error('Missing required fields');
+    }
+
+    const processed: BlogPost = {
+      id: rawPost.id || generateSlug(rawPost.title),
+      slug: rawPost.slug || generateSlug(rawPost.title),
+      title: rawPost.title,
+      excerpt: rawPost.excerpt || '',
+      date: rawPost.date || new Date().toISOString().split('T')[0],
+      category: rawPost.category || 'Uncategorized',
+      featured: rawPost.featured || false,
+      author: rawPost.author || 'Anonymous',
+      tags: rawPost.tags || [],
+      content: rawPost.content,
+      readTime: rawPost.readTime || calculateReadingTime(rawPost.content),
+      image: rawPost.image
+    };
+
+    return validateBlogPost(processed) ? processed : null;
+  } catch (error) {
+    console.error('Error processing blog post:', error);
+    return null;
+  }
+};
+
+// Export utility functions for use elsewhere
+export {
+  generateSlug,
+  calculateReadingTime
 };
