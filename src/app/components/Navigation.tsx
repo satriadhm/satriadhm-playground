@@ -90,8 +90,8 @@ export default function Navigation() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo - Mobile Responsive */}
-            <div className="flex-shrink-0">
+            {/* Logo - Mobile Responsive with Journey Link on Hover */}
+            <div className="flex-shrink-0 relative group">
               <Link 
                 href="/" 
                 className="font-bold text-lg sm:text-xl text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -99,6 +99,21 @@ export default function Navigation() {
               >
                 Satria.
               </Link>
+              
+              {/* Journey Link - Appears on Hover */}
+              <div className="absolute top-full left-0 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
+                <Link 
+                  href="/journey"
+                  className="block bg-amber-900/95 backdrop-blur-sm text-amber-100 px-3 py-2 rounded-lg text-xs font-medium shadow-2xl border border-amber-700/50 whitespace-nowrap hover:bg-amber-800/95 transition-all"
+                >
+                  <div className="flex items-center space-x-2">
+                    <span className="text-yellow-400">🧙‍♂️</span>
+                    <span>My Journey</span>
+                  </div>
+                  {/* Tooltip arrow */}
+                  <div className="absolute bottom-full left-6 -mb-1 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-amber-900/95"></div>
+                </Link>
+              </div>
             </div>
 
             {/* Desktop Navigation */}
@@ -203,6 +218,18 @@ export default function Navigation() {
                     </Link>
                   );
                 })}
+                
+                {/* Journey Link in Mobile Menu */}
+                <Link
+                  href="/journey"
+                  className="block px-4 py-4 rounded-xl text-lg font-medium transition-all duration-200 active:scale-95 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <div className="flex items-center space-x-2">
+                    <span className="text-amber-500">🧙‍♂️</span>
+                    <span>My Journey</span>
+                  </div>
+                </Link>
               </div>
 
               {/* Mobile Footer Info */}
@@ -210,10 +237,6 @@ export default function Navigation() {
                 <div className="text-center space-y-4">
                   <div className="text-sm text-gray-500 dark:text-gray-400">
                     Software Engineer & Full-Stack Developer
-                  </div>
-                  <div className="flex items-center justify-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span>Available for opportunities</span>
                   </div>
                 </div>
               </div>

@@ -338,14 +338,6 @@ export default function TechStackSlider({ techStack }: TechStackSliderProps) {
           />
         </div>
       )}
-
-      {/* STATS - Mobile Responsive */}
-      <div className="mt-8 sm:mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 text-center">
-        <StatsBlock label="Technologies" value={techStack.length} />
-        <StatsBlock label="Advanced+" value={techStack.filter((t) => t.proficiency >= 4).length} highlight />
-        <StatsBlock label="Avg Score" value={Math.round((techStack.reduce((s, t) => s + t.proficiency, 0) / techStack.length) * 10) / 10} />
-        <StatsBlock label="Years Exp" value="2+" />
-      </div>
     </>
   );
 }
@@ -445,22 +437,6 @@ function TooltipContentDesktop({ tech, Icon, mousePosition }: {
         {/* Arrow */}
         <div className="absolute left-1/2 transform -translate-x-1/2 top-full -mt-1 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white dark:border-t-gray-800" />
       </div>
-    </div>
-  );
-}
-
-// Small helper component for the bottom stats - Mobile Responsive
-function StatsBlock({ value, label, highlight = false }: { value: number | string; label: string; highlight?: boolean }) {
-  return (
-    <div className="space-y-1 sm:space-y-2 group cursor-pointer">
-      <div
-        className={`text-xl sm:text-2xl md:text-3xl font-bold transition-colors duration-300 group-hover:scale-110 transform ${
-          highlight ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400'
-        }`}
-      >
-        {value}
-      </div>
-      <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{label}</div>
     </div>
   );
 }
