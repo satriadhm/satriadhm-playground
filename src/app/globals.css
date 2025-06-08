@@ -89,15 +89,15 @@ code {
 /* ===== ANIMATIONS ===== */
 @layer utilities {
   .animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
+    animation: fadeIn 0.6s ease-out forwards;
   }
   
   .animate-slide-up {
-    animation: slideUp 0.8s ease-out forwards;
+    animation: slideUp 0.6s ease-out forwards;
   }
   
   .animate-scale-in {
-    animation: scaleIn 0.6s ease-out forwards;
+    animation: scaleIn 0.5s ease-out forwards;
   }
 
   .animate-slide-infinite {
@@ -414,7 +414,7 @@ code {
   font-weight: 600;
   margin-bottom: 1.5rem;
   margin-top: 2.5rem;
-  color: #0f172a;
+  color: #1e293b;
   line-height: 1.3;
 }
 
@@ -423,7 +423,7 @@ code {
   font-weight: 600;
   margin-bottom: 1rem;
   margin-top: 2rem;
-  color: #0f172a;
+  color: #1e293b;
   line-height: 1.3;
 }
 
@@ -432,25 +432,25 @@ code {
   font-weight: 600;
   margin-bottom: 0.75rem;
   margin-top: 1.5rem;
-  color: #1e293b;
+  color: #334155;
   line-height: 1.3;
 }
 
 .blog-content p {
   margin-bottom: 1.25rem;
   line-height: 1.75;
-  color: #334155;
+  color: #475569;
   font-size: 1rem;
 }
 
 .blog-content strong {
   font-weight: 600;
-  color: #0f172a;
+  color: #1e293b;
 }
 
 .blog-content em {
   font-style: italic;
-  color: #475569;
+  color: #64748b;
 }
 
 /* Lists with Better Spacing */
@@ -463,11 +463,11 @@ code {
 .blog-content li {
   margin-bottom: 0.75rem;
   line-height: 1.75;
-  color: #334155;
+  color: #475569;
 }
 
 .blog-content li strong {
-  color: #0f172a;
+  color: #1e293b;
 }
 
 /* Links with Better Contrast */
@@ -511,7 +511,7 @@ code {
 .blog-content td {
   padding: 1rem 1.25rem;
   font-size: 0.875rem;
-  color: #1e293b;
+  color: #334155;
   border-bottom: 1px solid #f1f5f9;
   vertical-align: top;
 }
@@ -527,7 +527,7 @@ code {
 /* Enhanced Inline Code with Better Contrast */
 .blog-content code:not(.code-block code) {
   background: #f1f5f9;
-  color: #1e293b;
+  color: #334155;
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
   font-size: 0.875em;

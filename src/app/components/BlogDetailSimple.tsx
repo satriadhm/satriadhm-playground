@@ -1,4 +1,4 @@
-// src/app/components/BlogDetailSimple.tsx - Fixed version with proper code rendering
+// src/app/components/BlogDetailSimple.tsx - Fixed version with better contrast for light mode
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -70,7 +70,7 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
             <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
               Article Not Found
             </h1>
-            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-md mx-auto">
+            <p className="text-lg text-slate-700 dark:text-slate-400 max-w-md mx-auto">
               The article you are looking for does not exist or has been moved.
             </p>
             <button
@@ -92,7 +92,7 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
         {/* Back Button */}
         <button
           onClick={handleBackClick}
-          className="inline-flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors mb-8 group font-medium"
+          className="inline-flex items-center space-x-2 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors mb-8 group font-medium"
         >
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
           <span>Back to Blog</span>
@@ -102,11 +102,11 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
         <header className="mb-12 space-y-6">
           {/* Category Badge */}
           <div className="flex flex-wrap items-center gap-3">
-            <span className="px-4 py-2 bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 rounded-full text-sm font-semibold">
+            <span className="px-4 py-2 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 rounded-full text-sm font-semibold">
               {post.category}
             </span>
             {post.featured && (
-              <span className="px-4 py-2 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-950/30 dark:to-orange-950/30 text-yellow-600 dark:text-yellow-400 rounded-full text-sm font-semibold border border-yellow-200 dark:border-yellow-800">
+              <span className="px-4 py-2 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-950/30 dark:to-orange-950/30 text-yellow-700 dark:text-yellow-400 rounded-full text-sm font-semibold border border-yellow-200 dark:border-yellow-800">
                 ⭐ Featured
               </span>
             )}
@@ -118,39 +118,25 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
           </h1>
 
           {/* Excerpt */}
-          <p className="text-xl text-slate-600 dark:text-slate-400 leading-relaxed">
+          <p className="text-xl text-slate-700 dark:text-slate-400 leading-relaxed">
             {post.excerpt}
           </p>
 
           {/* Meta Information */}
           <div className="flex flex-wrap items-center gap-6 pt-6 border-t border-slate-200 dark:border-slate-800">
-            <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
+            <div className="flex items-center space-x-2 text-sm text-slate-600 dark:text-slate-400">
               <User size={16} className="text-blue-500" />
               <span className="font-medium">{post.author}</span>
             </div>
-            <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
+            <div className="flex items-center space-x-2 text-sm text-slate-600 dark:text-slate-400">
               <Calendar size={16} className="text-green-500" />
               <span>{formatDate(post.date)}</span>
             </div>
-            <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
+            <div className="flex items-center space-x-2 text-sm text-slate-600 dark:text-slate-400">
               <Clock size={16} className="text-orange-500" />
               <span>{post.readTime} min read</span>
             </div>
           </div>
-
-          {/* Tags */}
-          {post.tags && post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 pt-4">
-              {post.tags.map((tag: string, index: number) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg text-sm font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          )}
         </header>
 
         {/* Article Content - CRITICAL: Apply blog-content class here */}
@@ -167,10 +153,10 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
         <footer className="border-t border-slate-200 dark:border-slate-800 pt-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
             <div className="space-y-2">
-              <div className="text-sm text-slate-500 dark:text-slate-400">
+              <div className="text-sm text-slate-600 dark:text-slate-400">
                 Published on {formatDate(post.date)}
               </div>
-              <div className="text-sm text-slate-500 dark:text-slate-400">
+              <div className="text-sm text-slate-600 dark:text-slate-400">
                 Written by <span className="font-medium text-slate-900 dark:text-slate-100">{post.author}</span>
               </div>
             </div>
@@ -223,4 +209,4 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
       </article>
     </div>
   );
-}  
+}

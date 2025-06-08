@@ -1,4 +1,4 @@
-// src/app/components/BlogCertificationSection.tsx - Updated for dynamic blog loading
+// src/app/components/BlogCertificationSection.tsx - Cleaned up version
 "use client";
 
 import { useState, useEffect } from "react";
@@ -15,7 +15,6 @@ import {
   loadBlogPosts,
   getFeaturedPosts,
   refreshBlogCache,
-  getBlogStats,
 } from "@/constants/blogData";
 import { BlogPost } from "@/types";
 import BlogPostCard from "./BlogPostCard";
@@ -100,9 +99,6 @@ export default function BlogCertificationSection() {
     router.push(`/blog/${post.slug}`);
   };
 
-  // Get blog statistics
-  const blogStats = getBlogStats();
-
   return (
     <section
       id="blog-certifications"
@@ -114,48 +110,10 @@ export default function BlogCertificationSection() {
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6 sm:mb-8">
             Writing & Achievements
           </h2>
-          <p className="text-base sm:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-xl text-slate-700 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
             Thoughts on technology, career insights, and professional milestones
             along my journey as a software engineer.
           </p>
-
-          {/* Blog Statistics */}
-          {!isLoading && posts.length > 0 && (
-            <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-md mx-auto">
-              <div className="text-center">
-                <div className="text-lg sm:text-xl font-bold text-blue-600 dark:text-blue-400">
-                  {blogStats.totalPosts}
-                </div>
-                <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                  Posts
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-lg sm:text-xl font-bold text-green-600 dark:text-green-400">
-                  {blogStats.featuredPosts}
-                </div>
-                <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                  Featured
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-lg sm:text-xl font-bold text-purple-600 dark:text-purple-400">
-                  {blogStats.categories}
-                </div>
-                <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                  Categories
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-lg sm:text-xl font-bold text-orange-600 dark:text-orange-400">
-                  {blogStats.tags}
-                </div>
-                <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                  Tags
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Tab Navigation - Mobile Responsive */}
@@ -166,7 +124,7 @@ export default function BlogCertificationSection() {
               className={`flex-1 px-6 sm:px-10 py-3 sm:py-4 text-base sm:text-lg font-medium transition-all relative ${
                 activeTab === "blog"
                   ? "text-blue-600 dark:text-blue-400"
-                  : "text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                  : "text-slate-600 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-300"
               }`}
             >
               Writing
@@ -179,7 +137,7 @@ export default function BlogCertificationSection() {
               className={`flex-1 px-6 sm:px-10 py-3 sm:py-4 text-base sm:text-lg font-medium transition-all relative ${
                 activeTab === "certifications"
                   ? "text-blue-600 dark:text-blue-400"
-                  : "text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                  : "text-slate-600 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-300"
               }`}
             >
               Achievements
@@ -225,21 +183,13 @@ export default function BlogCertificationSection() {
                   <span>Failed to refresh</span>
                 </div>
               )}
-
-              {/* Cache Info */}
-              {blogStats.lastUpdated && (
-                <div className="text-xs text-slate-500 dark:text-slate-400">
-                  Last updated:{" "}
-                  {new Date(blogStats.lastUpdated).toLocaleTimeString()}
-                </div>
-              )}
             </div>
 
             {/* Loading State */}
             {isLoading && (
               <div className="text-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                <p className="text-slate-600 dark:text-slate-400">
+                <p className="text-slate-700 dark:text-slate-400">
                   Loading blog posts dynamically...
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-500 mt-2">
@@ -255,7 +205,7 @@ export default function BlogCertificationSection() {
                 <p className="text-red-600 dark:text-red-400 mb-4 font-medium">
                   {error}
                 </p>
-                <div className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
+                <div className="space-y-2 text-sm text-slate-700 dark:text-slate-400">
                   <p>Tips to resolve this:</p>
                   <ul className="list-disc list-inside space-y-1">
                     <li>Ensure .md files exist in public/blog/ directory</li>
@@ -299,7 +249,7 @@ export default function BlogCertificationSection() {
             {!isLoading && !error && posts.length === 0 && (
               <div className="text-center py-12">
                 <div className="text-6xl mb-4">📝</div>
-                <p className="text-slate-600 dark:text-slate-400 mb-4">
+                <p className="text-slate-700 dark:text-slate-400 mb-4">
                   No blog posts found in the public/blog/ directory.
                 </p>
                 <p className="text-sm text-slate-500 dark:text-slate-500">
@@ -309,15 +259,11 @@ export default function BlogCertificationSection() {
               </div>
             )}
 
-            {/* View All - Mobile Responsive */}
+            {/* Simple indicator without counts */}
             {!isLoading && !error && posts.length > 0 && (
               <div className="text-center pt-8 sm:pt-12">
                 <div className="inline-flex items-center space-x-2 text-blue-600 dark:text-blue-400 font-medium">
-                  <span>Showing {posts.length} articles</span>
-                  <span className="text-slate-400">•</span>
-                  <span className="text-sm">
-                    Auto-discovered from filesystem
-                  </span>
+                  <span>Auto-discovered from filesystem</span>
                 </div>
               </div>
             )}
@@ -341,7 +287,7 @@ export default function BlogCertificationSection() {
                       <h3 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-slate-100">
                         {cert.title}
                       </h3>
-                      <div className="flex items-center space-x-2 text-slate-600 dark:text-slate-400">
+                      <div className="flex items-center space-x-2 text-slate-700 dark:text-slate-400">
                         <Award
                           size={16}
                           className="text-blue-500 flex-shrink-0"
@@ -350,7 +296,7 @@ export default function BlogCertificationSection() {
                           {cert.issuer}
                         </span>
                       </div>
-                      <div className="text-sm text-slate-500 dark:text-slate-400">
+                      <div className="text-sm text-slate-600 dark:text-slate-400">
                         {cert.date}
                       </div>
                     </div>
@@ -369,7 +315,7 @@ export default function BlogCertificationSection() {
                   </div>
 
                   {cert.credentialId && (
-                    <div className="text-xs text-slate-500 dark:text-slate-400 font-mono bg-slate-50 dark:bg-slate-900 px-3 py-2 rounded inline-block">
+                    <div className="text-xs text-slate-600 dark:text-slate-400 font-mono bg-slate-50 dark:bg-slate-900 px-3 py-2 rounded inline-block">
                       ID: {cert.credentialId}
                     </div>
                   )}
