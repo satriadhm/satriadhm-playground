@@ -7,7 +7,7 @@ export const personalInfo: PersonalInfo = {
   linkedin: 'https://linkedin.com/in/gloriousatria',
   github: 'https://github.com/satriadhm',
   location: 'Indonesia',
-  bio: 'Passionate Software Engineer with expertise in full-stack development, solution architecture, and scientific implementation. Currently building innovative solutions for laboratory automation and educational technology.',
+  bio: 'Crafting simple yet intuitive Software Solutions to solve complex problems, led by thoughtful tradeoffs and Engineering Principles.',
   profileImage: '/profile.png'
 };
 
