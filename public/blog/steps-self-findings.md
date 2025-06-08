@@ -1,5 +1,5 @@
 ---
-title: 8 Steps of Finding Myself: A Personal Journey Through Software Engineering
+title: 8 Steps Journey of Finding Myself: A Personal Journey Through Software Engineering
 excerpt: A candid reflection on the mistakes, breakthroughs, and lessons learned during my transformation from a non-tech enthusiast to a software engineer.
 date: 2025-06-08
 category: Personal Development
