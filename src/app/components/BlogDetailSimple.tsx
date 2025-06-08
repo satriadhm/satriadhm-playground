@@ -105,11 +105,6 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
             <span className="px-4 py-2 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 rounded-full text-sm font-semibold">
               {post.category}
             </span>
-            {post.featured && (
-              <span className="px-4 py-2 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-950/30 dark:to-orange-950/30 text-yellow-700 dark:text-yellow-400 rounded-full text-sm font-semibold border border-yellow-200 dark:border-yellow-800">
-                ⭐ Featured
-              </span>
-            )}
           </div>
 
           {/* Title */}
