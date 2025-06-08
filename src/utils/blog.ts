@@ -47,6 +47,7 @@ interface ParsedTable {
  */
 export function parseMarkdown(markdown: string): string {
   if (!markdown || typeof markdown !== 'string') {
+    // Apply Tailwind classes for default text color on error/no content
     return '<p class="mb-4 text-slate-700 dark:text-slate-300">No content available</p>';
   }
 
@@ -54,6 +55,7 @@ export function parseMarkdown(markdown: string): string {
     return processMarkdownContent(markdown);
   } catch (error) {
     console.error('Markdown parsing error:', error);
+    // Apply Tailwind classes for default text color on error/no content
     return `<p class="mb-4 text-slate-700 dark:text-slate-300">${escapeHtml(markdown)}</p>`;
   }
 }
@@ -68,12 +70,23 @@ function processMarkdownContent(text: string): string {
   let codeLanguage = '';
   let codeContent: string[] = [];
   let tableBuffer: string[] = [];
+  let inUnorderedList = false; // Track if currently inside an unordered list
+  let inOrderedList = false; // Track if currently inside an ordered list
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
     // Handle code blocks
     if (line.startsWith('```')) {
+      // Close any open list before starting a code block
+      if (inUnorderedList) {
+        result.push('</ul>');
+        inUnorderedList = false;
+      }
+      if (inOrderedList) {
+        result.push('</ol>');
+        inOrderedList = false;
+      }
       if (inCodeBlock) {
         // End code block
         result.push(createCodeBlock(codeContent.join('\n'), codeLanguage));
@@ -100,6 +113,15 @@ function processMarkdownContent(text: string): string {
 
     // Handle table rows
     if (isTableRow(line)) {
+      // Close any open list before starting a table
+      if (inUnorderedList) {
+        result.push('</ul>');
+        inUnorderedList = false;
+      }
+      if (inOrderedList) {
+        result.push('</ol>');
+        inOrderedList = false;
+      }
       tableBuffer.push(line);
       continue;
     } else if (tableBuffer.length > 0) {
@@ -108,10 +130,43 @@ function processMarkdownContent(text: string): string {
       tableBuffer = [];
     }
 
-    // Process regular lines
-    const processedLine = processRegularLine(line);
-    if (processedLine.trim()) {
-      result.push(processedLine);
+    // Handle lists context
+    const listItemMatch = trimmedLineStartsWithListItem(line);
+    if (listItemMatch) {
+        // Close other type of list if open
+        if (inUnorderedList && listItemMatch.type === 'ordered') {
+            result.push('</ul>');
+            inUnorderedList = false;
+        } else if (inOrderedList && listItemMatch.type === 'unordered') {
+            result.push('</ol>');
+            inOrderedList = false;
+        }
+
+        // Start new list if not already in one
+        if (listItemMatch.type === 'unordered' && !inUnorderedList) {
+            result.push('<ul class="list-disc pl-5 mb-4 text-slate-700 dark:text-slate-300">');
+            inUnorderedList = true;
+        } else if (listItemMatch.type === 'ordered' && !inOrderedList) {
+            result.push('<ol class="list-decimal pl-5 mb-4 text-slate-700 dark:text-slate-300">');
+            inOrderedList = true;
+        }
+
+        // Add list item with Tailwind classes
+        result.push(`<li class="mb-2 text-slate-700 dark:text-slate-300 leading-relaxed">${processInlineFormatting(listItemMatch.content)}</li>`);
+    } else {
+        // If not a list item, close any open list
+        if (inUnorderedList) {
+            result.push('</ul>');
+            inUnorderedList = false;
+        }
+        if (inOrderedList) {
+            result.push('</ol>');
+            inOrderedList = false;
+        }
+        const processedLine = processRegularLine(line);
+        if (processedLine.trim()) {
+            result.push(processedLine);
+        }
     }
   }
 
@@ -120,7 +175,28 @@ function processMarkdownContent(text: string): string {
     result.push(processTableBuffer(tableBuffer));
   }
 
+  // Close any open list at the end of the document
+  if (inUnorderedList) {
+      result.push('</ul>');
+  }
+  if (inOrderedList) {
+      result.push('</ol>');
+  }
+
   return result.join('\n');
+}
+
+// Helper to check if a line starts with a list item for better list parsing
+function trimmedLineStartsWithListItem(line: string): { type: 'unordered' | 'ordered', content: string } | null {
+  const trimmed = line.trim();
+  if (trimmed.startsWith('- ')) {
+      return { type: 'unordered', content: trimmed.substring(2) };
+  }
+  const orderedMatch = trimmed.match(/^(\d+)\.\s/);
+  if (orderedMatch) {
+      return { type: 'ordered', content: trimmed.substring(orderedMatch[0].length) };
+  }
+  return null;
 }
 
 /**
@@ -128,10 +204,13 @@ function processMarkdownContent(text: string): string {
  */
 function isTableRow(line: string): boolean {
   const trimmed = line.trim();
-  return trimmed.includes('|') && 
-         !trimmed.startsWith('#') && 
-         !trimmed.startsWith('```') &&
-         trimmed.length > 0;
+  // Check if it looks like a table row and not a header separator, code block, or list item
+  return trimmed.includes('|') &&
+         !trimmed.startsWith('#') && // Exclude headers
+         !trimmed.startsWith('```') && // Exclude code blocks
+         !trimmed.match(/^\s*[-\s:]+$/) && // Exclude table separator line itself
+         !trimmed.match(/^(\d+)\.\s/) && // Exclude ordered list items
+         !trimmed.startsWith('- '); // Exclude unordered list items
 }
 
 /**
@@ -228,17 +307,20 @@ function renderTable(table: ParsedTable): string {
   if (table.rows.length === 0) return '';
 
   let html = '<div class="table-container mb-6 overflow-x-auto">';
+  // Apply Tailwind classes for table background and border
   html += '<table class="min-w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden shadow-sm">';
   
   // Determine if we have headers
   const hasHeaderRow = table.hasHeader || (table.rows.length > 0 && table.rows[0].cells.some(cell => cell.isHeader));
   
   if (hasHeaderRow) {
+    // Apply Tailwind classes for table header background
     html += '<thead class="bg-slate-50 dark:bg-slate-900">';
     html += renderTableRow(table.rows[0], true);
     html += '</thead>';
     
     if (table.rows.length > 1) {
+      // Apply Tailwind classes for table body dividers
       html += '<tbody class="divide-y divide-slate-200 dark:divide-slate-700">';
       for (let i = 1; i < table.rows.length; i++) {
         html += renderTableRow(table.rows[i], false);
@@ -246,6 +328,7 @@ function renderTable(table: ParsedTable): string {
       html += '</tbody>';
     }
   } else {
+    // Apply Tailwind classes for table body dividers
     html += '<tbody class="divide-y divide-slate-200 dark:divide-slate-700">';
     table.rows.forEach(row => {
       html += renderTableRow(row, false);
@@ -264,16 +347,19 @@ function renderTable(table: ParsedTable): string {
  */
 function renderTableRow(row: TableRow, isHeader: boolean): string {
   const tag = isHeader ? 'th' : 'td';
+  // Apply Tailwind classes for table cell text and border
   const baseClasses = isHeader 
     ? 'px-3 sm:px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-700'
     : 'px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700';
 
+  // Apply Tailwind classes for hover effect on rows
   let html = isHeader 
     ? '<tr>' 
     : '<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">';
 
   row.cells.forEach(cell => {
     const alignment = getAlignmentClass(cell.alignment || 'left');
+    // Call processInlineFormatting on table cell content as well
     const cellContent = processInlineFormatting(cell.content);
     
     html += `<${tag} class="${baseClasses} ${alignment}">${cellContent}</${tag}>`;
@@ -295,16 +381,18 @@ function getAlignmentClass(alignment: 'left' | 'center' | 'right'): string {
 }
 
 /**
- * Process a regular (non-code, non-table) line
+ * Process a regular (non-code, non-table, non-list) line
+ * Inject Tailwind dark mode classes directly
  */
 function processRegularLine(line: string): string {
   const trimmed = line.trim();
   
-  if (!trimmed) {
+  // If it's empty or a list item (list items are handled in processMarkdownContent)
+  if (!trimmed || trimmedLineStartsWithListItem(line)) { 
     return '';
   }
 
-  // Headers
+  // Headers - Apply Tailwind text colors for both light and dark mode
   if (trimmed.startsWith('#### ')) {
     return `<h4 class="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-100 mt-8">${processInlineFormatting(trimmed.substring(5))}</h4>`;
   }
@@ -318,36 +406,32 @@ function processRegularLine(line: string): string {
     return `<h1 class="text-3xl font-bold mb-8 text-slate-900 dark:text-slate-100 mt-12">${processInlineFormatting(trimmed.substring(2))}</h1>`;
   }
 
-  // Lists
-  if (trimmed.startsWith('- ')) {
-    return `<li class="mb-2 text-slate-700 dark:text-slate-300 leading-relaxed">${processInlineFormatting(trimmed.substring(2))}</li>`;
-  }
-
-  // Blockquotes
+  // Blockquotes - Apply Tailwind background and text colors
   if (trimmed.startsWith('> ')) {
     return `<blockquote class="border-l-4 border-blue-500 pl-6 py-4 mb-6 bg-blue-50 dark:bg-blue-900/20 text-slate-700 dark:text-slate-300 italic rounded-r-lg">${processInlineFormatting(trimmed.substring(2))}</blockquote>`;
   }
 
-  // Regular paragraphs
+  // Regular paragraphs - Apply Tailwind text colors
   return `<p class="mb-4 text-slate-700 dark:text-slate-300 leading-relaxed">${processInlineFormatting(trimmed)}</p>`;
 }
 
 /**
  * Process inline formatting (bold, italic, code, links)
+ * Inject Tailwind dark mode classes directly for these inline elements
  */
 function processInlineFormatting(text: string): string {
   let result = escapeHtml(text);
   
-  // Process links [text](url)
+  // Process links [text](url) - Apply Tailwind text colors for links
   result = result.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline transition-colors" target="_blank" rel="noopener noreferrer">$1</a>');
   
-  // Process bold **text**
+  // Process bold **text** - Apply Tailwind text colors for bold text
   result = result.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-slate-900 dark:text-slate-100">$1</strong>');
   
-  // Process italic *text*
+  // Process italic *text* - Apply Tailwind text colors for italic text
   result = result.replace(/\*([^*]+)\*/g, '<em class="italic text-slate-800 dark:text-slate-200">$1</em>');
   
-  // Process inline code `code`
+  // Process inline code `code` - Apply Tailwind background, text, and border colors
   result = result.replace(/`([^`]+)`/g, '<code class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-2 py-1 rounded text-sm font-mono border border-slate-200 dark:border-slate-600">$1</code>');
   
   return result;
@@ -355,6 +439,7 @@ function processInlineFormatting(text: string): string {
 
 /**
  * Create a code block with proper syntax highlighting
+ * Background and text color for the block are already dark-mode aware from your globals.css
  */
 function createCodeBlock(code: string, language: string): string {
   const highlightedCode = language ? addSyntaxHighlighting(code, language) : escapeHtml(code);
@@ -362,9 +447,11 @@ function createCodeBlock(code: string, language: string): string {
   let html = '<div class="code-container mb-8 rounded-xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700">';
   
   if (language) {
+    // Code header background and text colors already defined in globals.css for light/dark
     html += `<div class="code-header bg-slate-800 dark:bg-slate-900 text-slate-200 dark:text-slate-300 px-4 py-3 text-sm font-semibold border-b border-slate-700 dark:border-slate-600">${language.toUpperCase()}</div>`;
   }
   
+  // Code block itself has background and text colors defined in globals.css for light/dark
   html += `<div class="code-block bg-slate-900 dark:bg-slate-950 text-slate-100 dark:text-slate-200 p-6 overflow-x-auto">`;
   html += `<pre class="text-sm leading-relaxed"><code class="language-${language}">${highlightedCode}</code></pre>`;
   html += '</div>';
@@ -375,6 +462,9 @@ function createCodeBlock(code: string, language: string): string {
 
 /**
  * Add syntax highlighting based on language
+ * The hl- classes (e.g., hl-keyword, hl-string) are defined in globals.css.
+ * Ensure your globals.css defines both light and dark mode colors for these classes
+ * within the @media (prefers-color-scheme: dark) block.
  */
 function addSyntaxHighlighting(code: string, language: string): string {
   const lang = language.toLowerCase();
@@ -413,30 +503,31 @@ function addSyntaxHighlighting(code: string, language: string): string {
 
 /**
  * Enhanced syntax highlighting for Java with better contrast
+ * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightJava(code: string): string {
   let result = escapeHtml(code);
 
-  // Keywords - bright purple/magenta for high contrast
+  // Keywords
   const keywords = ['public', 'private', 'protected', 'static', 'final', 'class', 'interface', 'extends', 'implements', 'import', 'package', 'if', 'else', 'for', 'while', 'do', 'switch', 'case', 'break', 'continue', 'return', 'try', 'catch', 'finally', 'throw', 'throws', 'new', 'this', 'super', 'abstract', 'synchronized', 'volatile', 'transient', 'native', 'strictfp'];
   const keywordPattern = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
   result = result.replace(keywordPattern, '<span class="hl-keyword">$1</span>');
   
-  // Annotations - bright yellow
+  // Annotations
   result = result.replace(/(@\w+)/g, '<span class="hl-annotation">$1</span>');
   
-  // Types - bright blue
+  // Types
   const types = ['int', 'long', 'short', 'byte', 'double', 'float', 'boolean', 'char', 'String', 'void', 'Object', 'List', 'Long', 'LocalDateTime', 'ResponseEntity', 'HttpStatus', 'Entity', 'Table', 'Column', 'Id', 'GeneratedValue', 'GenerationType', 'IDENTITY', 'CreationTimestamp', 'UpdateTimestamp'];
   const typePattern = new RegExp(`\\b(${types.join('|')})\\b`, 'g');
   result = result.replace(typePattern, '<span class="hl-type">$1</span>');
   
-  // Strings - bright green
+  // Strings
   result = result.replace(/&quot;([^&]*)&quot;/g, '<span class="hl-string">&quot;$1&quot;</span>');
   
-  // Numbers - bright orange
+  // Numbers
   result = result.replace(/\b(\d+\.?\d*[fFdDlL]?)\b/g, '<span class="hl-number">$1</span>');
   
-  // Comments - gray but still readable
+  // Comments
   result = result.replace(/\/\/(.*)$/gm, '<span class="hl-comment">//$1</span>');
   result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="hl-comment">/*$1*/</span>');
   
@@ -445,6 +536,7 @@ function highlightJava(code: string): string {
 
 /**
  * Syntax highlighting for SQL
+ * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightSQL(code: string): string {
   let result = escapeHtml(code);
@@ -467,6 +559,7 @@ function highlightSQL(code: string): string {
 
 /**
  * Syntax highlighting for JavaScript/TypeScript
+ * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightJavaScript(code: string): string {
   let result = escapeHtml(code);
@@ -499,6 +592,7 @@ function highlightJavaScript(code: string): string {
 
 /**
  * Syntax highlighting for Go
+ * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightGo(code: string): string {
   let result = escapeHtml(code);
@@ -527,6 +621,7 @@ function highlightGo(code: string): string {
 
 /**
  * Syntax highlighting for JSON
+ * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightJSON(code: string): string {
   let result = escapeHtml(code);
@@ -548,6 +643,7 @@ function highlightJSON(code: string): string {
 
 /**
  * Syntax highlighting for Bash/Shell
+ * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightBash(code: string): string {
   let result = escapeHtml(code);
@@ -570,6 +666,7 @@ function highlightBash(code: string): string {
 
 /**
  * Syntax highlighting for Python
+ * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightPython(code: string): string {
   let result = escapeHtml(code);
@@ -598,6 +695,7 @@ function highlightPython(code: string): string {
 
 /**
  * Syntax highlighting for CSS
+ * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightCSS(code: string): string {
   let result = escapeHtml(code);
@@ -619,6 +717,7 @@ function highlightCSS(code: string): string {
 
 /**
  * Syntax highlighting for HTML
+ * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightHTML(code: string): string {
   let result = escapeHtml(code);

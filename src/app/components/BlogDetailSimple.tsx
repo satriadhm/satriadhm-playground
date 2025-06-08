@@ -102,7 +102,7 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
         <header className="mb-12 space-y-6">
           {/* Category Badge */}
           <div className="flex flex-wrap items-center gap-3">
-            <span className="px-4 py-2 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 rounded-full text-sm font-semibold">
+            <span className="px-4 py-2 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-  -400 rounded-full text-sm font-semibold">
               {post.category}
             </span>
           </div>

@@ -1,4 +1,4 @@
-// src/app/components/BlogPostCard.tsx - Cleaned up version without tags and counts
+// src/app/components/BlogPostCard.tsx - Fixed version with proper dark mode colors
 'use client';
 
 import { Clock, User, Calendar } from 'lucide-react';
@@ -30,7 +30,7 @@ export default function BlogPostCard({ post, onClick, variant = 'list' }: BlogPo
   if (variant === 'featured') {
     return (
       <article 
-        className="border-b border-slate-200 dark:border-slate-800 pb-16 sm:pb-20 cursor-pointer group"
+        className="border-b border-slate-200 dark:border-slate-700 pb-16 sm:pb-20 cursor-pointer group"
         onClick={onClick}
       >
         <div className="space-y-6 sm:space-y-8">
@@ -38,7 +38,7 @@ export default function BlogPostCard({ post, onClick, variant = 'list' }: BlogPo
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
               {post.title}
             </h1>
-            <p className="text-lg sm:text-xl text-slate-700 dark:text-slate-400 leading-relaxed">
+            <p className="text-lg sm:text-xl text-slate-700 dark:text-slate-300 leading-relaxed">
               {post.excerpt}
             </p>
           </div>
@@ -47,18 +47,18 @@ export default function BlogPostCard({ post, onClick, variant = 'list' }: BlogPo
             <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-slate-600 dark:text-slate-400">
               <div className="flex items-center space-x-1">
                 <User size={14} />
-                <span className="font-medium">{post.author}</span>
+                <span className="font-medium text-slate-700 dark:text-slate-300">{post.author}</span>
               </div>
-              <span className="hidden sm:inline">·</span>
-              <span className="px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 rounded-full text-xs font-medium">
+              <span className="hidden sm:inline text-slate-400 dark:text-slate-500">·</span>
+              <span className="px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full text-xs font-medium">
                 {post.category}
               </span>
-              <span className="hidden sm:inline">·</span>
+              <span className="hidden sm:inline text-slate-400 dark:text-slate-500">·</span>
               <div className="flex items-center space-x-1">
                 <Calendar size={14} />
                 <span>{formatDate(post.date)}</span>
               </div>
-              <span className="hidden sm:inline">·</span>
+              <span className="hidden sm:inline text-slate-400 dark:text-slate-500">·</span>
               <div className="flex items-center space-x-1">
                 <Clock size={14} />
                 <span>{post.readTime} min read</span>
@@ -81,16 +81,16 @@ export default function BlogPostCard({ post, onClick, variant = 'list' }: BlogPo
   if (variant === 'compact') {
     return (
       <article 
-        className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-all duration-300 cursor-pointer group"
+        className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 cursor-pointer group"
         onClick={onClick}
       >
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <span className="px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 rounded-lg text-sm font-medium">
+            <span className="px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg text-sm font-medium">
               {post.category}
             </span>
             {post.featured && (
-              <span className="px-2 py-1 bg-yellow-50 dark:bg-yellow-950/30 text-yellow-700 dark:text-yellow-400 rounded text-xs font-medium">
+              <span className="px-2 py-1 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded text-xs font-medium">
                 Featured
               </span>
             )}
@@ -100,7 +100,7 @@ export default function BlogPostCard({ post, onClick, variant = 'list' }: BlogPo
             {post.title}
           </h3>
 
-          <p className="text-slate-700 dark:text-slate-400 text-sm leading-relaxed line-clamp-3">
+          <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed line-clamp-3">
             {post.excerpt}
           </p>
 
@@ -131,11 +131,11 @@ export default function BlogPostCard({ post, onClick, variant = 'list' }: BlogPo
           <h2 className="text-lg sm:text-xl font-semibold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
             {post.title}
           </h2>
-          <p className="text-slate-700 dark:text-slate-400 leading-relaxed text-sm sm:text-base">
+          <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
             {post.excerpt}
           </p>
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-sm text-slate-600 dark:text-slate-400">
-            <span className="px-2 sm:px-3 py-1 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 rounded-full text-xs">
+            <span className="px-2 sm:px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full text-xs">
               {post.category}
             </span>
             <div className="flex items-center space-x-1">
@@ -144,7 +144,7 @@ export default function BlogPostCard({ post, onClick, variant = 'list' }: BlogPo
             </div>
             <div className="flex items-center space-x-1">
               <User size={12} />
-              <span>{post.author}</span>
+              <span className="text-slate-600 dark:text-slate-400">{post.author}</span>
             </div>
           </div>
         </div>

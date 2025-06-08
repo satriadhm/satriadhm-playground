@@ -186,6 +186,7 @@ code {
 }
 
 /* ===== TYPOGRAPHY STYLES ===== */
+/* These .prose styles apply to general markdown rendering if not overridden */
 .prose h1 {
   font-size: 1.875rem;
   font-weight: 700;
@@ -394,18 +395,22 @@ code {
 }
 
 /* ===== ENHANCED BLOG CONTENT STYLING ===== */
+/*
+   These styles are now primarily for structural and non-color properties,
+   as colors are handled by Tailwind classes in `blog.ts` for dark mode compatibility.
+*/
 .blog-content {
-  color: inherit;
+  /* color: inherit;  Removed, handled by Tailwind classes */
   font-size: 16px;
   line-height: 1.7;
 }
 
-/* Typography - Light Mode with Better Contrast */
+/* Typography - Light Mode with Better Contrast (Structural properties remain) */
 .blog-content h1 {
   font-size: 2.25rem;
   font-weight: 700;
   margin-bottom: 2rem;
-  color: #0f172a !important;
+  /* color: #0f172a; Removed, handled by Tailwind classes in blog.ts */
   line-height: 1.2;
 }
 
@@ -414,7 +419,7 @@ code {
   font-weight: 600;
   margin-bottom: 1.5rem;
   margin-top: 2.5rem;
-  color: #0f172a !important;
+  /* color: #0f172a; Removed, handled by Tailwind classes in blog.ts */
   line-height: 1.3;
 }
 
@@ -423,7 +428,7 @@ code {
   font-weight: 600;
   margin-bottom: 1rem;
   margin-top: 2rem;
-  color: #0f172a !important;
+  /* color: #0f172a; Removed, handled by Tailwind classes in blog.ts */
   line-height: 1.3;
 }
 
@@ -432,25 +437,25 @@ code {
   font-weight: 600;
   margin-bottom: 0.75rem;
   margin-top: 1.5rem;
-  color: #1e293b !important;
+  /* color: #1e293b; Removed, handled by Tailwind classes in blog.ts */
   line-height: 1.3;
 }
 
 .blog-content p {
   margin-bottom: 1.25rem;
   line-height: 1.75;
-  color: #1e293b !important;
+  /* color: #1e293b; Removed, handled by Tailwind classes in blog.ts */
   font-size: 1rem;
 }
 
 .blog-content strong {
   font-weight: 600;
-  color: #0f172a !important;
+  /* color: #0f172a; Removed, handled by Tailwind classes in blog.ts */
 }
 
 .blog-content em {
   font-style: italic;
-  color: #374151 !important;
+  /* color: #374151; Removed, handled by Tailwind classes in blog.ts */
 }
 
 /* Lists with Better Spacing */
@@ -463,26 +468,15 @@ code {
 .blog-content li {
   margin-bottom: 0.75rem;
   line-height: 1.75;
-  color: #1e293b !important;
 }
 
-.blog-content li strong {
-  color: #0f172a !important;
-}
 
-/* Links with Better Contrast */
 .blog-content a {
-  color: #1d4ed8 !important;
   text-decoration: underline;
   transition: color 0.2s ease;
   font-weight: 500;
 }
 
-.blog-content a:hover {
-  color: #1e40af !important;
-}
-
-/* Enhanced Tables with Better Contrast */
 .blog-content .table-container {
   margin: 2rem 0;
   border-radius: 12px;
@@ -502,7 +496,7 @@ code {
   text-align: left;
   padding: 1rem 1.25rem;
   font-size: 0.875rem;
-  color: #475569;
+  color: #475569; /* Keep, specific to table header */
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border-bottom: 2px solid #e2e8f0;
@@ -511,7 +505,7 @@ code {
 .blog-content td {
   padding: 1rem 1.25rem;
   font-size: 0.875rem;
-  color: #334155;
+  color: #334155; /* Keep, specific to table data */
   border-bottom: 1px solid #f1f5f9;
   vertical-align: top;
 }
@@ -526,14 +520,14 @@ code {
 
 /* Enhanced Inline Code with Better Contrast */
 .blog-content code:not(.code-block code) {
-  background: #f1f5f9 !important;
-  color: #1e293b !important;
+  /* background: #f1f5f9; Removed, handled by Tailwind classes in blog.ts */
+  /* color: #1e293b; Removed, handled by Tailwind classes in blog.ts */
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
   font-size: 0.875em;
   font-family: 'JetBrains Mono', 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', 'Source Code Pro', monospace;
   font-weight: 500;
-  border: 1px solid rgba(148, 163, 184, 0.3);
+  /* border: 1px solid rgba(148, 163, 184, 0.3); Removed, handled by Tailwind classes in blog.ts */
 }
 
 /* Enhanced Code Blocks with Proper Styling */
@@ -546,8 +540,8 @@ code {
 }
 
 .blog-content .code-header {
-  background: #374151;
-  color: #e5e7eb;
+  background: #374151; /* Keep, this is a custom dark background for header */
+  color: #e5e7eb; /* Keep, custom light text for header */
   padding: 0.75rem 1rem;
   font-size: 0.75rem;
   font-weight: 600;
@@ -558,8 +552,8 @@ code {
 }
 
 .blog-content .code-block {
-  background: #0f172a !important;
-  color: #f1f5f9;
+  background: #0f172a; /* Keep, this is a custom dark background */
+  color: #f1f5f9; /* Keep, custom light text */
   padding: 1.5rem;
   font-family: 'JetBrains Mono', 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', 'Source Code Pro', monospace;
   overflow-x: auto;
@@ -570,7 +564,7 @@ code {
 .blog-content .code-block pre {
   margin: 0;
   padding: 0;
-  background: transparent !important;
+  background: transparent;
   color: inherit;
   font-size: inherit;
   line-height: inherit;
@@ -579,7 +573,7 @@ code {
 }
 
 .blog-content .code-block code {
-  background: transparent !important;
+  background: transparent;
   color: inherit;
   padding: 0;
   font-size: inherit;
@@ -587,7 +581,8 @@ code {
   font-family: inherit;
 }
 
-/* Enhanced Syntax Highlighting with High Contrast Colors */
+/* Enhanced Syntax Highlighting with High Contrast Colors (Light Mode) */
+/* These colors are applied to the `hl-` classes within code blocks. */
 .blog-content .code-block .hl-keyword {
   color: #c084fc;
   font-weight: 600;
@@ -652,64 +647,30 @@ code {
   color: #60a5fa;
   font-weight: 500;
 }
-
-/* Override prose styles for better contrast */
-.blog-content.prose h1,
-.blog-content.prose h2,
-.blog-content.prose h3,
-.blog-content.prose h4,
-.blog-content.prose h5,
-.blog-content.prose h6 {
-  color: #0f172a !important;
-}
-
-.blog-content.prose p {
-  color: #1e293b !important;
-}
-
-.blog-content.prose li {
-  color: #1e293b !important;
-}
-
-.blog-content.prose strong {
-  color: #0f172a !important;
-}
-
-.blog-content.prose a {
-  color: #1d4ed8 !important;
-}
-
-.blog-content.prose a:hover {
-  color: #1e40af !important;
-}
-
-/* Override prose styles for code blocks */
 .blog-content.prose :not(pre) > code {
-  background-color: #f1f5f9 !important;
-  color: #1e293b !important;
-  padding: 0.25rem 0.5rem !important;
-  font-size: 0.875em !important;
-  border-radius: 6px !important;
-  font-weight: 500 !important;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875em;
+  border-radius: 6px;
+  font-weight: 500;
 }
 
 .blog-content.prose pre {
-  background-color: transparent !important;
-  padding: 0 !important;
-  border: none !important;
-  border-radius: 0 !important;
-  margin: 0 !important;
-  color: inherit !important;
-  font-size: inherit !important;
-  overflow: visible !important;
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  color: inherit; /* Keep, ensures it takes color from parent code-block */
+  font-size: inherit;
+  overflow: visible;
 }
 
 .blog-content.prose pre code {
-  background-color: transparent !important;
-  padding: 0 !important;
-  color: inherit !important;
-  font-size: inherit !important;
-  border-radius: 0 !important;
+  background-color: transparent;
+  padding: 0;
+  color: inherit; /* Keep, ensures it takes color from parent code-block */
+  font-size: inherit;
+  border-radius: 0;
 }
 
 /* Enhanced Scrollbar for code blocks */
@@ -745,9 +706,8 @@ code {
   background-color: rgba(59, 130, 246, 0.3);
 }
 
-/* ===== DARK MODE OVERRIDES ===== */
 @media (prefers-color-scheme: dark) {
-  /* Typography - Dark Mode with Better Contrast */
+
   .blog-content h1,
   .blog-content h2,
   .blog-content h3,
@@ -816,8 +776,69 @@ code {
 
   /* Code block background stays the same (always dark) */
   .blog-content .code-block {
-    background: #0f172a !important;
+    background: #0f172a;
     color: #f1f5f9;
+  }
+
+  /* Syntax Highlighting in Dark Mode */
+  .blog-content .code-block .hl-keyword {
+    color: #e879f9; /* Adjusted for better contrast in dark mode */
+  }
+
+  .blog-content .code-block .hl-type {
+    color: #93c5fd;
+  }
+
+  .blog-content .code-block .hl-string {
+    color: #86efac;
+  }
+
+  .blog-content .code-block .hl-number {
+    color: #fca5a5;
+  }
+
+  .blog-content .code-block .hl-comment {
+    color: #a3a3a3;
+  }
+
+  .blog-content .code-block .hl-annotation {
+    color: #fcd34d;
+  }
+
+  .blog-content .code-block .hl-builtin {
+    color: #67e8f9;
+  }
+
+  .blog-content .code-block .hl-html-tag {
+    color: #fda4af;
+  }
+
+  .blog-content .code-block .hl-html-attr {
+    color: #c4b5fd;
+  }
+
+  .blog-content .code-block .hl-html-value {
+    color: #86efac;
+  }
+
+  .blog-content .code-block .hl-template-literal {
+    color: #86efac;
+  }
+
+  .blog-content .code-block .hl-template-interpolation {
+    color: #fcd34d;
+  }
+
+  .blog-content .code-block .hl-template-expression {
+    color: #e2e8f0;
+  }
+
+  .blog-content .code-block .hl-string-with-html {
+    color: #86efac;
+  }
+
+  .blog-content .code-block .hl-react {
+    color: #93c5fd;
   }
 }
 
@@ -873,13 +894,13 @@ code {
 /* ===== PRINT STYLES ===== */
 @media print {
   .blog-content .code-block {
-    background: #f8fafc !important;
-    color: #1e293b !important;
+    background: #f8fafc;
+    color: #1e293b;
     border: 1px solid #e2e8f0;
   }
   
   .blog-content .code-header {
-    background: #e2e8f0 !important;
-    color: #1e293b !important;
+    background: #e2e8f0;
+    color: #1e293b;
   }
 }

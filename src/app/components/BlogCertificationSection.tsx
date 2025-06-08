@@ -1,4 +1,4 @@
-// src/app/components/BlogCertificationSection.tsx - Cleaned up version
+// src/app/components/BlogCertificationSection.tsx - Fixed version with proper dark mode colors
 "use client";
 
 import { useState, useEffect } from "react";
@@ -105,7 +105,7 @@ export default function BlogCertificationSection() {
       className="py-16 sm:py-24 bg-white dark:bg-slate-950"
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header - Mobile Responsive */}
+        {/* Section Header - Mobile Responsive dengan proper dark mode */}
         <div className="text-center mb-16 sm:mb-20">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-6 sm:mb-8">
             Writing & Achievements
@@ -116,15 +116,15 @@ export default function BlogCertificationSection() {
           </p>
         </div>
 
-        {/* Tab Navigation - Mobile Responsive */}
+        {/* Tab Navigation - Mobile Responsive dengan proper dark mode */}
         <div className="flex justify-center mb-16 sm:mb-20">
-          <div className="flex border-b border-slate-200 dark:border-slate-800 w-full max-w-md">
+          <div className="flex border-b border-slate-200 dark:border-slate-700 w-full max-w-md">
             <button
               onClick={() => setActiveTab("blog")}
               className={`flex-1 px-6 sm:px-10 py-3 sm:py-4 text-base sm:text-lg font-medium transition-all relative ${
                 activeTab === "blog"
                   ? "text-blue-600 dark:text-blue-400"
-                  : "text-slate-600 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-300"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300"
               }`}
             >
               Writing
@@ -137,7 +137,7 @@ export default function BlogCertificationSection() {
               className={`flex-1 px-6 sm:px-10 py-3 sm:py-4 text-base sm:text-lg font-medium transition-all relative ${
                 activeTab === "certifications"
                   ? "text-blue-600 dark:text-blue-400"
-                  : "text-slate-600 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-300"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300"
               }`}
             >
               Achievements
@@ -153,7 +153,7 @@ export default function BlogCertificationSection() {
           <div className="space-y-16 sm:space-y-20">
             {/* Controls */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              {/* Refresh Button */}
+              {/* Refresh Button dengan proper dark mode */}
               <button
                 onClick={handleRefresh}
                 disabled={isRefreshing}
@@ -170,7 +170,7 @@ export default function BlogCertificationSection() {
                 <span>{isRefreshing ? "Refreshing..." : "Refresh Posts"}</span>
               </button>
 
-              {/* Status Messages */}
+              {/* Status Messages dengan proper dark mode */}
               {refreshStatus === "success" && (
                 <div className="flex items-center space-x-2 text-green-600 dark:text-green-400 text-sm">
                   <CheckCircle size={16} />
@@ -185,10 +185,10 @@ export default function BlogCertificationSection() {
               )}
             </div>
 
-            {/* Loading State */}
+            {/* Loading State dengan proper dark mode */}
             {isLoading && (
               <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4"></div>
                 <p className="text-slate-700 dark:text-slate-400">
                   Loading blog posts dynamically...
                 </p>
@@ -198,10 +198,10 @@ export default function BlogCertificationSection() {
               </div>
             )}
 
-            {/* Error State */}
+            {/* Error State dengan proper dark mode */}
             {error && !isLoading && (
               <div className="text-center py-12">
-                <div className="text-red-500 text-4xl mb-4">⚠️</div>
+                <div className="text-red-500 dark:text-red-400 text-4xl mb-4">⚠️</div>
                 <p className="text-red-600 dark:text-red-400 mb-4 font-medium">
                   {error}
                 </p>
@@ -215,7 +215,7 @@ export default function BlogCertificationSection() {
                 </div>
                 <button
                   onClick={handleRefresh}
-                  className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg transition-colors"
                 >
                   Try Again
                 </button>
@@ -245,7 +245,7 @@ export default function BlogCertificationSection() {
               </div>
             )}
 
-            {/* Empty State (when no error but no posts) */}
+            {/* Empty State dengan proper dark mode */}
             {!isLoading && !error && posts.length === 0 && (
               <div className="text-center py-12">
                 <div className="text-6xl mb-4">📝</div>
@@ -259,7 +259,7 @@ export default function BlogCertificationSection() {
               </div>
             )}
 
-            {/* Simple indicator without counts */}
+            {/* Simple indicator dengan proper dark mode */}
             {!isLoading && !error && posts.length > 0 && (
               <div className="text-center pt-8 sm:pt-12">
                 <div className="inline-flex items-center space-x-2 text-blue-600 dark:text-blue-400 font-medium">
@@ -270,7 +270,7 @@ export default function BlogCertificationSection() {
           </div>
         )}
 
-        {/* Certifications Tab - Mobile Responsive */}
+        {/* Certifications Tab - Mobile Responsive dengan proper dark mode */}
         {activeTab === "certifications" && (
           <div className="space-y-8 sm:space-y-12">
             {certifications.map((cert) => (
@@ -278,7 +278,7 @@ export default function BlogCertificationSection() {
                 key={cert.id}
                 className="border-l-2 border-blue-200 dark:border-blue-800 pl-6 sm:pl-10 pb-8 sm:pb-12 relative"
               >
-                {/* Timeline dot */}
+                {/* Timeline dot dengan proper dark mode */}
                 <div className="absolute left-0 w-3 h-3 bg-blue-500 dark:bg-blue-400 rounded-full transform -translate-x-1.5 mt-1"></div>
 
                 <div className="space-y-3 sm:space-y-4">
@@ -290,7 +290,7 @@ export default function BlogCertificationSection() {
                       <div className="flex items-center space-x-2 text-slate-700 dark:text-slate-400">
                         <Award
                           size={16}
-                          className="text-blue-500 flex-shrink-0"
+                          className="text-blue-500 dark:text-blue-400 flex-shrink-0"
                         />
                         <span className="text-sm sm:text-base">
                           {cert.issuer}
@@ -315,7 +315,7 @@ export default function BlogCertificationSection() {
                   </div>
 
                   {cert.credentialId && (
-                    <div className="text-xs text-slate-600 dark:text-slate-400 font-mono bg-slate-50 dark:bg-slate-900 px-3 py-2 rounded inline-block">
+                    <div className="text-xs text-slate-600 dark:text-slate-400 font-mono bg-slate-50 dark:bg-slate-800 px-3 py-2 rounded inline-block">
                       ID: {cert.credentialId}
                     </div>
                   )}
