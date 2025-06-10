@@ -1,4 +1,4 @@
-// src/utils/blog.ts - Fixed version with proper syntax highlighting and contrast
+// src/utils/blog.ts - Fixed version with full Tailwind dark mode support
 
 export interface BlogPost {
   id: string;
@@ -43,11 +43,10 @@ interface ParsedTable {
 }
 
 /**
- * Main function to parse markdown content to HTML
+ * Main function to parse markdown content to HTML with full Tailwind dark mode support
  */
 export function parseMarkdown(markdown: string): string {
   if (!markdown || typeof markdown !== 'string') {
-    // Apply Tailwind classes for default text color on error/no content
     return '<p class="mb-4 text-slate-700 dark:text-slate-300">No content available</p>';
   }
 
@@ -55,7 +54,6 @@ export function parseMarkdown(markdown: string): string {
     return processMarkdownContent(markdown);
   } catch (error) {
     console.error('Markdown parsing error:', error);
-    // Apply Tailwind classes for default text color on error/no content
     return `<p class="mb-4 text-slate-700 dark:text-slate-300">${escapeHtml(markdown)}</p>`;
   }
 }
@@ -70,8 +68,8 @@ function processMarkdownContent(text: string): string {
   let codeLanguage = '';
   let codeContent: string[] = [];
   let tableBuffer: string[] = [];
-  let inUnorderedList = false; // Track if currently inside an unordered list
-  let inOrderedList = false; // Track if currently inside an ordered list
+  let inUnorderedList = false;
+  let inOrderedList = false;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -144,15 +142,15 @@ function processMarkdownContent(text: string): string {
 
         // Start new list if not already in one
         if (listItemMatch.type === 'unordered' && !inUnorderedList) {
-            result.push('<ul class="list-disc pl-5 mb-4 text-slate-700 dark:text-slate-300">');
+            result.push('<ul class="list-disc pl-5 mb-4 space-y-2 text-slate-700 dark:text-slate-300">');
             inUnorderedList = true;
         } else if (listItemMatch.type === 'ordered' && !inOrderedList) {
-            result.push('<ol class="list-decimal pl-5 mb-4 text-slate-700 dark:text-slate-300">');
+            result.push('<ol class="list-decimal pl-5 mb-4 space-y-2 text-slate-700 dark:text-slate-300">');
             inOrderedList = true;
         }
 
         // Add list item with Tailwind classes
-        result.push(`<li class="mb-2 text-slate-700 dark:text-slate-300 leading-relaxed">${processInlineFormatting(listItemMatch.content)}</li>`);
+        result.push(`<li class="leading-relaxed text-slate-700 dark:text-slate-300">${processInlineFormatting(listItemMatch.content)}</li>`);
     } else {
         // If not a list item, close any open list
         if (inUnorderedList) {
@@ -204,13 +202,12 @@ function trimmedLineStartsWithListItem(line: string): { type: 'unordered' | 'ord
  */
 function isTableRow(line: string): boolean {
   const trimmed = line.trim();
-  // Check if it looks like a table row and not a header separator, code block, or list item
   return trimmed.includes('|') &&
-         !trimmed.startsWith('#') && // Exclude headers
-         !trimmed.startsWith('```') && // Exclude code blocks
-         !trimmed.match(/^\s*[-\s:]+$/) && // Exclude table separator line itself
-         !trimmed.match(/^(\d+)\.\s/) && // Exclude ordered list items
-         !trimmed.startsWith('- '); // Exclude unordered list items
+         !trimmed.startsWith('#') &&
+         !trimmed.startsWith('```') &&
+         !trimmed.match(/^\s*[-\s:]+$/) &&
+         !trimmed.match(/^(\d+)\.\s/) &&
+         !trimmed.startsWith('- ');
 }
 
 /**
@@ -234,17 +231,14 @@ function parseTableRows(lines: string[]): ParsedTable {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
     
-    // Skip empty lines
     if (!line) continue;
 
-    // Check for separator row (|:---|:---:|---:|)
     if (isSeparatorRow(line)) {
       alignments = parseSeparatorRow(line);
       hasHeader = true;
       continue;
     }
 
-    // Parse regular table row
     const cells = parseTableCells(line);
     const isHeaderRow = i === 0 && !hasHeader;
     
@@ -293,7 +287,6 @@ function parseSeparatorRow(line: string): ('left' | 'center' | 'right')[] {
 function parseTableCells(line: string): string[] {
   const cells = line.split('|').map(cell => cell.trim());
   
-  // Remove empty cells at start and end
   if (cells[0] === '') cells.shift();
   if (cells.length > 0 && cells[cells.length - 1] === '') cells.pop();
   
@@ -301,26 +294,22 @@ function parseTableCells(line: string): string[] {
 }
 
 /**
- * Render a parsed table to HTML
+ * Render a parsed table to HTML with full Tailwind dark mode support
  */
 function renderTable(table: ParsedTable): string {
   if (table.rows.length === 0) return '';
 
-  let html = '<div class="table-container mb-6 overflow-x-auto">';
-  // Apply Tailwind classes for table background and border
-  html += '<table class="min-w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden shadow-sm">';
+  let html = '<div class="table-container mb-6 overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">';
+  html += '<table class="min-w-full bg-white dark:bg-slate-800">';
   
-  // Determine if we have headers
   const hasHeaderRow = table.hasHeader || (table.rows.length > 0 && table.rows[0].cells.some(cell => cell.isHeader));
   
   if (hasHeaderRow) {
-    // Apply Tailwind classes for table header background
-    html += '<thead class="bg-slate-50 dark:bg-slate-900">';
+    html += '<thead class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">';
     html += renderTableRow(table.rows[0], true);
     html += '</thead>';
     
     if (table.rows.length > 1) {
-      // Apply Tailwind classes for table body dividers
       html += '<tbody class="divide-y divide-slate-200 dark:divide-slate-700">';
       for (let i = 1; i < table.rows.length; i++) {
         html += renderTableRow(table.rows[i], false);
@@ -328,7 +317,6 @@ function renderTable(table: ParsedTable): string {
       html += '</tbody>';
     }
   } else {
-    // Apply Tailwind classes for table body dividers
     html += '<tbody class="divide-y divide-slate-200 dark:divide-slate-700">';
     table.rows.forEach(row => {
       html += renderTableRow(row, false);
@@ -343,23 +331,20 @@ function renderTable(table: ParsedTable): string {
 }
 
 /**
- * Render a single table row
+ * Render a single table row with full Tailwind dark mode support
  */
 function renderTableRow(row: TableRow, isHeader: boolean): string {
   const tag = isHeader ? 'th' : 'td';
-  // Apply Tailwind classes for table cell text and border
   const baseClasses = isHeader 
-    ? 'px-3 sm:px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-700'
-    : 'px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700';
+    ? 'px-3 sm:px-6 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider'
+    : 'px-3 sm:px-6 py-4 text-sm text-slate-900 dark:text-slate-100';
 
-  // Apply Tailwind classes for hover effect on rows
   let html = isHeader 
     ? '<tr>' 
     : '<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">';
 
   row.cells.forEach(cell => {
     const alignment = getAlignmentClass(cell.alignment || 'left');
-    // Call processInlineFormatting on table cell content as well
     const cellContent = processInlineFormatting(cell.content);
     
     html += `<${tag} class="${baseClasses} ${alignment}">${cellContent}</${tag}>`;
@@ -381,65 +366,61 @@ function getAlignmentClass(alignment: 'left' | 'center' | 'right'): string {
 }
 
 /**
- * Process a regular (non-code, non-table, non-list) line
- * Inject Tailwind dark mode classes directly
+ * Process a regular line with full Tailwind dark mode support
  */
 function processRegularLine(line: string): string {
   const trimmed = line.trim();
   
-  // If it's empty or a list item (list items are handled in processMarkdownContent)
   if (!trimmed || trimmedLineStartsWithListItem(line)) { 
     return '';
   }
 
-  // Headers - Apply Tailwind text colors for both light and dark mode
+  // Headers with Tailwind dark mode classes
   if (trimmed.startsWith('#### ')) {
-    return `<h4 class="text-lg font-semibold mb-4 text-slate-900 dark:text-slate-100 mt-8">${processInlineFormatting(trimmed.substring(5))}</h4>`;
+    return `<h4 class="text-lg font-semibold mb-4 mt-8 text-slate-900 dark:text-slate-100">${processInlineFormatting(trimmed.substring(5))}</h4>`;
   }
   if (trimmed.startsWith('### ')) {
-    return `<h3 class="text-xl font-semibold mb-4 text-slate-900 dark:text-slate-100 mt-8">${processInlineFormatting(trimmed.substring(4))}</h3>`;
+    return `<h3 class="text-xl font-semibold mb-4 mt-8 text-slate-900 dark:text-slate-100">${processInlineFormatting(trimmed.substring(4))}</h3>`;
   }
   if (trimmed.startsWith('## ')) {
-    return `<h2 class="text-2xl font-bold mb-6 text-slate-900 dark:text-slate-100 mt-10">${processInlineFormatting(trimmed.substring(3))}</h2>`;
+    return `<h2 class="text-2xl font-bold mb-6 mt-10 text-slate-900 dark:text-slate-100">${processInlineFormatting(trimmed.substring(3))}</h2>`;
   }
   if (trimmed.startsWith('# ')) {
-    return `<h1 class="text-3xl font-bold mb-8 text-slate-900 dark:text-slate-100 mt-12">${processInlineFormatting(trimmed.substring(2))}</h1>`;
+    return `<h1 class="text-3xl font-bold mb-8 mt-12 text-slate-900 dark:text-slate-100">${processInlineFormatting(trimmed.substring(2))}</h1>`;
   }
 
-  // Blockquotes - Apply Tailwind background and text colors
+  // Blockquotes with Tailwind dark mode classes
   if (trimmed.startsWith('> ')) {
-    return `<blockquote class="border-l-4 border-blue-500 pl-6 py-4 mb-6 bg-blue-50 dark:bg-blue-900/20 text-slate-700 dark:text-slate-300 italic rounded-r-lg">${processInlineFormatting(trimmed.substring(2))}</blockquote>`;
+    return `<blockquote class="border-l-4 border-blue-500 dark:border-blue-400 pl-6 py-4 mb-6 bg-blue-50 dark:bg-blue-900/20 text-slate-700 dark:text-slate-300 italic rounded-r-lg">${processInlineFormatting(trimmed.substring(2))}</blockquote>`;
   }
 
-  // Regular paragraphs - Apply Tailwind text colors
+  // Regular paragraphs with Tailwind dark mode classes
   return `<p class="mb-4 text-slate-700 dark:text-slate-300 leading-relaxed">${processInlineFormatting(trimmed)}</p>`;
 }
 
 /**
- * Process inline formatting (bold, italic, code, links)
- * Inject Tailwind dark mode classes directly for these inline elements
+ * Process inline formatting with full Tailwind dark mode support
  */
 function processInlineFormatting(text: string): string {
   let result = escapeHtml(text);
   
-  // Process links [text](url) - Apply Tailwind text colors for links
-  result = result.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline transition-colors" target="_blank" rel="noopener noreferrer">$1</a>');
+  // Links with Tailwind dark mode classes
+  result = result.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline transition-colors font-medium" target="_blank" rel="noopener noreferrer">$1</a>');
   
-  // Process bold **text** - Apply Tailwind text colors for bold text
+  // Bold with Tailwind dark mode classes
   result = result.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold text-slate-900 dark:text-slate-100">$1</strong>');
   
-  // Process italic *text* - Apply Tailwind text colors for italic text
+  // Italic with Tailwind dark mode classes
   result = result.replace(/\*([^*]+)\*/g, '<em class="italic text-slate-800 dark:text-slate-200">$1</em>');
   
-  // Process inline code `code` - Apply Tailwind background, text, and border colors
+  // Inline code with Tailwind dark mode classes
   result = result.replace(/`([^`]+)`/g, '<code class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 px-2 py-1 rounded text-sm font-mono border border-slate-200 dark:border-slate-600">$1</code>');
   
   return result;
 }
 
 /**
- * Create a code block with proper syntax highlighting
- * Background and text color for the block are already dark-mode aware from your globals.css
+ * Create a code block with syntax highlighting and Tailwind dark mode support
  */
 function createCodeBlock(code: string, language: string): string {
   const highlightedCode = language ? addSyntaxHighlighting(code, language) : escapeHtml(code);
@@ -447,11 +428,10 @@ function createCodeBlock(code: string, language: string): string {
   let html = '<div class="code-container mb-8 rounded-xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700">';
   
   if (language) {
-    // Code header background and text colors already defined in globals.css for light/dark
     html += `<div class="code-header bg-slate-800 dark:bg-slate-900 text-slate-200 dark:text-slate-300 px-4 py-3 text-sm font-semibold border-b border-slate-700 dark:border-slate-600">${language.toUpperCase()}</div>`;
   }
   
-  // Code block itself has background and text colors defined in globals.css for light/dark
+  // Code block with consistent dark background for both modes
   html += `<div class="code-block bg-slate-900 dark:bg-slate-950 text-slate-100 dark:text-slate-200 p-6 overflow-x-auto">`;
   html += `<pre class="text-sm leading-relaxed"><code class="language-${language}">${highlightedCode}</code></pre>`;
   html += '</div>';
@@ -462,9 +442,6 @@ function createCodeBlock(code: string, language: string): string {
 
 /**
  * Add syntax highlighting based on language
- * The hl- classes (e.g., hl-keyword, hl-string) are defined in globals.css.
- * Ensure your globals.css defines both light and dark mode colors for these classes
- * within the @media (prefers-color-scheme: dark) block.
  */
 function addSyntaxHighlighting(code: string, language: string): string {
   const lang = language.toLowerCase();
@@ -496,14 +473,16 @@ function addSyntaxHighlighting(code: string, language: string): string {
     case 'html':
     case 'xml':
       return highlightHTML(code);
+    case 'csharp':
+    case 'c#':
+      return highlightCSharp(code);
     default:
       return escapeHtml(code);
   }
 }
 
 /**
- * Enhanced syntax highlighting for Java with better contrast
- * Uses hl- classes which should be defined with dark mode variants in globals.css
+ * Enhanced syntax highlighting for Java
  */
 function highlightJava(code: string): string {
   let result = escapeHtml(code);
@@ -511,226 +490,247 @@ function highlightJava(code: string): string {
   // Keywords
   const keywords = ['public', 'private', 'protected', 'static', 'final', 'class', 'interface', 'extends', 'implements', 'import', 'package', 'if', 'else', 'for', 'while', 'do', 'switch', 'case', 'break', 'continue', 'return', 'try', 'catch', 'finally', 'throw', 'throws', 'new', 'this', 'super', 'abstract', 'synchronized', 'volatile', 'transient', 'native', 'strictfp'];
   const keywordPattern = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
-  result = result.replace(keywordPattern, '<span class="hl-keyword">$1</span>');
+  result = result.replace(keywordPattern, '<span class="text-purple-400 font-semibold">$1</span>');
   
   // Annotations
-  result = result.replace(/(@\w+)/g, '<span class="hl-annotation">$1</span>');
+  result = result.replace(/(@\w+)/g, '<span class="text-yellow-400 font-semibold">$1</span>');
   
   // Types
   const types = ['int', 'long', 'short', 'byte', 'double', 'float', 'boolean', 'char', 'String', 'void', 'Object', 'List', 'Long', 'LocalDateTime', 'ResponseEntity', 'HttpStatus', 'Entity', 'Table', 'Column', 'Id', 'GeneratedValue', 'GenerationType', 'IDENTITY', 'CreationTimestamp', 'UpdateTimestamp'];
   const typePattern = new RegExp(`\\b(${types.join('|')})\\b`, 'g');
-  result = result.replace(typePattern, '<span class="hl-type">$1</span>');
+  result = result.replace(typePattern, '<span class="text-blue-400 font-medium">$1</span>');
   
   // Strings
-  result = result.replace(/&quot;([^&]*)&quot;/g, '<span class="hl-string">&quot;$1&quot;</span>');
+  result = result.replace(/&quot;([^&]*)&quot;/g, '<span class="text-green-400">&quot;$1&quot;</span>');
   
   // Numbers
-  result = result.replace(/\b(\d+\.?\d*[fFdDlL]?)\b/g, '<span class="hl-number">$1</span>');
+  result = result.replace(/\b(\d+\.?\d*[fFdDlL]?)\b/g, '<span class="text-orange-400">$1</span>');
   
   // Comments
-  result = result.replace(/\/\/(.*)$/gm, '<span class="hl-comment">//$1</span>');
-  result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="hl-comment">/*$1*/</span>');
+  result = result.replace(/\/\/(.*)$/gm, '<span class="text-gray-400 italic">//$1</span>');
+  result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="text-gray-400 italic">/*$1*/</span>');
+  
+  return result;
+}
+
+/**
+ * Syntax highlighting for C#
+ */
+function highlightCSharp(code: string): string {
+  let result = escapeHtml(code);
+
+  // Keywords
+  const keywords = ['public', 'private', 'protected', 'internal', 'static', 'readonly', 'const', 'class', 'interface', 'struct', 'enum', 'namespace', 'using', 'if', 'else', 'for', 'foreach', 'while', 'do', 'switch', 'case', 'break', 'continue', 'return', 'try', 'catch', 'finally', 'throw', 'new', 'this', 'base', 'abstract', 'virtual', 'override', 'sealed', 'async', 'await', 'var'];
+  const keywordPattern = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
+  result = result.replace(keywordPattern, '<span class="text-purple-400 font-semibold">$1</span>');
+  
+  // Types
+  const types = ['int', 'long', 'short', 'byte', 'double', 'float', 'bool', 'char', 'string', 'void', 'object', 'DateTime', 'List', 'Dictionary', 'Array', 'IEnumerable', 'Task'];
+  const typePattern = new RegExp(`\\b(${types.join('|')})\\b`, 'g');
+  result = result.replace(typePattern, '<span class="text-blue-400 font-medium">$1</span>');
+  
+  // Strings
+  result = result.replace(/&quot;([^&]*)&quot;/g, '<span class="text-green-400">&quot;$1&quot;</span>');
+  
+  // Numbers
+  result = result.replace(/\b(\d+\.?\d*[fFdDlLmM]?)\b/g, '<span class="text-orange-400">$1</span>');
+  
+  // Comments
+  result = result.replace(/\/\/(.*)$/gm, '<span class="text-gray-400 italic">//$1</span>');
+  result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="text-gray-400 italic">/*$1*/</span>');
   
   return result;
 }
 
 /**
  * Syntax highlighting for SQL
- * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightSQL(code: string): string {
   let result = escapeHtml(code);
   
   const keywords = ['CREATE', 'TABLE', 'SELECT', 'FROM', 'WHERE', 'INSERT', 'UPDATE', 'DELETE', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES', 'CONSTRAINT', 'INDEX', 'DATABASE', 'ALTER', 'DROP', 'VARCHAR', 'CHAR', 'TEXT', 'INT', 'INTEGER', 'BIGINT', 'SMALLINT', 'DECIMAL', 'FLOAT', 'DOUBLE', 'BOOLEAN', 'DATE', 'DATETIME', 'TIMESTAMP', 'TIME', 'DEFAULT', 'NOT', 'NULL', 'UNIQUE', 'AUTO_INCREMENT', 'ON', 'UPDATE', 'CURRENT_TIMESTAMP'];
   const keywordPattern = new RegExp(`\\b(${keywords.join('|')})\\b`, 'gi');
-  result = result.replace(keywordPattern, '<span class="hl-keyword">$1</span>');
+  result = result.replace(keywordPattern, '<span class="text-purple-400 font-semibold">$1</span>');
   
   // Strings
-  result = result.replace(/'([^']*)'/g, '<span class="hl-string">\'$1\'</span>');
+  result = result.replace(/'([^']*)'/g, '<span class="text-green-400">\'$1\'</span>');
   
   // Numbers
-  result = result.replace(/\b(\d+)\b/g, '<span class="hl-number">$1</span>');
+  result = result.replace(/\b(\d+)\b/g, '<span class="text-orange-400">$1</span>');
   
   // Comments
-  result = result.replace(/--(.*)$/gm, '<span class="hl-comment">--$1</span>');
+  result = result.replace(/--(.*)$/gm, '<span class="text-gray-400 italic">--$1</span>');
   
   return result;
 }
 
 /**
  * Syntax highlighting for JavaScript/TypeScript
- * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightJavaScript(code: string): string {
   let result = escapeHtml(code);
   
   const keywords = ['const', 'let', 'var', 'function', 'return', 'if', 'else', 'for', 'while', 'do', 'switch', 'case', 'break', 'continue', 'try', 'catch', 'finally', 'throw', 'async', 'await', 'class', 'extends', 'import', 'export', 'from', 'default', 'new', 'this', 'super', 'typeof', 'instanceof'];
   const keywordPattern = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
-  result = result.replace(keywordPattern, '<span class="hl-keyword">$1</span>');
+  result = result.replace(keywordPattern, '<span class="text-purple-400 font-semibold">$1</span>');
   
   // Built-ins
-  result = result.replace(/\b(console|document|window|Array|Object|String|Number|Boolean|Date|Math|JSON|Promise|Error)\b/g, '<span class="hl-builtin">$1</span>');
+  result = result.replace(/\b(console|document|window|Array|Object|String|Number|Boolean|Date|Math|JSON|Promise|Error)\b/g, '<span class="text-cyan-400 font-medium">$1</span>');
   
   // Strings (double quotes)
-  result = result.replace(/&quot;([^&]*)&quot;/g, '<span class="hl-string">&quot;$1&quot;</span>');
+  result = result.replace(/&quot;([^&]*)&quot;/g, '<span class="text-green-400">&quot;$1&quot;</span>');
   
   // Strings (single quotes)
-  result = result.replace(/&#x27;([^&]*)&#x27;/g, '<span class="hl-string">&#x27;$1&#x27;</span>');
+  result = result.replace(/&#x27;([^&]*)&#x27;/g, '<span class="text-green-400">&#x27;$1&#x27;</span>');
   
   // Template literals
-  result = result.replace(/`([^`]*)`/g, '<span class="hl-template-literal">`$1`</span>');
+  result = result.replace(/`([^`]*)`/g, '<span class="text-green-400">`$1`</span>');
   
   // Numbers
-  result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="hl-number">$1</span>');
+  result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="text-orange-400">$1</span>');
   
   // Comments
-  result = result.replace(/\/\/(.*)$/gm, '<span class="hl-comment">//$1</span>');
-  result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="hl-comment">/*$1*/</span>');
+  result = result.replace(/\/\/(.*)$/gm, '<span class="text-gray-400 italic">//$1</span>');
+  result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="text-gray-400 italic">/*$1*/</span>');
   
   return result;
 }
 
 /**
  * Syntax highlighting for Go
- * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightGo(code: string): string {
   let result = escapeHtml(code);
   
   const keywords = ['package', 'import', 'func', 'var', 'const', 'type', 'struct', 'interface', 'if', 'else', 'for', 'range', 'switch', 'case', 'default', 'break', 'continue', 'return', 'go', 'chan', 'select', 'defer', 'panic', 'recover', 'map', 'slice', 'make', 'append', 'len', 'cap', 'copy', 'delete', 'new'];
   const keywordPattern = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
-  result = result.replace(keywordPattern, '<span class="hl-keyword">$1</span>');
+  result = result.replace(keywordPattern, '<span class="text-purple-400 font-semibold">$1</span>');
   
   const types = ['int', 'int8', 'int16', 'int32', 'int64', 'uint', 'uint8', 'uint16', 'uint32', 'uint64', 'float32', 'float64', 'bool', 'string', 'byte', 'rune', 'error'];
   const typePattern = new RegExp(`\\b(${types.join('|')})\\b`, 'g');
-  result = result.replace(typePattern, '<span class="hl-type">$1</span>');
+  result = result.replace(typePattern, '<span class="text-blue-400 font-medium">$1</span>');
   
   // Strings
-  result = result.replace(/&quot;([^&]*)&quot;/g, '<span class="hl-string">&quot;$1&quot;</span>');
-  result = result.replace(/`([^`]*)`/g, '<span class="hl-string">`$1`</span>');
+  result = result.replace(/&quot;([^&]*)&quot;/g, '<span class="text-green-400">&quot;$1&quot;</span>');
+  result = result.replace(/`([^`]*)`/g, '<span class="text-green-400">`$1`</span>');
   
   // Numbers
-  result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="hl-number">$1</span>');
+  result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="text-orange-400">$1</span>');
   
   // Comments
-  result = result.replace(/\/\/(.*)$/gm, '<span class="hl-comment">//$1</span>');
-  result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="hl-comment">/*$1*/</span>');
+  result = result.replace(/\/\/(.*)$/gm, '<span class="text-gray-400 italic">//$1</span>');
+  result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="text-gray-400 italic">/*$1*/</span>');
   
   return result;
 }
 
 /**
  * Syntax highlighting for JSON
- * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightJSON(code: string): string {
   let result = escapeHtml(code);
   
   // Keys
-  result = result.replace(/&quot;([^&]+)&quot;(\s*:)/g, '<span class="hl-type">&quot;$1&quot;</span>$2');
+  result = result.replace(/&quot;([^&]+)&quot;(\s*:)/g, '<span class="text-blue-400 font-medium">&quot;$1&quot;</span>$2');
   
   // String values
-  result = result.replace(/:\s*&quot;([^&]*)&quot;/g, ': <span class="hl-string">&quot;$1&quot;</span>');
+  result = result.replace(/:\s*&quot;([^&]*)&quot;/g, ': <span class="text-green-400">&quot;$1&quot;</span>');
   
   // Numbers
-  result = result.replace(/:\s*(\d+\.?\d*)/g, ': <span class="hl-number">$1</span>');
+  result = result.replace(/:\s*(\d+\.?\d*)/g, ': <span class="text-orange-400">$1</span>');
   
   // Booleans and null
-  result = result.replace(/:\s*(true|false|null)\b/g, ': <span class="hl-keyword">$1</span>');
+  result = result.replace(/:\s*(true|false|null)\b/g, ': <span class="text-purple-400 font-semibold">$1</span>');
   
   return result;
 }
 
 /**
  * Syntax highlighting for Bash/Shell
- * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightBash(code: string): string {
   let result = escapeHtml(code);
   
   // Commands at start of line
-  result = result.replace(/^(\$\s*)(\w+)/gm, '$1<span class="hl-keyword">$2</span>');
+  result = result.replace(/^(\$\s*)(\w+)/gm, '$1<span class="text-blue-400 font-semibold">$2</span>');
   
   // Flags
-  result = result.replace(/(\s)(--?\w+)/g, '$1<span class="hl-type">$2</span>');
+  result = result.replace(/(\s)(--?\w+)/g, '$1<span class="text-cyan-400">$2</span>');
   
   // Strings
-  result = result.replace(/&quot;([^&]*)&quot;/g, '<span class="hl-string">&quot;$1&quot;</span>');
-  result = result.replace(/&#x27;([^&]*)&#x27;/g, '<span class="hl-string">&#x27;$1&#x27;</span>');
+  result = result.replace(/&quot;([^&]*)&quot;/g, '<span class="text-green-400">&quot;$1&quot;</span>');
+  result = result.replace(/&#x27;([^&]*)&#x27;/g, '<span class="text-green-400">&#x27;$1&#x27;</span>');
   
   // Comments
-  result = result.replace(/#(.*)$/gm, '<span class="hl-comment">#$1</span>');
+  result = result.replace(/#(.*)$/gm, '<span class="text-gray-400 italic">#$1</span>');
   
   return result;
 }
 
 /**
  * Syntax highlighting for Python
- * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightPython(code: string): string {
   let result = escapeHtml(code);
   
   const keywords = ['def', 'class', 'if', 'elif', 'else', 'for', 'while', 'try', 'except', 'finally', 'import', 'from', 'as', 'return', 'yield', 'break', 'continue', 'pass', 'with', 'lambda', 'global', 'nonlocal', 'and', 'or', 'not', 'in', 'is'];
   const keywordPattern = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
-  result = result.replace(keywordPattern, '<span class="hl-keyword">$1</span>');
+  result = result.replace(keywordPattern, '<span class="text-purple-400 font-semibold">$1</span>');
   
   // Built-ins
-  result = result.replace(/\b(print|len|range|str|int|float|list|dict|tuple|set|bool|None|True|False)\b/g, '<span class="hl-builtin">$1</span>');
+  result = result.replace(/\b(print|len|range|str|int|float|list|dict|tuple|set|bool|None|True|False)\b/g, '<span class="text-cyan-400 font-medium">$1</span>');
   
   // Strings (single quotes)
-  result = result.replace(/&#x27;([^&]*)&#x27;/g, '<span class="hl-string">&#x27;$1&#x27;</span>');
+  result = result.replace(/&#x27;([^&]*)&#x27;/g, '<span class="text-green-400">&#x27;$1&#x27;</span>');
   
   // Strings (double quotes)
-  result = result.replace(/&quot;([^&]*)&quot;/g, '<span class="hl-string">&quot;$1&quot;</span>');
+  result = result.replace(/&quot;([^&]*)&quot;/g, '<span class="text-green-400">&quot;$1&quot;</span>');
   
   // Numbers
-  result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="hl-number">$1</span>');
+  result = result.replace(/\b(\d+\.?\d*)\b/g, '<span class="text-orange-400">$1</span>');
   
   // Comments
-  result = result.replace(/#(.*)$/gm, '<span class="hl-comment">#$1</span>');
+  result = result.replace(/#(.*)$/gm, '<span class="text-gray-400 italic">#$1</span>');
   
   return result;
 }
 
 /**
  * Syntax highlighting for CSS
- * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightCSS(code: string): string {
   let result = escapeHtml(code);
   
   // Properties
-  result = result.replace(/(\w+)(\s*:)/g, '<span class="hl-type">$1</span>$2');
+  result = result.replace(/(\w+)(\s*:)/g, '<span class="text-blue-400 font-medium">$1</span>$2');
   
   // Values
-  result = result.replace(/:\s*([^;]+);/g, ': <span class="hl-string">$1</span>;');
+  result = result.replace(/:\s*([^;]+);/g, ': <span class="text-green-400">$1</span>;');
   
   // Selectors
-  result = result.replace(/^([^{]+){/gm, '<span class="hl-keyword">$1</span>{');
+  result = result.replace(/^([^{]+){/gm, '<span class="text-purple-400 font-semibold">$1</span>{');
   
   // Comments
-  result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="hl-comment">/*$1*/</span>');
+  result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span class="text-gray-400 italic">/*$1*/</span>');
   
   return result;
 }
 
 /**
  * Syntax highlighting for HTML
- * Uses hl- classes which should be defined with dark mode variants in globals.css
  */
 function highlightHTML(code: string): string {
   let result = escapeHtml(code);
   
   // Tags
-  result = result.replace(/&lt;(\/?[\w-]+)/g, '&lt;<span class="hl-html-tag">$1</span>');
-  result = result.replace(/&gt;/g, '<span class="hl-html-tag">&gt;</span>');
+  result = result.replace(/&lt;(\/?[\w-]+)/g, '&lt;<span class="text-red-400 font-semibold">$1</span>');
+  result = result.replace(/&gt;/g, '<span class="text-red-400 font-semibold">&gt;</span>');
   
   // Attributes
-  result = result.replace(/(\w+)=(&quot;[^&]*&quot;)/g, '<span class="hl-html-attr">$1</span>=<span class="hl-html-value">$2</span>');
+  result = result.replace(/(\w+)=(&quot;[^&]*&quot;)/g, '<span class="text-blue-400">$1</span>=<span class="text-green-400">$2</span>');
   
   // Comments
-  result = result.replace(/&lt;!--([\s\S]*?)--&gt;/g, '<span class="hl-comment">&lt;!--$1--&gt;</span>');
+  result = result.replace(/&lt;!--([\s\S]*?)--&gt;/g, '<span class="text-gray-400 italic">&lt;!--$1--&gt;</span>');
   
   return result;
 }
@@ -759,9 +759,6 @@ export function calculateReadingTime(content: string): number {
   return Math.ceil(wordCount / wordsPerMinute);
 }
 
-/**
- * Generate URL-friendly slug from title
- */
 export function generateSlug(title: string): string {
   return title
     .toLowerCase()

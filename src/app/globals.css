@@ -185,79 +185,6 @@ code {
   }
 }
 
-/* ===== TYPOGRAPHY STYLES ===== */
-/* These .prose styles apply to general markdown rendering if not overridden */
-.prose h1 {
-  font-size: 1.875rem;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  color: #0f172a;
-}
-@media (min-width: 768px) {
-  .prose h1 {
-    font-size: 2.25rem;
-  }
-}
-@media (min-width: 1024px) {
-  .prose h1 {
-    font-size: 3rem;
-  }
-}
-@media (prefers-color-scheme: dark) {
-  .prose h1 {
-    color: #f1f5f9;
-  }
-}
-
-.prose h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  color: #0f172a;
-}
-@media (min-width: 768px) {
-  .prose h2 {
-    font-size: 1.875rem;
-  }
-}
-@media (prefers-color-scheme: dark) {
-  .prose h2 {
-    color: #f1f5f9;
-  }
-}
-
-.prose h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #0f172a;
-}
-@media (min-width: 768px) {
-  .prose h3 {
-    font-size: 1.5rem;
-  }
-}
-@media (prefers-color-scheme: dark) {
-  .prose h3 {
-    color: #f1f5f9;
-  }
-}
-
-.prose p {
-  font-size: 1rem;
-  line-height: 1.75rem;
-  color: #475569;
-}
-@media (min-width: 768px) {
-  .prose p {
-    font-size: 1.125rem;
-  }
-}
-@media (prefers-color-scheme: dark) {
-  .prose p {
-    color: #94a3b8;
-  }
-}
-
 /* ===== BUTTON STYLES ===== */
 .btn-primary {
   background-color: #1d4ed8;
@@ -395,300 +322,30 @@ code {
 }
 
 /* ===== ENHANCED BLOG CONTENT STYLING ===== */
-/*
-   These styles are now primarily for structural and non-color properties,
-   as colors are handled by Tailwind classes in `blog.ts` for dark mode compatibility.
-*/
+/* All blog content styling now uses Tailwind classes in blog.ts */
+/* This section is kept minimal for any remaining structural needs */
+
 .blog-content {
-  /* color: inherit;  Removed, handled by Tailwind classes */
   font-size: 16px;
   line-height: 1.7;
 }
 
-/* Typography - Light Mode with Better Contrast (Structural properties remain) */
-.blog-content h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  /* color: #0f172a; Removed, handled by Tailwind classes in blog.ts */
-  line-height: 1.2;
-}
-
-.blog-content h2 {
-  font-size: 1.875rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  margin-top: 2.5rem;
-  /* color: #0f172a; Removed, handled by Tailwind classes in blog.ts */
-  line-height: 1.3;
-}
-
-.blog-content h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  margin-top: 2rem;
-  /* color: #0f172a; Removed, handled by Tailwind classes in blog.ts */
-  line-height: 1.3;
-}
-
-.blog-content h4 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  margin-top: 1.5rem;
-  /* color: #1e293b; Removed, handled by Tailwind classes in blog.ts */
-  line-height: 1.3;
-}
-
-.blog-content p {
-  margin-bottom: 1.25rem;
-  line-height: 1.75;
-  /* color: #1e293b; Removed, handled by Tailwind classes in blog.ts */
-  font-size: 1rem;
-}
-
-.blog-content strong {
-  font-weight: 600;
-  /* color: #0f172a; Removed, handled by Tailwind classes in blog.ts */
-}
-
-.blog-content em {
-  font-style: italic;
-  /* color: #374151; Removed, handled by Tailwind classes in blog.ts */
-}
-
-/* Lists with Better Spacing */
-.blog-content ul,
-.blog-content ol {
-  margin-bottom: 1.5rem;
-  padding-left: 2rem;
-}
-
-.blog-content li {
-  margin-bottom: 0.75rem;
-  line-height: 1.75;
-}
-
-
-.blog-content a {
-  text-decoration: underline;
-  transition: color 0.2s ease;
-  font-weight: 500;
-}
-
-.blog-content .table-container {
-  margin: 2rem 0;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-}
-
-.blog-content table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.blog-content th {
-  background: #f1f5f9;
-  font-weight: 600;
-  text-align: left;
-  padding: 1rem 1.25rem;
-  font-size: 0.875rem;
-  color: #475569; /* Keep, specific to table header */
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-bottom: 2px solid #e2e8f0;
-}
-
-.blog-content td {
-  padding: 1rem 1.25rem;
-  font-size: 0.875rem;
-  color: #334155; /* Keep, specific to table data */
-  border-bottom: 1px solid #f1f5f9;
-  vertical-align: top;
-}
-
-.blog-content tr:hover {
-  background: #fafafa;
-}
-
-.blog-content tr:last-child td {
-  border-bottom: none;
-}
-
-/* Enhanced Inline Code with Better Contrast */
-.blog-content code:not(.code-block code) {
-  /* background: #f1f5f9; Removed, handled by Tailwind classes in blog.ts */
-  /* color: #1e293b; Removed, handled by Tailwind classes in blog.ts */
-  padding: 0.25rem 0.5rem;
-  border-radius: 6px;
-  font-size: 0.875em;
-  font-family: 'JetBrains Mono', 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', 'Source Code Pro', monospace;
-  font-weight: 500;
-  /* border: 1px solid rgba(148, 163, 184, 0.3); Removed, handled by Tailwind classes in blog.ts */
-}
-
-/* Enhanced Code Blocks with Proper Styling */
-.blog-content .code-container {
-  margin: 2rem 0;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(30, 41, 59, 0.1);
-}
-
-.blog-content .code-header {
-  background: #374151; /* Keep, this is a custom dark background for header */
-  color: #e5e7eb; /* Keep, custom light text for header */
-  padding: 0.75rem 1rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-family: 'JetBrains Mono', 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', 'Source Code Pro', monospace;
-  border-bottom: 1px solid rgba(55, 65, 81, 0.3);
-}
-
-.blog-content .code-block {
-  background: #0f172a; /* Keep, this is a custom dark background */
-  color: #f1f5f9; /* Keep, custom light text */
-  padding: 1.5rem;
-  font-family: 'JetBrains Mono', 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', 'Source Code Pro', monospace;
-  overflow-x: auto;
-  line-height: 1.6;
-  font-size: 0.875rem;
-}
-
-.blog-content .code-block pre {
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  color: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  white-space: pre;
-  word-wrap: normal;
-}
-
-.blog-content .code-block code {
-  background: transparent;
-  color: inherit;
-  padding: 0;
-  font-size: inherit;
-  line-height: inherit;
-  font-family: inherit;
-}
-
-/* Enhanced Syntax Highlighting with High Contrast Colors (Light Mode) */
-/* These colors are applied to the `hl-` classes within code blocks. */
-.blog-content .code-block .hl-keyword {
-  color: #c084fc;
-  font-weight: 600;
-}
-
-.blog-content .code-block .hl-type {
-  color: #60a5fa;
-  font-weight: 500;
-}
-
-.blog-content .code-block .hl-string {
-  color: #4ade80;
-}
-
-.blog-content .code-block .hl-number {
-  color: #fb923c;
-}
-
-.blog-content .code-block .hl-comment {
-  color: #94a3b8;
-  font-style: italic;
-}
-
-.blog-content .code-block .hl-annotation {
-  color: #fbbf24;
-  font-weight: 600;
-}
-
-.blog-content .code-block .hl-builtin {
-  color: #22d3ee;
-}
-
-.blog-content .code-block .hl-html-tag {
-  color: #f472b6;
-}
-
-.blog-content .code-block .hl-html-attr {
-  color: #a78bfa;
-}
-
-.blog-content .code-block .hl-html-value {
-  color: #4ade80;
-}
-
-.blog-content .code-block .hl-template-literal {
-  color: #4ade80;
-}
-
-.blog-content .code-block .hl-template-interpolation {
-  color: #fbbf24;
-}
-
-.blog-content .code-block .hl-template-expression {
-  color: #f1f5f9;
-}
-
-.blog-content .code-block .hl-string-with-html {
-  color: #4ade80;
-}
-
-.blog-content .code-block .hl-react {
-  color: #60a5fa;
-  font-weight: 500;
-}
-.blog-content.prose :not(pre) > code {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.875em;
-  border-radius: 6px;
-  font-weight: 500;
-}
-
-.blog-content.prose pre {
-  background-color: transparent;
-  padding: 0;
-  border: none;
-  border-radius: 0;
-  margin: 0;
-  color: inherit; /* Keep, ensures it takes color from parent code-block */
-  font-size: inherit;
-  overflow: visible;
-}
-
-.blog-content.prose pre code {
-  background-color: transparent;
-  padding: 0;
-  color: inherit; /* Keep, ensures it takes color from parent code-block */
-  font-size: inherit;
-  border-radius: 0;
-}
-
 /* Enhanced Scrollbar for code blocks */
-.blog-content .code-block::-webkit-scrollbar {
+.code-block::-webkit-scrollbar {
   height: 10px;
 }
 
-.blog-content .code-block::-webkit-scrollbar-track {
+.code-block::-webkit-scrollbar-track {
   background: rgba(30, 41, 59, 0.4);
   border-radius: 6px;
 }
 
-.blog-content .code-block::-webkit-scrollbar-thumb {
+.code-block::-webkit-scrollbar-thumb {
   background: rgba(148, 163, 184, 0.5);
   border-radius: 6px;
 }
 
-.blog-content .code-block::-webkit-scrollbar-thumb:hover {
+.code-block::-webkit-scrollbar-thumb:hover {
   background: rgba(148, 163, 184, 0.7);
 }
 
@@ -706,182 +363,10 @@ code {
   background-color: rgba(59, 130, 246, 0.3);
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .blog-content h1,
-  .blog-content h2,
-  .blog-content h3,
-  .blog-content h4 {
-    color: #f8fafc;
-  }
-
-  .blog-content p,
-  .blog-content li {
-    color: #cbd5e1;
-  }
-
-  .blog-content strong {
-    color: #f8fafc;
-  }
-
-  .blog-content em {
-    color: #e2e8f0;
-  }
-
-  .blog-content a {
-    color: #60a5fa;
-  }
-
-  .blog-content a:hover {
-    color: #3b82f6;
-  }
-
-  /* Tables - Dark Mode with Better Contrast */
-  .blog-content .table-container {
-    border-color: rgba(71, 85, 105, 0.4);
-  }
-
-  .blog-content th {
-    background: #1e293b;
-    color: #cbd5e1;
-    border-bottom-color: rgba(71, 85, 105, 0.4);
-  }
-
-  .blog-content td {
-    color: #f1f5f9;
-    border-bottom-color: rgba(71, 85, 105, 0.3);
-  }
-
-  .blog-content tr:hover {
-    background: rgba(30, 41, 59, 0.5);
-  }
-
-  /* Inline Code - Dark Mode with Better Contrast */
-  .blog-content code:not(.code-block code) {
-    background: #1e293b;
-    color: #f1f5f9;
-    border-color: rgba(71, 85, 105, 0.4);
-  }
-
-  /* Code Container - Dark Mode */
-  .blog-content .code-container {
-    border-color: rgba(71, 85, 105, 0.3);
-  }
-
-  .blog-content .code-header {
-    background: #1e293b;
-    color: #cbd5e1;
-    border-bottom-color: rgba(71, 85, 105, 0.4);
-  }
-
-  /* Code block background stays the same (always dark) */
-  .blog-content .code-block {
-    background: #0f172a;
-    color: #f1f5f9;
-  }
-
-  /* Syntax Highlighting in Dark Mode */
-  .blog-content .code-block .hl-keyword {
-    color: #e879f9; /* Adjusted for better contrast in dark mode */
-  }
-
-  .blog-content .code-block .hl-type {
-    color: #93c5fd;
-  }
-
-  .blog-content .code-block .hl-string {
-    color: #86efac;
-  }
-
-  .blog-content .code-block .hl-number {
-    color: #fca5a5;
-  }
-
-  .blog-content .code-block .hl-comment {
-    color: #a3a3a3;
-  }
-
-  .blog-content .code-block .hl-annotation {
-    color: #fcd34d;
-  }
-
-  .blog-content .code-block .hl-builtin {
-    color: #67e8f9;
-  }
-
-  .blog-content .code-block .hl-html-tag {
-    color: #fda4af;
-  }
-
-  .blog-content .code-block .hl-html-attr {
-    color: #c4b5fd;
-  }
-
-  .blog-content .code-block .hl-html-value {
-    color: #86efac;
-  }
-
-  .blog-content .code-block .hl-template-literal {
-    color: #86efac;
-  }
-
-  .blog-content .code-block .hl-template-interpolation {
-    color: #fcd34d;
-  }
-
-  .blog-content .code-block .hl-template-expression {
-    color: #e2e8f0;
-  }
-
-  .blog-content .code-block .hl-string-with-html {
-    color: #86efac;
-  }
-
-  .blog-content .code-block .hl-react {
-    color: #93c5fd;
-  }
-}
-
 /* ===== MOBILE RESPONSIVE ===== */
 @media (max-width: 640px) {
   .blog-content {
     font-size: 15px;
-  }
-
-  .blog-content .code-block {
-    font-size: 0.8rem;
-    padding: 1rem;
-  }
-  
-  .blog-content .code-header {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.7rem;
-  }
-
-  .blog-content h1 {
-    font-size: 1.75rem;
-  }
-
-  .blog-content h2 {
-    font-size: 1.5rem;
-  }
-
-  .blog-content h3 {
-    font-size: 1.25rem;
-  }
-
-  .blog-content p {
-    font-size: 0.95rem;
-    margin-bottom: 1rem;
-  }
-
-  .blog-content .table-container {
-    font-size: 0.8rem;
-  }
-  
-  .blog-content th,
-  .blog-content td {
-    padding: 0.75rem;
   }
 }
 
@@ -893,14 +378,9 @@ code {
 
 /* ===== PRINT STYLES ===== */
 @media print {
-  .blog-content .code-block {
-    background: #f8fafc;
-    color: #1e293b;
-    border: 1px solid #e2e8f0;
-  }
-  
-  .blog-content .code-header {
-    background: #e2e8f0;
-    color: #1e293b;
+  .code-block {
+    background: #f8fafc !important;
+    color: #1e293b !important;
+    border: 1px solid #e2e8f0 !important;
   }
 }

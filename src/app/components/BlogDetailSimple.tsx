@@ -1,4 +1,4 @@
-// src/app/components/BlogDetailSimple.tsx - Fixed version with better contrast for light mode
+// src/app/components/BlogDetailSimple.tsx - Updated with pure Tailwind dark mode
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -87,7 +87,7 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
   }
 
   return (
-    <div className="min-h-screen pt-16 bg-white dark:bg-slate-950">
+    <div className="min-h-screen pt-16 bg-white dark:bg-slate-950 transition-colors duration-300">
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         {/* Back Button */}
         <button
@@ -102,7 +102,7 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
         <header className="mb-12 space-y-6">
           {/* Category Badge */}
           <div className="flex flex-wrap items-center gap-3">
-            <span className="px-4 py-2 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-  -400 rounded-full text-sm font-semibold">
+            <span className="px-4 py-2 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 rounded-full text-sm font-semibold border border-blue-200 dark:border-blue-800">
               {post.category}
             </span>
           </div>
@@ -120,24 +120,24 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
           {/* Meta Information */}
           <div className="flex flex-wrap items-center gap-6 pt-6 border-t border-slate-200 dark:border-slate-800">
             <div className="flex items-center space-x-2 text-sm text-slate-600 dark:text-slate-400">
-              <User size={16} className="text-blue-500" />
-              <span className="font-medium">{post.author}</span>
+              <User size={16} className="text-blue-500 dark:text-blue-400" />
+              <span className="font-medium text-slate-700 dark:text-slate-300">{post.author}</span>
             </div>
             <div className="flex items-center space-x-2 text-sm text-slate-600 dark:text-slate-400">
-              <Calendar size={16} className="text-green-500" />
+              <Calendar size={16} className="text-green-500 dark:text-green-400" />
               <span>{formatDate(post.date)}</span>
             </div>
             <div className="flex items-center space-x-2 text-sm text-slate-600 dark:text-slate-400">
-              <Clock size={16} className="text-orange-500" />
+              <Clock size={16} className="text-orange-500 dark:text-orange-400" />
               <span>{post.readTime} min read</span>
             </div>
           </div>
         </header>
 
-        {/* Article Content - CRITICAL: Apply blog-content class here */}
+        {/* Article Content - Apply blog-content class with proper Tailwind text colors */}
         <div className="mb-16">
           <div 
-            className="blog-content prose prose-lg max-w-none"
+            className="blog-content prose prose-lg max-w-none text-slate-700 dark:text-slate-300"
             dangerouslySetInnerHTML={{ 
               __html: parseMarkdown(post.content) 
             }}
@@ -159,7 +159,7 @@ export default function BlogDetailSimple({ post, isLoading = false }: BlogDetail
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={handleBackClick}
-                className="inline-flex items-center justify-center space-x-2 px-6 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors font-medium"
+                className="inline-flex items-center justify-center space-x-2 px-6 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors font-medium border border-slate-200 dark:border-slate-700"
               >
                 <ArrowLeft size={16} />
                 <span>More Articles</span>
