@@ -1,4 +1,3 @@
-
 export interface BlogPost {
   id: string;
   title: string;
@@ -42,7 +41,7 @@ interface ParsedTable {
 }
 
 /**
- * Main function to parse markdown content to HTML with Tailwind for structure and CSS for code highlighting
+ * Main function to parse markdown content to HTML with Tailwind for structure and safe CSS for code highlighting
  */
 export function parseMarkdown(markdown: string): string {
   if (!markdown || typeof markdown !== 'string') {
@@ -419,20 +418,42 @@ function processInlineFormatting(text: string): string {
 }
 
 /**
- * Create a code block with CSS-based syntax highlighting (not Tailwind dependent)
+ * Create a code block with safe, supported CSS styling
  */
 function createCodeBlock(code: string, language: string): string {
   const highlightedCode = language ? addSyntaxHighlighting(code, language) : escapeHtml(code);
   
-  let html = '<div class="code-container mb-8 rounded-xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700">';
+  // Using safe CSS that's widely supported
+  const codeBlockStyle = `
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f1f5f9;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    overflow-x: auto;
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    border: 1px solid #334155;
+  `;
+
+  const headerStyle = `
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    color: #cbd5e1;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid #475569;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  `;
+
+  let html = '<div class="mb-8 rounded-xl overflow-hidden shadow-lg" style="border: 1px solid #334155;">';
   
   if (language) {
-    html += `<div class="code-header bg-slate-800 dark:bg-slate-900 text-slate-200 dark:text-slate-300 px-4 py-3 text-sm font-semibold border-b border-slate-700 dark:border-slate-600">${language.toUpperCase()}</div>`;
+    html += `<div style="${headerStyle}">${language.toUpperCase()}</div>`;
   }
   
-  // Code block with CSS-based styling
-  html += `<div class="code-block" style="background-color: #0f172a; color: #f1f5f9; padding: 1.5rem; overflow-x: auto; font-family: 'JetBrains Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 14px; line-height: 1.6;">`;
-  html += `<pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;"><code class="language-${language}">${highlightedCode}</code></pre>`;
+  html += `<div style="${codeBlockStyle}">`;
+  html += `<pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;"><code>${highlightedCode}</code></pre>`;
   html += '</div>';
   html += '</div>';
   
@@ -440,7 +461,7 @@ function createCodeBlock(code: string, language: string): string {
 }
 
 /**
- * Add syntax highlighting based on language using CSS styles
+ * Add syntax highlighting with safe, browser-compatible colors
  */
 function addSyntaxHighlighting(code: string, language: string): string {
   const lang = language.toLowerCase();
@@ -481,31 +502,31 @@ function addSyntaxHighlighting(code: string, language: string): string {
 }
 
 /**
- * Enhanced syntax highlighting for Java using CSS styles
+ * Enhanced syntax highlighting for Java with safe colors
  */
 function highlightJava(code: string): string {
   let result = escapeHtml(code);
 
-  // Keywords
+  // Keywords - purple
   const keywords = ['public', 'private', 'protected', 'static', 'final', 'class', 'interface', 'extends', 'implements', 'import', 'package', 'if', 'else', 'for', 'while', 'do', 'switch', 'case', 'break', 'continue', 'return', 'try', 'catch', 'finally', 'throw', 'throws', 'new', 'this', 'super', 'abstract', 'synchronized', 'volatile', 'transient', 'native', 'strictfp'];
   const keywordPattern = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
-  result = result.replace(keywordPattern, '<span style="color: #c084fc; font-weight: 600;">$1</span>');
+  result = result.replace(keywordPattern, '<span style="color: #c084fc; font-weight: bold;">$1</span>');
   
-  // Annotations
-  result = result.replace(/(@\w+)/g, '<span style="color: #fbbf24; font-weight: 600;">$1</span>');
+  // Annotations - yellow
+  result = result.replace(/(@\w+)/g, '<span style="color: #fbbf24; font-weight: bold;">$1</span>');
   
-  // Types
+  // Types - blue
   const types = ['int', 'long', 'short', 'byte', 'double', 'float', 'boolean', 'char', 'String', 'void', 'Object', 'List', 'Long', 'LocalDateTime', 'ResponseEntity', 'HttpStatus', 'Entity', 'Table', 'Column', 'Id', 'GeneratedValue', 'GenerationType', 'IDENTITY', 'CreationTimestamp', 'UpdateTimestamp'];
   const typePattern = new RegExp(`\\b(${types.join('|')})\\b`, 'g');
-  result = result.replace(typePattern, '<span style="color: #60a5fa; font-weight: 500;">$1</span>');
+  result = result.replace(typePattern, '<span style="color: #60a5fa; font-weight: normal;">$1</span>');
   
-  // Strings
+  // Strings - green
   result = result.replace(/&quot;([^&]*)&quot;/g, '<span style="color: #4ade80;">&quot;$1&quot;</span>');
   
-  // Numbers
+  // Numbers - orange
   result = result.replace(/\b(\d+\.?\d*[fFdDlL]?)\b/g, '<span style="color: #fb923c;">$1</span>');
   
-  // Comments
+  // Comments - gray
   result = result.replace(/\/\/(.*)$/gm, '<span style="color: #9ca3af; font-style: italic;">//$1</span>');
   result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span style="color: #9ca3af; font-style: italic;">/*$1*/</span>');
   
@@ -513,28 +534,28 @@ function highlightJava(code: string): string {
 }
 
 /**
- * Syntax highlighting for C# using CSS styles
+ * Syntax highlighting for C# with safe colors
  */
 function highlightCSharp(code: string): string {
   let result = escapeHtml(code);
 
-  // Keywords
+  // Keywords - purple
   const keywords = ['public', 'private', 'protected', 'internal', 'static', 'readonly', 'const', 'class', 'interface', 'struct', 'enum', 'namespace', 'using', 'if', 'else', 'for', 'foreach', 'while', 'do', 'switch', 'case', 'break', 'continue', 'return', 'try', 'catch', 'finally', 'throw', 'new', 'this', 'base', 'abstract', 'virtual', 'override', 'sealed', 'async', 'await', 'var'];
   const keywordPattern = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
-  result = result.replace(keywordPattern, '<span style="color: #c084fc; font-weight: 600;">$1</span>');
+  result = result.replace(keywordPattern, '<span style="color: #c084fc; font-weight: bold;">$1</span>');
   
-  // Types
+  // Types - blue
   const types = ['int', 'long', 'short', 'byte', 'double', 'float', 'bool', 'char', 'string', 'void', 'object', 'DateTime', 'List', 'Dictionary', 'Array', 'IEnumerable', 'Task'];
   const typePattern = new RegExp(`\\b(${types.join('|')})\\b`, 'g');
-  result = result.replace(typePattern, '<span style="color: #60a5fa; font-weight: 500;">$1</span>');
+  result = result.replace(typePattern, '<span style="color: #60a5fa; font-weight: normal;">$1</span>');
   
-  // Strings
+  // Strings - green
   result = result.replace(/&quot;([^&]*)&quot;/g, '<span style="color: #4ade80;">&quot;$1&quot;</span>');
   
-  // Numbers
+  // Numbers - orange
   result = result.replace(/\b(\d+\.?\d*[fFdDlLmM]?)\b/g, '<span style="color: #fb923c;">$1</span>');
   
-  // Comments
+  // Comments - gray
   result = result.replace(/\/\/(.*)$/gm, '<span style="color: #9ca3af; font-style: italic;">//$1</span>');
   result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span style="color: #9ca3af; font-style: italic;">/*$1*/</span>');
   
@@ -542,53 +563,53 @@ function highlightCSharp(code: string): string {
 }
 
 /**
- * Syntax highlighting for SQL using CSS styles
+ * Syntax highlighting for SQL with safe colors
  */
 function highlightSQL(code: string): string {
   let result = escapeHtml(code);
   
   const keywords = ['CREATE', 'TABLE', 'SELECT', 'FROM', 'WHERE', 'INSERT', 'UPDATE', 'DELETE', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES', 'CONSTRAINT', 'INDEX', 'DATABASE', 'ALTER', 'DROP', 'VARCHAR', 'CHAR', 'TEXT', 'INT', 'INTEGER', 'BIGINT', 'SMALLINT', 'DECIMAL', 'FLOAT', 'DOUBLE', 'BOOLEAN', 'DATE', 'DATETIME', 'TIMESTAMP', 'TIME', 'DEFAULT', 'NOT', 'NULL', 'UNIQUE', 'AUTO_INCREMENT', 'ON', 'UPDATE', 'CURRENT_TIMESTAMP'];
   const keywordPattern = new RegExp(`\\b(${keywords.join('|')})\\b`, 'gi');
-  result = result.replace(keywordPattern, '<span style="color: #c084fc; font-weight: 600;">$1</span>');
+  result = result.replace(keywordPattern, '<span style="color: #c084fc; font-weight: bold;">$1</span>');
   
-  // Strings
+  // Strings - green
   result = result.replace(/'([^']*)'/g, '<span style="color: #4ade80;">\'$1\'</span>');
   
-  // Numbers
+  // Numbers - orange
   result = result.replace(/\b(\d+)\b/g, '<span style="color: #fb923c;">$1</span>');
   
-  // Comments
+  // Comments - gray
   result = result.replace(/--(.*)$/gm, '<span style="color: #9ca3af; font-style: italic;">--$1</span>');
   
   return result;
 }
 
 /**
- * Syntax highlighting for JavaScript/TypeScript using CSS styles
+ * Syntax highlighting for JavaScript/TypeScript with safe colors
  */
 function highlightJavaScript(code: string): string {
   let result = escapeHtml(code);
   
   const keywords = ['const', 'let', 'var', 'function', 'return', 'if', 'else', 'for', 'while', 'do', 'switch', 'case', 'break', 'continue', 'try', 'catch', 'finally', 'throw', 'async', 'await', 'class', 'extends', 'import', 'export', 'from', 'default', 'new', 'this', 'super', 'typeof', 'instanceof'];
   const keywordPattern = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
-  result = result.replace(keywordPattern, '<span style="color: #c084fc; font-weight: 600;">$1</span>');
+  result = result.replace(keywordPattern, '<span style="color: #c084fc; font-weight: bold;">$1</span>');
   
-  // Built-ins
-  result = result.replace(/\b(console|document|window|Array|Object|String|Number|Boolean|Date|Math|JSON|Promise|Error)\b/g, '<span style="color: #22d3ee; font-weight: 500;">$1</span>');
+  // Built-ins - cyan
+  result = result.replace(/\b(console|document|window|Array|Object|String|Number|Boolean|Date|Math|JSON|Promise|Error)\b/g, '<span style="color: #22d3ee; font-weight: normal;">$1</span>');
   
-  // Strings (double quotes)
+  // Strings (double quotes) - green
   result = result.replace(/&quot;([^&]*)&quot;/g, '<span style="color: #4ade80;">&quot;$1&quot;</span>');
   
-  // Strings (single quotes)
+  // Strings (single quotes) - green
   result = result.replace(/&#x27;([^&]*)&#x27;/g, '<span style="color: #4ade80;">&#x27;$1&#x27;</span>');
   
-  // Template literals
+  // Template literals - green
   result = result.replace(/`([^`]*)`/g, '<span style="color: #4ade80;">`$1`</span>');
   
-  // Numbers
+  // Numbers - orange
   result = result.replace(/\b(\d+\.?\d*)\b/g, '<span style="color: #fb923c;">$1</span>');
   
-  // Comments
+  // Comments - gray
   result = result.replace(/\/\/(.*)$/gm, '<span style="color: #9ca3af; font-style: italic;">//$1</span>');
   result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span style="color: #9ca3af; font-style: italic;">/*$1*/</span>');
   
@@ -596,27 +617,27 @@ function highlightJavaScript(code: string): string {
 }
 
 /**
- * Syntax highlighting for Go using CSS styles
+ * Syntax highlighting for Go with safe colors
  */
 function highlightGo(code: string): string {
   let result = escapeHtml(code);
   
   const keywords = ['package', 'import', 'func', 'var', 'const', 'type', 'struct', 'interface', 'if', 'else', 'for', 'range', 'switch', 'case', 'default', 'break', 'continue', 'return', 'go', 'chan', 'select', 'defer', 'panic', 'recover', 'map', 'slice', 'make', 'append', 'len', 'cap', 'copy', 'delete', 'new'];
   const keywordPattern = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
-  result = result.replace(keywordPattern, '<span style="color: #c084fc; font-weight: 600;">$1</span>');
+  result = result.replace(keywordPattern, '<span style="color: #c084fc; font-weight: bold;">$1</span>');
   
   const types = ['int', 'int8', 'int16', 'int32', 'int64', 'uint', 'uint8', 'uint16', 'uint32', 'uint64', 'float32', 'float64', 'bool', 'string', 'byte', 'rune', 'error'];
   const typePattern = new RegExp(`\\b(${types.join('|')})\\b`, 'g');
-  result = result.replace(typePattern, '<span style="color: #60a5fa; font-weight: 500;">$1</span>');
+  result = result.replace(typePattern, '<span style="color: #60a5fa; font-weight: normal;">$1</span>');
   
-  // Strings
+  // Strings - green
   result = result.replace(/&quot;([^&]*)&quot;/g, '<span style="color: #4ade80;">&quot;$1&quot;</span>');
   result = result.replace(/`([^`]*)`/g, '<span style="color: #4ade80;">`$1`</span>');
   
-  // Numbers
+  // Numbers - orange
   result = result.replace(/\b(\d+\.?\d*)\b/g, '<span style="color: #fb923c;">$1</span>');
   
-  // Comments
+  // Comments - gray
   result = result.replace(/\/\/(.*)$/gm, '<span style="color: #9ca3af; font-style: italic;">//$1</span>');
   result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span style="color: #9ca3af; font-style: italic;">/*$1*/</span>');
   
@@ -624,118 +645,118 @@ function highlightGo(code: string): string {
 }
 
 /**
- * Syntax highlighting for JSON using CSS styles
+ * Syntax highlighting for JSON with safe colors
  */
 function highlightJSON(code: string): string {
   let result = escapeHtml(code);
   
-  // Keys
-  result = result.replace(/&quot;([^&]+)&quot;(\s*:)/g, '<span style="color: #60a5fa; font-weight: 500;">&quot;$1&quot;</span>$2');
+  // Keys - blue
+  result = result.replace(/&quot;([^&]+)&quot;(\s*:)/g, '<span style="color: #60a5fa; font-weight: bold;">&quot;$1&quot;</span>$2');
   
-  // String values
+  // String values - green
   result = result.replace(/:\s*&quot;([^&]*)&quot;/g, ': <span style="color: #4ade80;">&quot;$1&quot;</span>');
   
-  // Numbers
+  // Numbers - orange
   result = result.replace(/:\s*(\d+\.?\d*)/g, ': <span style="color: #fb923c;">$1</span>');
   
-  // Booleans and null
-  result = result.replace(/:\s*(true|false|null)\b/g, ': <span style="color: #c084fc; font-weight: 600;">$1</span>');
+  // Booleans and null - purple
+  result = result.replace(/:\s*(true|false|null)\b/g, ': <span style="color: #c084fc; font-weight: bold;">$1</span>');
   
   return result;
 }
 
 /**
- * Syntax highlighting for Bash/Shell using CSS styles
+ * Syntax highlighting for Bash/Shell with safe colors
  */
 function highlightBash(code: string): string {
   let result = escapeHtml(code);
   
-  // Commands at start of line
-  result = result.replace(/^(\$\s*)(\w+)/gm, '$1<span style="color: #60a5fa; font-weight: 600;">$2</span>');
+  // Commands at start of line - blue
+  result = result.replace(/^(\$\s*)(\w+)/gm, '$1<span style="color: #60a5fa; font-weight: bold;">$2</span>');
   
-  // Flags
+  // Flags - cyan
   result = result.replace(/(\s)(--?\w+)/g, '$1<span style="color: #22d3ee;">$2</span>');
   
-  // Strings
+  // Strings - green
   result = result.replace(/&quot;([^&]*)&quot;/g, '<span style="color: #4ade80;">&quot;$1&quot;</span>');
   result = result.replace(/&#x27;([^&]*)&#x27;/g, '<span style="color: #4ade80;">&#x27;$1&#x27;</span>');
   
-  // Comments
+  // Comments - gray
   result = result.replace(/#(.*)$/gm, '<span style="color: #9ca3af; font-style: italic;">#$1</span>');
   
   return result;
 }
 
 /**
- * Syntax highlighting for Python using CSS styles
+ * Syntax highlighting for Python with safe colors
  */
 function highlightPython(code: string): string {
   let result = escapeHtml(code);
   
   const keywords = ['def', 'class', 'if', 'elif', 'else', 'for', 'while', 'try', 'except', 'finally', 'import', 'from', 'as', 'return', 'yield', 'break', 'continue', 'pass', 'with', 'lambda', 'global', 'nonlocal', 'and', 'or', 'not', 'in', 'is'];
   const keywordPattern = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
-  result = result.replace(keywordPattern, '<span style="color: #c084fc; font-weight: 600;">$1</span>');
+  result = result.replace(keywordPattern, '<span style="color: #c084fc; font-weight: bold;">$1</span>');
   
-  // Built-ins
-  result = result.replace(/\b(print|len|range|str|int|float|list|dict|tuple|set|bool|None|True|False)\b/g, '<span style="color: #22d3ee; font-weight: 500;">$1</span>');
+  // Built-ins - cyan
+  result = result.replace(/\b(print|len|range|str|int|float|list|dict|tuple|set|bool|None|True|False)\b/g, '<span style="color: #22d3ee; font-weight: normal;">$1</span>');
   
-  // Strings (single quotes)
+  // Strings (single quotes) - green
   result = result.replace(/&#x27;([^&]*)&#x27;/g, '<span style="color: #4ade80;">&#x27;$1&#x27;</span>');
   
-  // Strings (double quotes)
+  // Strings (double quotes) - green
   result = result.replace(/&quot;([^&]*)&quot;/g, '<span style="color: #4ade80;">&quot;$1&quot;</span>');
   
-  // Numbers
+  // Numbers - orange
   result = result.replace(/\b(\d+\.?\d*)\b/g, '<span style="color: #fb923c;">$1</span>');
   
-  // Comments
+  // Comments - gray
   result = result.replace(/#(.*)$/gm, '<span style="color: #9ca3af; font-style: italic;">#$1</span>');
   
   return result;
 }
 
 /**
- * Syntax highlighting for CSS using CSS styles
+ * Syntax highlighting for CSS with safe colors
  */
 function highlightCSS(code: string): string {
   let result = escapeHtml(code);
   
-  // Properties
-  result = result.replace(/(\w+)(\s*:)/g, '<span style="color: #60a5fa; font-weight: 500;">$1</span>$2');
+  // Properties - blue
+  result = result.replace(/(\w+)(\s*:)/g, '<span style="color: #60a5fa; font-weight: normal;">$1</span>$2');
   
-  // Values
+  // Values - green
   result = result.replace(/:\s*([^;]+);/g, ': <span style="color: #4ade80;">$1</span>;');
   
-  // Selectors
-  result = result.replace(/^([^{]+){/gm, '<span style="color: #c084fc; font-weight: 600;">$1</span>{');
+  // Selectors - purple
+  result = result.replace(/^([^{]+){/gm, '<span style="color: #c084fc; font-weight: bold;">$1</span>{');
   
-  // Comments
+  // Comments - gray
   result = result.replace(/\/\*([\s\S]*?)\*\//g, '<span style="color: #9ca3af; font-style: italic;">/*$1*/</span>');
   
   return result;
 }
 
 /**
- * Syntax highlighting for HTML using CSS styles
+ * Syntax highlighting for HTML with safe colors
  */
 function highlightHTML(code: string): string {
   let result = escapeHtml(code);
   
-  // Tags
-  result = result.replace(/&lt;(\/?[\w-]+)/g, '&lt;<span style="color: #ef4444; font-weight: 600;">$1</span>');
-  result = result.replace(/&gt;/g, '<span style="color: #ef4444; font-weight: 600;">&gt;</span>');
+  // Tags - red
+  result = result.replace(/&lt;(\/?[\w-]+)/g, '&lt;<span style="color: #ef4444; font-weight: bold;">$1</span>');
+  result = result.replace(/&gt;/g, '<span style="color: #ef4444; font-weight: bold;">&gt;</span>');
   
-  // Attributes
+  // Attributes - blue and green
   result = result.replace(/(\w+)=(&quot;[^&]*&quot;)/g, '<span style="color: #60a5fa;">$1</span>=<span style="color: #4ade80;">$2</span>');
   
-  // Comments
+  // Comments - gray
   result = result.replace(/&lt;!--([\s\S]*?)--&gt;/g, '<span style="color: #9ca3af; font-style: italic;">&lt;!--$1--&gt;</span>');
   
   return result;
 }
 
 /**
- * Escape HTML characters
+ * Escape HTML characters - safe and reliable
  */
 function escapeHtml(text: string): string {
   const map: { [key: string]: string } = {
@@ -758,6 +779,9 @@ export function calculateReadingTime(content: string): number {
   return Math.ceil(wordCount / wordsPerMinute);
 }
 
+/**
+ * Generate URL-friendly slug from title
+ */
 export function generateSlug(title: string): string {
   return title
     .toLowerCase()
