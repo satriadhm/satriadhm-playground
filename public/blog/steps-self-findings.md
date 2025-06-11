@@ -37,7 +37,7 @@ This was the year I really found my goal in Software Engineering: **"to never-en
 
 There are 2 courses that have been sticking in my mind until this day: Software Construction and Object-Oriented Programming (OOP). I found the intuition of building products by reading the Object-Oriented Programming course. Finally, I was proud of myself for understanding the OOP concepts, and later I still used them in my interviews and got accepted by some companies.
 
-This year was the first year I found the true meaning in learning software engineering. It was my first time joining and winning a competition that made me find it. Unfortunately, my role at that time was not a hacker (dev), since I found myself not capable enough to truly build a Flutter-based mobile app. But this was the time I understood **the feeling of building a product from scratch**. It was so satisfying and fulfilling.
+This year was the first year I found the true meaning in learning software engineering. It was my first time joining and winning a competition that made me find it. Unfortunately, my role at that time was not a hacker (dev), since I found myself not capable enough to truly build a Flutter-based mobile app. But this was the time I understood **the feeling of building a product from scratch**. It was so fulfilling and meaningful.
 
 ### The Overload Experience
 
