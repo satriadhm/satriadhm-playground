@@ -13,6 +13,7 @@ export default function ContactSection() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -25,30 +26,48 @@ export default function ContactSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMessage('');
     
     try {
-      // Simulate form submission - replace with actual implementation
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Here you would typically integrate with a service like EmailJS, Formspree, etc.
-      console.log('Form submitted:', formData);
-      
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch  {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        throw new Error(result.error || 'Failed to send email');
+      }
+    } catch (error) {
+      console.error('Contact form error:', error);
       setSubmitStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Failed to send email. Please try the direct email option below.');
     }
     
     setIsSubmitting(false);
-    
-    // Reset status after 5 seconds
-    setTimeout(() => setSubmitStatus('idle'), 5000);
+    setTimeout(() => setSubmitStatus('idle'), 10000); // Clear status after 10 seconds
+  };
+
+  const handleDirectEmail = () => {
+    const subject = encodeURIComponent(formData.subject || 'Portfolio Contact');
+    const body = encodeURIComponent(
+      `Hi Glorious,\n\nName: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}\n\nBest regards,\n${formData.name}`
+    );
+    const mailtoLink = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
   };
 
   return (
     <section id="contact" className="py-16 sm:py-20 bg-slate-50 dark:bg-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header - Mobile Responsive */}
+        {/* Section Header */}
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-3 sm:mb-4">
             Get In Touch
@@ -60,7 +79,7 @@ export default function ContactSection() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
-          {/* Contact Information - Mobile Responsive */}
+          {/* Contact Information */}
           <div className="lg:col-span-2 space-y-6 sm:space-y-8">
             <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-700">
               <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 sm:mb-8">
@@ -108,7 +127,7 @@ export default function ContactSection() {
                 </div>
               </div>
 
-              {/* Social Links - Mobile Responsive */}
+              {/* Social Links */}
               <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-slate-200 dark:border-slate-700">
                 <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">Professional Links</h4>
                 <div className="flex flex-wrap gap-3">
@@ -141,7 +160,7 @@ export default function ContactSection() {
               </div>
             </div>
 
-            {/* Quick Contact Options - Mobile Responsive */}
+            {/* Quick Contact Options */}
             <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200 dark:border-slate-700">
               <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">Quick Contact</h4>
               <div className="space-y-3">
@@ -174,7 +193,7 @@ export default function ContactSection() {
             </div>
           </div>
 
-          {/* Contact Form - Mobile Responsive */}
+          {/* Contact Form */}
           <div className="lg:col-span-3">
             <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-700">
               <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
@@ -251,53 +270,61 @@ export default function ContactSection() {
                   />
                 </div>
 
-                {/* Submit Button and Status - Mobile Responsive */}
+                {/* Submit Buttons */}
                 <div className="flex flex-col gap-4">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full sm:w-auto inline-flex items-center justify-center space-x-3 bg-slate-900 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-500 disabled:bg-slate-400 dark:disabled:bg-slate-700 text-white px-6 sm:px-8 py-3 rounded-lg font-semibold transition-all hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                        <span>Sending...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Send size={18} />
-                        <span>Send Message</span>
-                      </>
-                    )}
-                  </button>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="flex-1 inline-flex items-center justify-center space-x-3 bg-slate-900 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-500 disabled:bg-slate-400 dark:disabled:bg-slate-700 text-white px-6 sm:px-8 py-3 rounded-lg font-semibold transition-all hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                          <span>Sending via Nodemailer...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send size={18} />
+                          <span>Send Message</span>
+                        </>
+                      )}
+                    </button>
 
-                  {/* Status Messages - Mobile Responsive */}
+                    <button
+                      type="button"
+                      onClick={handleDirectEmail}
+                      className="inline-flex items-center justify-center space-x-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors text-sm"
+                    >
+                      <Mail size={16} />
+                      <span>Direct Email</span>
+                    </button>
+                  </div>
+
+                  {/* Status Messages */}
                   {submitStatus === 'success' && (
                     <div className="flex items-center space-x-2 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
                       <Check size={18} className="flex-shrink-0" />
-                      <span className="text-sm font-medium">Message sent successfully!</span>
+                      <span className="text-sm font-medium">✅ Message sent successfully via Nodemailer! Check your email for confirmation.</span>
                     </div>
                   )}
                   
                   {submitStatus === 'error' && (
-                    <div className="flex items-center space-x-2 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
-                      <AlertCircle size={18} className="flex-shrink-0" />
-                      <span className="text-sm font-medium">Failed to send. Please try again.</span>
+                    <div className="flex flex-col space-y-2 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
+                      <div className="flex items-center space-x-2">
+                        <AlertCircle size={18} className="flex-shrink-0" />
+                        <span className="text-sm font-medium">
+                          ❌ {errorMessage || 'Failed to send via Nodemailer.'}
+                        </span>
+                      </div>
+                      <div className="text-xs text-red-500 dark:text-red-400">
+                        Please try the &quot;Direct Email&quot; button or contact me at {personalInfo.email}
+                      </div>
                     </div>
                   )}
                 </div>
               </form>
             </div>
-          </div>
-        </div>
-
-        {/* Bottom Section - Mobile Responsive */}
-        <div className="mt-12 sm:mt-16 text-center">
-          <div className="inline-flex items-center space-x-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 sm:px-6 py-3 rounded-full shadow-sm">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-slate-600 dark:text-slate-400 text-sm font-medium">
-              Currently available for new opportunities
-            </span>
           </div>
         </div>
       </div>
