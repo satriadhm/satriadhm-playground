@@ -29,7 +29,7 @@ By this time, I still couldn't see myself mastering programming and software dev
 
 ### Mistake #1: Inconsistency in Fundamentals
 
-This was the first mistake that I couldn't avoid, and I hope that anybody who reads this will eventually avoid it in the future: **we need to be consistent in studying the fundamentals**. I was so money-oriented that I was a hard worker in several different jobs at that time, looking down on my conditions, but at the same time, I always found excuses not to study the fundamentals and always looked for the easiest ways.
+This was the first mistake that I couldn't avoid, and I hope that anybody who reads this will eventually avoid it in the future: **we need to be consistent in studying the fundamentals**. I was so money-oriented that I was a hard worker in several different jobs at that time, looking down on my conditions. But at the same time, I always found excuses not to study the fundamentals and always looked for the easiest ways.
 
 ## The Enlightenment (4th Semester)
 
@@ -49,7 +49,7 @@ So, can you imagine I was learning 3 different programming languages at a time?
 
 ### Mistake #2: Learning Too Many Things Simultaneously
 
-This eventually led to my second mistake: **not learning just one particular thing (programming language) at a time**. Again, I was so money-oriented that I thought I would get some money from my internship, but I missed the biggest part, which was learning.
+This eventually led to my second mistake: **not learning just one particular thing (programming language) at a time**. Again, I was so money-oriented that I thought I would get some money from my current internship, but I missed the biggest part, which was learning.
 
 ### Mistake #3: Having Too Many Things in Mind
 
@@ -73,7 +73,7 @@ Being star-syndromed after the Global Internship Program and getting accepted in
 
 I stopped programming, building products, joining competitions, and just focused on earning money. This led to my 4th mistake: **stopping doing it**. Well, most of my mistakes were related to financial problems. Yes, that is true, because I really needed the money, so I couldn't avoid it. (I hope you can avoid it).
 
-I made some other mistakes this semester. For example, I used my credit pass in the Web Development course because I believed myself capable of passing the course through the internship. But I was not. I had missed a lot of fundamentals in website development, something I truly regret until this day.
+I made some other mistakes this semester. For example, I used my credit pass in the Web Development course because I believed myself capable of passing the course through the previous internship. But I was not. I had missed a lot of fundamentals in website development, something I truly regret until this day.
 
 Secondly, I thought I would switch my career to Software Tester because of my latest internship experience. This was so wrong, since last semester I had just started my pathway to mastering Software Dev. This is a representation of **inconsistency between my semesters**.
 
