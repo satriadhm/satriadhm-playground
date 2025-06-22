@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Github, ExternalLink, Star, GitFork, Calendar, Award, Eye, X } from 'lucide-react';
+import { Github, ExternalLink, Star, GitFork, Calendar, Award, Eye, X, FileText, Download } from 'lucide-react';
 import Image from 'next/image';
 import { projects } from '@/constants/data';
 import { GitHubRepo } from '@/types';
@@ -29,6 +29,23 @@ export default function ProjectsSection() {
     : projects.filter(p => p.category === selectedCategory);
 
   const featuredProjects = projects.filter(p => p.featured);
+
+  // Helper function to check file type
+  const getFileType = (filePath: string): 'image' | 'pdf' | 'unknown' => {
+    const extension = filePath.toLowerCase().split('.').pop();
+    if (['jpg', 'jpeg', 'png', 'webp', 'svg'].includes(extension || '')) {
+      return 'image';
+    }
+    if (extension === 'pdf') {
+      return 'pdf';
+    }
+    return 'unknown';
+  };
+
+  // Helper function to get file name from path
+  const getFileName = (filePath: string): string => {
+    return filePath.split('/').pop() || 'Certificate';
+  };
 
   // GitHub API integration with pagination and search
   const fetchGitHubRepos = async () => {
@@ -692,6 +709,153 @@ export default function ProjectsSection() {
                     ))}
                   </div>
                 </div>
+
+                {/* 🆕 CERTIFICATES SECTION - UPDATED FOR PDF SUPPORT */}
+                {selectedProject.certificates && selectedProject.certificates.length > 0 && (
+                  <div>
+                    <h4 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-slate-100 mb-3 sm:mb-4 flex items-center">
+                      <Award size={18} className="mr-2 text-green-600 dark:text-green-400" />
+                      Project Certificates
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                      {selectedProject.certificates.map((certificate: string, certIndex: number) => {
+                        const fileType = getFileType(certificate);
+                        const fileName = getFileName(certificate);
+                        
+                        return (
+                          <div key={certIndex} className="group relative">
+                            {/* Certificate Preview */}
+                            <div className="relative aspect-[3/4] bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-600 hover:shadow-lg transition-all duration-300">
+                              
+                              {/* IMAGE FILE */}
+                              {fileType === 'image' && (
+                                <>
+                                  <Image
+                                    src={certificate}
+                                    alt={`${selectedProject.title} Certificate ${certIndex + 1}`}
+                                    fill
+                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                  />
+                                  
+                                  {/* Overlay with View Button */}
+                                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
+                                    <button
+                                      onClick={() => window.open(certificate, '_blank')}
+                                      className="opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm px-4 py-2 rounded-lg text-slate-900 dark:text-slate-100 font-medium hover:bg-white dark:hover:bg-slate-800 transform scale-90 group-hover:scale-100"
+                                    >
+                                      <div className="flex items-center space-x-2">
+                                        <ExternalLink size={16} />
+                                        <span>View Certificate</span>
+                                      </div>
+                                    </button>
+                                  </div>
+                                </>
+                              )}
+
+                              {/* PDF FILE */}
+                              {fileType === 'pdf' && (
+                                <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
+                                  {/* PDF Icon */}
+                                  <div className="mb-4">
+                                    <FileText size={48} className="text-red-500 mx-auto" />
+                                  </div>
+                                  
+                                  {/* PDF Info */}
+                                  <div className="text-center space-y-2">
+                                    <h6 className="text-sm font-medium text-slate-900 dark:text-slate-100 line-clamp-2">
+                                      {fileName}
+                                    </h6>
+                                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                                      PDF Document
+                                    </p>
+                                  </div>
+                                  
+                                  {/* Buttons */}
+                                  <div className="mt-4 flex flex-col space-y-2 w-full">
+                                    <button
+                                      onClick={() => window.open(certificate, '_blank')}
+                                      className="flex items-center justify-center space-x-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs font-medium transition-colors"
+                                    >
+                                      <ExternalLink size={14} />
+                                      <span>View PDF</span>
+                                    </button>
+                                    <a
+                                      href={certificate}
+                                      download={fileName}
+                                      className="flex items-center justify-center space-x-2 px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-xs font-medium transition-colors"
+                                    >
+                                      <Download size={14} />
+                                      <span>Download</span>
+                                    </a>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* UNKNOWN FILE TYPE */}
+                              {fileType === 'unknown' && (
+                                <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
+                                  <FileText size={48} className="text-slate-500 mx-auto mb-4" />
+                                  <div className="text-center space-y-2">
+                                    <h6 className="text-sm font-medium text-slate-900 dark:text-slate-100 line-clamp-2">
+                                      {fileName}
+                                    </h6>
+                                    <p className="text-xs text-slate-600 dark:text-slate-400">
+                                      Document
+                                    </p>
+                                  </div>
+                                  <button
+                                    onClick={() => window.open(certificate, '_blank')}
+                                    className="mt-4 flex items-center space-x-2 px-3 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-md text-xs font-medium transition-colors"
+                                  >
+                                    <ExternalLink size={14} />
+                                    <span>Open File</span>
+                                  </button>
+                                </div>
+                              )}
+
+                              {/* Certificate Number Badge */}
+                              <div className="absolute top-2 right-2 bg-green-600/90 text-white px-2 py-1 rounded-md text-xs font-medium">
+                                {fileType === 'pdf' ? 'PDF' : 'IMG'} {certIndex + 1}
+                              </div>
+                            </div>
+
+                            {/* Certificate Info */}
+                            <div className="mt-3 text-center">
+                              <h5 className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                                {fileType === 'pdf' ? 'PDF Certificate' : 'Certificate Image'} {certIndex + 1}
+                              </h5>
+                              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                                {selectedProject.title} - Official Documentation
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    
+                    {/* Download All Certificates Button */}
+                    <div className="mt-4 text-center">
+                      <button
+                        onClick={() => {
+                          selectedProject.certificates?.forEach((cert, index) => {
+                            const link = document.createElement('a');
+                            link.href = cert;
+                            link.download = `${selectedProject.title}-certificate-${index + 1}`;
+                            link.target = '_blank';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                          });
+                        }}
+                        className="inline-flex items-center space-x-2 px-4 py-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors text-sm font-medium border border-green-200 dark:border-green-700"
+                      >
+                        <Download size={16} />
+                        <span>Download All Certificates</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {/* Links */}
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">

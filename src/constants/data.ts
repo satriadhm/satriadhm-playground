@@ -424,7 +424,10 @@ export const projects: Project[] = [
     category: 'AR/VR',
     featured: true,
     images: ['/images/projects/elemento-showcase.png'],
-    achievements: ['Ministry funding recipient', 'AR-based learning platform', 'Interactive chemistry modules']
+    achievements: ['Ministry funding recipient', 'AR-based learning platform', 'Interactive chemistry modules'],
+    certificates: [
+      '/certificates/certificate-elemento.pdf',
+    ]
   },
   {
     id: 'perisai',

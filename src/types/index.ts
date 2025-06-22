@@ -35,6 +35,7 @@ export interface Skill {
     featured: boolean;
     images?: string[];
     achievements?: string[];
+    certificates?: string[];
   }
   
   export interface BlogPost {
