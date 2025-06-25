@@ -228,8 +228,8 @@ export const experiences: Experience[] = [
     title: 'Research and Development Software Engineer',
     company: 'Formulatrix Indonesia',
     location: 'Indonesia',
-    period: 'Feb 2025 – Present',
-    type: 'fulltime',
+    period: 'Feb 2025 – June 2025',
+    type: 'internship',
     description: [
       'Formulatrix is a global leader in laboratory automation solutions, revolutionizing scientific research through innovative robotics and software systems. My journey here began as a Graduate Intern, where I quickly demonstrated my capabilities and was offered a full-time position as an R&D Software Engineer.',
       'In this role, I spearheaded the transformation of critical laboratory automation systems. My primary achievement was leading the complete migration of the Rover Updater Mechanism from a legacy Whiptail Bash CLI system to a modern, intuitive web-based dashboard. This wasn\'t just a technical upgrade—it was about making complex laboratory equipment more accessible to researchers worldwide.',
